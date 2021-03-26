@@ -7,6 +7,6 @@ import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
 public interface TornAPIService {
 
     public Player getPlayer(String APIKey);
-    public PlayerEventsDTO getNotifications(String APIKey);
+    public PlayerEventsDTO getEvents(String APIKey);
     
 }
