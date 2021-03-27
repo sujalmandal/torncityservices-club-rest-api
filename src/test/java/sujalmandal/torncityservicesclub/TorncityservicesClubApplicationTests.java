@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import sujalmandal.torncityservicesclub.services.TornAPIService;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
 
 @SpringBootTest
+@Profile("test")
 @Slf4j
 class TorncityservicesClubApplicationTests {
 
