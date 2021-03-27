@@ -5,7 +5,7 @@ import java.util.HashMap;
 import lombok.Data;
 
 @Data
-public class TornPlayerEvent {
+public class TornPlayerEvent implements Comparable<TornPlayerEvent>{
     private String id;
     private Integer timestamp;
     private String event;
@@ -15,5 +15,11 @@ public class TornPlayerEvent {
         this.timestamp=(Integer) event.get("timestamp");
         this.event = (String) event.get("event");
         this.seen = ((Integer) event.get("seen")==0?Boolean.TRUE:Boolean.FALSE);
+    }
+
+    @Override
+    public int compareTo(TornPlayerEvent o) {
+        //latest events first
+        return o.timestamp-this.timestamp;
     }
 }

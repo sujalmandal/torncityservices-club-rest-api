@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.Data;
 
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "level", "gender", "player_id", "name", "status" })
-@Data
-public class TornPlayerInfo {
+public class TornPlayer  {
 
     @JsonProperty("level")
     public Integer level;

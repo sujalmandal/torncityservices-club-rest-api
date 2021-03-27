@@ -26,7 +26,7 @@ public class PlayerServiceImpl implements PlayerService{
     private SubscriptionRepository subRepo;
 
     @Override
-    public void registerPlayer(String APIKey) {
+    public Player registerPlayer(String APIKey) {
         try{
             Player player = authenticateAndReturnPlayer(APIKey);
             if(player!=null){
@@ -37,7 +37,9 @@ public class PlayerServiceImpl implements PlayerService{
                 subscription.setPlayer(registeredPlayer);
                 subRepo.save(subscription);
                 log.info("player successfully registered {}",registeredPlayer);
+                return registeredPlayer;
             }
+            return null;
         }
         catch(Exception e){
             log.error("failed to register player!", e);
@@ -55,6 +57,11 @@ public class PlayerServiceImpl implements PlayerService{
             log.error("failed to authenticate player with torn", e);
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public Player getPlayerByPlayerTornId(Integer tornId) {
+        return playerRepo.findByTornUserId(tornId);
     }
     
 }

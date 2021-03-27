@@ -12,8 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
+import sujalmandal.torncityservicesclub.torn.models.TornPlayer;
 import sujalmandal.torncityservicesclub.torn.models.TornPlayerEvent;
-import sujalmandal.torncityservicesclub.torn.models.TornPlayerInfo;
+
 
 @Service
 @Slf4j
@@ -35,11 +36,11 @@ public class TornAPIServiceImpl implements TornAPIService{
         Player player=null;
         initWebClient();
 
-        TornPlayerInfo tornPlayerInfo = webClient.get()
+        TornPlayer tornPlayerInfo = webClient.get()
         .uri(String.format(tornPlayerInfoEndPoint, APIKey))
         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
         .retrieve()
-        .bodyToMono(TornPlayerInfo.class).block();
+        .bodyToMono(TornPlayer.class).block();
         
         if(tornPlayerInfo!=null){
             player = new Player(tornPlayerInfo);

@@ -7,10 +7,12 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.torn.models.TornPlayerInfo;
+import lombok.NoArgsConstructor;
+import sujalmandal.torncityservicesclub.torn.models.TornPlayer;
 
 @Data
 @Document(collection = "Player")
+@NoArgsConstructor
 public class Player {
     
     @Id
@@ -20,7 +22,7 @@ public class Player {
     private String tornUserName;
     private LocalDateTime registeredAt;
 
-    public Player(TornPlayerInfo tornPlayerInfo){
+    public Player(TornPlayer tornPlayerInfo){
         this.tornUserName=tornPlayerInfo.getName();
         this.tornUserId=tornPlayerInfo.getPlayerId();
     }
