@@ -1,8 +1,10 @@
 package sujalmandal.torncityservicesclub.services;
 
+import sujalmandal.torncityservicesclub.models.Player;
+
 public interface PlayerService{
 
-    public void registerPlayer();
-    public void authenticatePlayer(String APIKey);
+    public void registerPlayer(String APIKey);
+    public Player authenticateAndReturnPlayer(String APIKey);
     
 }
