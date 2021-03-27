@@ -8,6 +8,7 @@ import sujalmandal.torncityservicesclub.enums.JobType;
 
 @Data
 public class JobFilterRequestDTO {
+    
     private List<JobType> jobTypes;
     private Integer amountGreaterThan;
     private Long payGreaterThan;

@@ -16,7 +16,7 @@ import sujalmandal.torncityservicesclub.services.TornAPIService;
 
 @Service
 @Slf4j
-public class PlayerServiceImpl implements PlayerService{
+public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     private TornAPIService tornService;

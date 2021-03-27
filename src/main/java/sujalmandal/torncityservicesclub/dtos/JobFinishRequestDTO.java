@@ -3,7 +3,9 @@ package sujalmandal.torncityservicesclub.dtos;
 import lombok.Data;
 
 @Data
-public class JobCloseRequestDTO {
+public class JobFinishRequestDTO {
+
     private String id;
     private String acceptedByPlayerId;
+    
 }

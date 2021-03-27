@@ -21,6 +21,7 @@ import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.enums.JobType;
 import sujalmandal.torncityservicesclub.models.Job;
+import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.models.Subscription;
 import sujalmandal.torncityservicesclub.services.JobService;
@@ -52,6 +53,7 @@ class TorncityservicesClubApplicationTests {
 		MongoTemplate mongoTemplate = StaticContextAccessor.getBean(MongoTemplate.class);
 		mongoTemplate.dropCollection(Player.class);
 		mongoTemplate.dropCollection(Subscription.class);
+		mongoTemplate.dropCollection(Payment.class);
 		mongoTemplate.dropCollection(Job.class);
 		log.info("wiping test data complete!");
 	}
@@ -119,7 +121,7 @@ class TorncityservicesClubApplicationTests {
 		jobTypes.add(JobType.BOUNTY_REVEAL);
 		jobTypes.add(JobType.FIGHT_HOSPITALIZE);
 		filterReq.setJobTypes(jobTypes);
-		List<Job> foundJobs = jobService.getJobsByFilter(filterReq);
+		List<Job> foundJobs = jobService.getJobsByFilter(filterReq).getJobs();
 		Assert.notEmpty(foundJobs, "failed to fetch jobs");
 		log.info("found {} jobs {}", foundJobs.size(),foundJobs);
 	}

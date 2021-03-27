@@ -1,21 +1,19 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-
 import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobAcceptRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobCloseRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobDeleteRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.JobFilterResponseDTO;
+import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.Player;
@@ -24,9 +22,8 @@ import sujalmandal.torncityservicesclub.repositories.PlayerRepository;
 import sujalmandal.torncityservicesclub.services.JobService;
 import sujalmandal.torncityservicesclub.utils.MongoUtil;
 
-
 @Service
-public class JobServiceImpl implements JobService{
+public class JobServiceImpl implements JobService {
 
     @Autowired
     private PlayerRepository playerRepo;
@@ -36,40 +33,80 @@ public class JobServiceImpl implements JobService{
     private MongoTemplate mongoTemplate;
 
     @Override
-    public List<Job> getJobsByFilter(JobFilterRequestDTO filterRequest) {
-        Criteria filterCriteria = MongoUtil.getCriteriaForJobFilterRequest(filterRequest);
-        Query filterQuery=new Query(filterCriteria);
-        MongoUtil.paginateQuery(filterQuery, filterRequest.getPageNumber(), filterRequest.getPageSize());
-        return mongoTemplate.find(filterQuery, Job.class);
+    public JobFilterResponseDTO getJobsByFilter(JobFilterRequestDTO filterRequest) {
+        try {
+            Criteria filterCriteria = MongoUtil.getCriteriaForJobFilterRequest(filterRequest);
+            Query filterQuery = new Query(filterCriteria);
+            MongoUtil.paginateQuery(filterQuery, filterRequest.getPageNumber(), filterRequest.getPageSize());
+            JobFilterResponseDTO response = new JobFilterResponseDTO();
+            response.setJobs(mongoTemplate.find(filterQuery, Job.class));
+            response.setPageNumber(filterRequest.getPageNumber());
+            response.setPageSize(filterRequest.getPageSize());
+            return response;
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override
     public Job postJob(CreateJobRequestDTO createJobRequestDTO) {
         Job newJob = createJobRequestDTO.getJob();
         Optional<Player> poster = playerRepo.findById(createJobRequestDTO.getPlayerId());
-        if(poster.isPresent()){
+        if (poster.isPresent()) {
             newJob.setListedByPlayerId(poster.get().getInternalId());
             newJob.setPostedDate(LocalDateTime.now());
             return jobRepo.save(newJob);
-        }
-        else{
-            throw new ServiceException(500,"Player not found in the database!",null);
+        } else {
+            throw new ServiceException(500, "Player not found in the database!", null);
         }
     }
 
     @Override
     public Job acceptJob(JobAcceptRequestDTO updateJobRequestDTO) {
-        return null;
+        String jobId=updateJobRequestDTO.getId();
+        Optional<Job> job = jobRepo.findById(jobId);
+        if(job.isPresent()){
+            Job updatedJob = job.get();
+            updatedJob.setAcceptedByPlayerId(updateJobRequestDTO.getAcceptedByPlayerId());
+            updatedJob.setAcceptedDate(LocalDateTime.now());
+            updatedJob.setStatus(JobStatus.ACCEPTED);
+            return jobRepo.save(updatedJob);
+        }
+        else{
+            throw new ServiceException(500, String.format("job %d not found in the database!", jobId), null);
+        }
     }
 
     @Override
-    public Job closeJob(JobCloseRequestDTO updateJobRequestDTO) {
-        return null;
+    public Job finishJob(JobFinishRequestDTO updateJobRequestDTO) {
+        String jobId=updateJobRequestDTO.getId();
+        Optional<Job> job = jobRepo.findById(jobId);
+        if(job.isPresent()){
+            Job updatedJob = job.get();
+            if(updatedJob.getAcceptedByPlayerId()==null || updatedJob.getStatus()==JobStatus.AVAILABLE){
+                throw new ServiceException(500, String.format("job %d has not been accepted yet!", jobId), null);
+            }
+            updatedJob.setFinishedDate(LocalDateTime.now());
+            updatedJob.setStatus(JobStatus.FINISHED);
+            return jobRepo.save(updatedJob);
+        }
+        else{
+            throw new ServiceException(500, String.format("job %d not found in the database!", jobId), null);
+        }
     }
 
     @Override
     public Job cancelJob(JobDeleteRequestDTO updateJobRequestDTO) {
-        return null;
+        String jobId=updateJobRequestDTO.getId();
+        Optional<Job> job = jobRepo.findById(jobId);
+        if(job.isPresent()){
+            Job updatedJob = job.get();
+            updatedJob.setIsDeleted(Boolean.TRUE);
+            return jobRepo.save(updatedJob);
+        }
+        else{
+            throw new ServiceException(500, String.format("job %d not found in the database!", jobId), null);
+        }
     }
 
 }

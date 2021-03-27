@@ -7,8 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
@@ -17,7 +15,6 @@ import sujalmandal.torncityservicesclub.torn.models.TornPlayerEvent;
 
 
 @Service
-@Slf4j
 public class TornAPIServiceImpl implements TornAPIService{
 
     @Value("${torn.api.baseurl}")
@@ -45,7 +42,6 @@ public class TornAPIServiceImpl implements TornAPIService{
         if(tornPlayerInfo!=null){
             player = new Player(tornPlayerInfo);
         }
-
         return player;
     }
 
@@ -68,7 +64,6 @@ public class TornAPIServiceImpl implements TornAPIService{
                 playerEventsDTO.getEvents().add(event);
             });
         }
-
         return playerEventsDTO;
     }
 
