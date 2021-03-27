@@ -28,7 +28,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player registerPlayer(String APIKey) {
         try{
-            Player player = authenticateAndReturnPlayer(APIKey);
+            Player player = tornService.getPlayer(APIKey);
             if(player!=null){
                 log.info("player data successfully fetched from torn {}",player);
                 player.setRegisteredAt(LocalDateTime.now());
@@ -51,7 +51,14 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player authenticateAndReturnPlayer(String APIKey) {
         try{
-            return tornService.getPlayer(APIKey);
+            Player fetchedFromTorn = tornService.getPlayer(APIKey);
+            Player fetchedPlayerDb = this.getPlayerByPlayerTornId(fetchedFromTorn.getTornUserId());
+            if(fetchedPlayerDb==null){
+                throw new ServiceException(500,String.format("User %s is not registered!", fetchedFromTorn.getTornUserName()),null);
+            }
+            else{
+                return fetchedPlayerDb;
+            }
         }
         catch(Exception e){
             log.error("failed to authenticate player with torn", e);
