@@ -39,7 +39,7 @@ public class PlayerServiceImpl implements PlayerService {
                 log.info("player successfully registered {}",registeredPlayer);
                 return registeredPlayer;
             }
-            return null;
+            throw new ServiceException(500,String.format("The API KEY [%s] is not invalid!", APIKey),null);
         }
         catch(Exception e){
             log.error("failed to register player!", e);
@@ -53,6 +53,9 @@ public class PlayerServiceImpl implements PlayerService {
         try{
             Player fetchedFromTorn = tornService.getPlayer(APIKey);
             Player fetchedPlayerDb = this.getPlayerByPlayerTornId(fetchedFromTorn.getTornUserId());
+            if(fetchedFromTorn==null){
+                throw new ServiceException(500,String.format("The API KEY [%s] is not invalid!", APIKey),null);
+            }
             if(fetchedPlayerDb==null){
                 throw new ServiceException(500,String.format("User %s is not registered!", fetchedFromTorn.getTornUserName()),null);
             }
