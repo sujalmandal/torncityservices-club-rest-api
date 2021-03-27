@@ -9,13 +9,19 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.CollectionUtils;
 
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
+import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.JobType;
 
 public class MongoUtil {
 
     public static Criteria getCriteriaForJobFilterRequest(JobFilterRequestDTO jobFilterRequestDTO) {
         List<Criteria> criteriaList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(jobFilterRequestDTO.getJobTypes())) {
+
+        //default filters
+        criteriaList.add(new Criteria("status").is(JobStatus.AVAILABLE));
+        criteriaList.add(new Criteria("isDeleted").is(Boolean.FALSE));
+
+        if (!CollectionUtils.isEmpty(jobFilterRequestDTO.getJobTypes())) {
             criteriaList.add(new Criteria("jobType").in(
                     jobFilterRequestDTO.getJobTypes().stream().map(JobType::toString).collect(Collectors.toList())));
         }

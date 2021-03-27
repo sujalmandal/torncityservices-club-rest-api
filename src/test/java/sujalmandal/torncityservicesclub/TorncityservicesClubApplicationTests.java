@@ -1,6 +1,8 @@
 package sujalmandal.torncityservicesclub;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
@@ -16,6 +18,7 @@ import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.enums.JobType;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.Player;
@@ -49,6 +52,7 @@ class TorncityservicesClubApplicationTests {
 		MongoTemplate mongoTemplate = StaticContextAccessor.getBean(MongoTemplate.class);
 		mongoTemplate.dropCollection(Player.class);
 		mongoTemplate.dropCollection(Subscription.class);
+		mongoTemplate.dropCollection(Job.class);
 		log.info("wiping test data complete!");
 	}
 
@@ -106,7 +110,53 @@ class TorncityservicesClubApplicationTests {
 	@Test
 	@Order(5)
 	public void testFetchingJobs(){
+		postHospitalizeJob();
+		postBountyRevealJob();
+		postMugJob();
+		postBountyJob();
+		JobFilterRequestDTO filterReq = new JobFilterRequestDTO();
+		List<JobType> jobTypes = new ArrayList<>();
+		jobTypes.add(JobType.BOUNTY_REVEAL);
+		jobTypes.add(JobType.FIGHT_HOSPITALIZE);
+		filterReq.setJobTypes(jobTypes);
+		List<Job> foundJobs = jobService.getJobsByFilter(filterReq);
+		Assert.notEmpty(foundJobs, "failed to fetch jobs");
+		log.info("found {} jobs {}", foundJobs.size(),foundJobs);
+	}
 
+	private void postHospitalizeJob(){
+		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
+		createJobRequestDTO.setAmount(3);
+		createJobRequestDTO.setJobType(JobType.FIGHT_HOSPITALIZE);
+		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setPay(10_000_000L);
+		jobService.postJob(createJobRequestDTO);
+	}
+
+	private void postBountyRevealJob(){
+		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
+		createJobRequestDTO.setJobType(JobType.BOUNTY_REVEAL);
+		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setPay(350_000L);
+		jobService.postJob(createJobRequestDTO);
+	}
+
+	private void postMugJob(){
+		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
+		createJobRequestDTO.setJobType(JobType.FIGHT_MUG);
+		createJobRequestDTO.setAmount(20);
+		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setPay(50_000L);
+		jobService.postJob(createJobRequestDTO);
+	}
+
+	private void postBountyJob(){
+		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
+		createJobRequestDTO.setJobType(JobType.BOUNTY);
+		createJobRequestDTO.setAmount(100);
+		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setPay(100_000L);
+		jobService.postJob(createJobRequestDTO);
 	}
 
 }
