@@ -103,7 +103,7 @@ class TorncityservicesClubApplicationTests {
 		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 		createJobRequestDTO.setAmount(3);
 		createJobRequestDTO.setJobType(JobType.FIGHT_HOSPITALIZE);
-		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setListedByPlayerId(player.getInternalId());
 		createJobRequestDTO.setPay(100_000_000L);
 		Job postedJob = jobService.postJob(createJobRequestDTO);
 		Assert.notNull(postedJob, "failed to post a job!");
@@ -130,7 +130,7 @@ class TorncityservicesClubApplicationTests {
 		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 		createJobRequestDTO.setAmount(3);
 		createJobRequestDTO.setJobType(JobType.FIGHT_HOSPITALIZE);
-		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setListedByPlayerId(player.getInternalId());
 		createJobRequestDTO.setPay(10_000_000L);
 		jobService.postJob(createJobRequestDTO);
 	}
@@ -138,7 +138,7 @@ class TorncityservicesClubApplicationTests {
 	private void postBountyRevealJob(){
 		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 		createJobRequestDTO.setJobType(JobType.BOUNTY_REVEAL);
-		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setListedByPlayerId(player.getInternalId());
 		createJobRequestDTO.setPay(350_000L);
 		jobService.postJob(createJobRequestDTO);
 	}
@@ -147,7 +147,7 @@ class TorncityservicesClubApplicationTests {
 		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 		createJobRequestDTO.setJobType(JobType.FIGHT_MUG);
 		createJobRequestDTO.setAmount(20);
-		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setListedByPlayerId(player.getInternalId());
 		createJobRequestDTO.setPay(50_000L);
 		jobService.postJob(createJobRequestDTO);
 	}
@@ -156,7 +156,7 @@ class TorncityservicesClubApplicationTests {
 		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 		createJobRequestDTO.setJobType(JobType.BOUNTY);
 		createJobRequestDTO.setAmount(100);
-		createJobRequestDTO.setPlayerId(player.getInternalId());
+		createJobRequestDTO.setListedByPlayerId(player.getInternalId());
 		createJobRequestDTO.setPay(100_000L);
 		jobService.postJob(createJobRequestDTO);
 	}

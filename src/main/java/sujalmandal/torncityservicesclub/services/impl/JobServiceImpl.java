@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobAcceptRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobDeleteRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.JobCancelRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
@@ -21,6 +21,7 @@ import sujalmandal.torncityservicesclub.repositories.JobRepository;
 import sujalmandal.torncityservicesclub.repositories.PlayerRepository;
 import sujalmandal.torncityservicesclub.services.JobService;
 import sujalmandal.torncityservicesclub.utils.MongoUtil;
+import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -50,8 +51,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job postJob(CreateJobRequestDTO createJobRequestDTO) {
-        Job newJob = createJobRequestDTO.getJob();
-        Optional<Player> poster = playerRepo.findById(createJobRequestDTO.getPlayerId());
+        Job newJob = PojoUtils.getJobFromDTO(createJobRequestDTO);
+        Optional<Player> poster = playerRepo.findById(createJobRequestDTO.getListedByPlayerId());
         if (poster.isPresent()) {
             newJob.setListedByPlayerId(poster.get().getInternalId());
             newJob.setPostedDate(LocalDateTime.now());
@@ -96,7 +97,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job cancelJob(JobDeleteRequestDTO updateJobRequestDTO) {
+    public Job cancelJob(JobCancelRequestDTO updateJobRequestDTO) {
         String jobId=updateJobRequestDTO.getId();
         Optional<Job> job = jobRepo.findById(jobId);
         if(job.isPresent()){

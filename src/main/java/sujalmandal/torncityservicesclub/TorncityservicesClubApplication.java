@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @Slf4j
-public class TorncityservicesClubApplication implements CommandLineRunner{
+public class TorncityservicesClubApplication implements CommandLineRunner {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(TorncityservicesClubApplication.class, args);

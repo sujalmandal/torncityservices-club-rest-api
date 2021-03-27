@@ -23,8 +23,11 @@ public class Job {
     private Boolean isDeleted = Boolean.FALSE;
     private int amount;
     private Long pay;
+
     private String listedByPlayerId;
     private String acceptedByPlayerId;
+    private String targetPlayerId;
+    
     private LocalDateTime postedDate;
     private LocalDateTime acceptedDate;
     private LocalDateTime finishedDate;

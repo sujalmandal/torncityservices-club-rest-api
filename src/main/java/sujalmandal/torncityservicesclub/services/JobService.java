@@ -2,10 +2,10 @@ package sujalmandal.torncityservicesclub.services;
 
 import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobAcceptRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobDeleteRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.JobCancelRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterResponseDTO;
+import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
 import sujalmandal.torncityservicesclub.models.Job;
 
 public interface JobService {
@@ -14,6 +14,6 @@ public interface JobService {
     public Job postJob(CreateJobRequestDTO createJobRequestDTO);
     public Job acceptJob(JobAcceptRequestDTO updateJobRequestDTO);
     public Job finishJob(JobFinishRequestDTO updateJobRequestDTO);
-    public Job cancelJob(JobDeleteRequestDTO updateJobRequestDTO);
+    public Job cancelJob(JobCancelRequestDTO updateJobRequestDTO);
     
 }
