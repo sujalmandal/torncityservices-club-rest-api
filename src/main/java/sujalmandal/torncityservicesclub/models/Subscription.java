@@ -16,7 +16,7 @@ public class Subscription {
     @Id
     private String id;
     private SubscriptionType subscriptionType=SubscriptionType.NON_SUBSCRIBED;
-    private Player player;
+    private String playerId;
     private LocalDate subscribedOn;
     private List<Payment> payments;
 

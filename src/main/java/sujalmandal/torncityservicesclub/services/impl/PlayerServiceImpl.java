@@ -34,7 +34,7 @@ public class PlayerServiceImpl implements PlayerService{
                 player.setRegisteredAt(LocalDateTime.now());
                 Player registeredPlayer = playerRepo.save(player);
                 Subscription subscription = new Subscription();
-                subscription.setPlayer(registeredPlayer);
+                subscription.setPlayerId(registeredPlayer.getInternalId());
                 subRepo.save(subscription);
                 log.info("player successfully registered {}",registeredPlayer);
                 return registeredPlayer;
