@@ -60,7 +60,8 @@ public class AppUtils {
 
     public static Long getAmountFromEvents(String event){
         event=event.replaceAll(",", "");
-        Matcher moneySentMatch=moneyPattern.matcher(event);
+        String[] tokens=event.split(":");
+        Matcher moneySentMatch=moneyPattern.matcher(tokens[0]);
         if(moneySentMatch.find()){
             return Long.parseLong(moneySentMatch.group(0).replace("$",""));
         }

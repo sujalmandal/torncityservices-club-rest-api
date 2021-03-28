@@ -128,7 +128,7 @@ class TorncityservicesClubApplicationTests {
 	@Test
 	@Order(1)
 	public void testExactingMoneyFromEventMessage(){
-		String eventMsg="You were sent $550,000 from Lalop with the message: lol";
+		String eventMsg="You were sent $550,000 from AwesomePlayer with the message: asbc9";
 		Long amountExtracted=AppUtils.getAmountFromEvents(eventMsg);
 		log.info("amount extracted {}",amountExtracted);
 		Assert.isTrue(amountExtracted.equals(550_000L), "unable to extract correct amount from message!");
