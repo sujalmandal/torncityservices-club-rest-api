@@ -22,5 +22,10 @@ public class ServiceException extends RuntimeException{
         this.message=e.getMessage();
         this.statusCode=500;
     }
+
+    public ServiceException(String message, int statusCode){
+        this.message=message;
+        this.statusCode=statusCode;
+    }
     
 }

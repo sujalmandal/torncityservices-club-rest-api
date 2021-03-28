@@ -19,5 +19,7 @@ public class Payment {
     private PaymentStatus status = PaymentStatus.INITIATED;
     private LocalDateTime paymentInitiatedDateTime;
     private LocalDateTime paymentVerifiedDateTime;
+    private String fromPlayerId;
+    private String toPlayerId;
 
 }

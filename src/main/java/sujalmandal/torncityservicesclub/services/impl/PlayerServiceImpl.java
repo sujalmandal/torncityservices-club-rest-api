@@ -1,8 +1,6 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
 import java.time.LocalDateTime;
-
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +11,7 @@ import sujalmandal.torncityservicesclub.repositories.PlayerRepository;
 import sujalmandal.torncityservicesclub.repositories.SubscriptionRepository;
 import sujalmandal.torncityservicesclub.services.PlayerService;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
+import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
 
 @Service
 @Slf4j
@@ -39,7 +38,7 @@ public class PlayerServiceImpl implements PlayerService {
                 log.info("player successfully registered {}", registeredPlayer);
                 return registeredPlayer;
             }
-            throw new ServiceException(500, String.format("The API KEY [%s] is not invalid!", APIKey), null);
+            throw new ServiceException(String.format("The API KEY [%s] is not invalid!", APIKey), 400);
         } catch (Exception e) {
             log.error("failed to register player!", e);
             throw new ServiceException(e);
@@ -55,11 +54,10 @@ public class PlayerServiceImpl implements PlayerService {
                 if (fetchedPlayerDb != null && fetchedPlayerDb.getInternalId()!=null) {
                     return fetchedPlayerDb;
                 } else {
-                    throw new ServiceException(500,
-                            String.format("User %s is not registered!", fetchedFromTorn.getTornUserName()), null);
+                    throw new ServiceException(String.format("User %s is not registered!", fetchedFromTorn.getTornUserName()), 400);
                 }
             } else {
-                throw new ServiceException(500, String.format("The API KEY [%s] is invalid!", APIKey), null);
+                throw new ServiceException(String.format("The API KEY [%s] is invalid!", APIKey),400);
             }
         } catch (Exception e) {
             log.error("failed to authenticate player with torn", e);
@@ -70,6 +68,12 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player getPlayerByPlayerTornId(Integer tornId) {
         return playerRepo.findByTornUserId(tornId);
+    }
+
+    @Override
+    public PlayerEventsDTO getEvents(String APIKey) {
+        PlayerEventsDTO events = tornService.getEvents(APIKey);
+        return events;
     }
 
 }

@@ -1,5 +1,5 @@
 package sujalmandal.torncityservicesclub.enums;
 
 public enum SubscriptionType{
-    LIFE_TIME,MONTHLY,NON_SUBSCRIBED
+    LIFE_TIME,ONE_MONTH,NON_SUBSCRIBED
 }

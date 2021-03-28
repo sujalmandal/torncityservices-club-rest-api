@@ -1,16 +1,15 @@
 package sujalmandal.torncityservicesclub.services;
 
-import sujalmandal.torncityservicesclub.enums.SubscriptionType;
+import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
+import sujalmandal.torncityservicesclub.dtos.SubscriptionRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.SubscriptionVerificationRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.SubscriptionVerificationResponseDTO;
 import sujalmandal.torncityservicesclub.models.Player;
-import sujalmandal.torncityservicesclub.models.Subscription;
 
 public interface SubscriptionService {
     
-    public void subscribeForLifeTime(Player player);
-    public void subscribeForAMonth(Player player);
     public void removeSubscription(Player player);
-    
-    public Subscription initiateSubscription(Player player,SubscriptionType subscriptionType);
-    public Subscription verifySubscription(Player player, Subscription subscription);
+    public SubscriptionPaymentDetailsDTO initiateSubscription(SubscriptionRequestDTO request);
+    public SubscriptionVerificationResponseDTO verifySubscription(SubscriptionVerificationRequestDTO subVerificationRequest);
 
 }

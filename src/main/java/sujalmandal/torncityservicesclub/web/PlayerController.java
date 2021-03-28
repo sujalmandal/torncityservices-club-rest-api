@@ -16,13 +16,13 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @RequestMapping(method = RequestMethod.POST,path = "/register/{api-key}")
-    public ResponseEntity<?> registerPlayer(@PathVariable("api-key") String APIKey){
+    @RequestMapping(method = RequestMethod.POST,path = "/register/{APIKey}")
+    public ResponseEntity<?> registerPlayer(@PathVariable("APIKey") String APIKey){
         return ResponseEntity.ok().body(playerService.registerPlayer(APIKey));
     }
 
-    @RequestMapping(method = RequestMethod.POST,path = "/auth/{api-key}")
-    public ResponseEntity<?> authenticateAndReturnPlayer(@PathVariable("api-key") String APIKey){
+    @RequestMapping(method = RequestMethod.POST,path = "/auth/{APIKey}")
+    public ResponseEntity<?> authenticateAndReturnPlayer(@PathVariable("APIKey") String APIKey){
         return ResponseEntity.ok().body(playerService.authenticateAndReturnPlayer(APIKey));
     }
 }
