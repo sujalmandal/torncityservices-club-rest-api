@@ -64,7 +64,7 @@ public class AppUtils {
         if(moneySentMatch.find()){
             return Long.parseLong(moneySentMatch.group(0).replace("$",""));
         }
-        return 0L;
+        return null;
     }
 
 }
