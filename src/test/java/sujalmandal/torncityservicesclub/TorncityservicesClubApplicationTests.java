@@ -28,7 +28,9 @@ import sujalmandal.torncityservicesclub.services.JobService;
 import sujalmandal.torncityservicesclub.services.PlayerService;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
+import sujalmandal.torncityservicesclub.utils.AppUtils;
 import sujalmandal.torncityservicesclub.utils.StaticContextAccessor;
+
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -75,11 +77,8 @@ class TorncityservicesClubApplicationTests {
 		Assert.notNull(eventsDTO, "events must be not null!");
 		Collections.sort(eventsDTO.getEvents());
 		log.info("testTornPlayerEventsFetch() --> total events fetched {}",eventsDTO.getEvents().size());
-		/*
-		eventsDTO.getEvents().forEach(event->{
-			log.info("event-> {}",event.getId());
-		});
-		*/
+		log.info("sample event data -> {}", eventsDTO.getEvents().get(0));
+		
 	}
 
 	@Test
@@ -126,6 +125,15 @@ class TorncityservicesClubApplicationTests {
 		log.info("found {} jobs {}", foundJobs.size(),foundJobs);
 	}
 
+	@Test
+	@Order(1)
+	public void testExactingMoneyFromEventMessage(){
+		String eventMsg="You were sent $550,000 from Lalop with the message: lol";
+		Long amountExtracted=AppUtils.getAmountFromEvents(eventMsg);
+		log.info("amount extracted {}",amountExtracted);
+		Assert.isTrue(amountExtracted.equals(550_000L), "unable to extract correct amount from message!");
+	}
+
 	private void postHospitalizeJob(){
 		CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 		createJobRequestDTO.setAmount(3);
@@ -160,5 +168,6 @@ class TorncityservicesClubApplicationTests {
 		createJobRequestDTO.setPay(100_000L);
 		jobService.postJob(createJobRequestDTO);
 	}
+	
 
 }

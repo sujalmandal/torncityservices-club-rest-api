@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Payment;
-import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.repositories.PaymentRepository;
 import sujalmandal.torncityservicesclub.services.PaymentService;
 import sujalmandal.torncityservicesclub.services.PlayerService;

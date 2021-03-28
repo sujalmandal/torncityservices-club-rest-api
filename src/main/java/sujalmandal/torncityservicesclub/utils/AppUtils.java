@@ -1,6 +1,8 @@
 package sujalmandal.torncityservicesclub.utils;
 
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
@@ -13,6 +15,7 @@ import sujalmandal.torncityservicesclub.torn.models.TornPlayerEvent;
 public class AppUtils {
 
     private static final String paymentRedirectedLinkStub = "https://www.torn.com/sendcash.php#/XID=%s";
+    private static final Pattern moneyPattern=Pattern.compile("\\$[0-9]+");
 
     public static String generateCode() {
         UUID uuid = UUID.randomUUID();
@@ -37,10 +40,11 @@ public class AppUtils {
     public static Long getAmountFromEventLogs(String verificationCode, PlayerEventsDTO eventsDTO) {
         for (TornPlayerEvent event : eventsDTO.getEvents()) {
             if (event.getEvent().contains(verificationCode)) {
-                Long paymentMade = AppUtils.getAmountFromEventLogs(verificationCode, event);
+                
                 
             }
         }
+        return null;
     }
 
     public static Long getSubscriptionCost(SubscriptionType subscriptionType) {
@@ -52,6 +56,15 @@ public class AppUtils {
         default:
             throw new ServiceException("Illegal subscription type!", 400);
         }
+    }
+
+    public static Long getAmountFromEvents(String event){
+        event=event.replaceAll(",", "");
+        Matcher moneySentMatch=moneyPattern.matcher(event);
+        if(moneySentMatch.find()){
+            return Long.parseLong(moneySentMatch.group(0).replace("$",""));
+        }
+        return 0L;
     }
 
 }
