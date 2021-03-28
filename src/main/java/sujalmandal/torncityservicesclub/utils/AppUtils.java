@@ -39,9 +39,8 @@ public class AppUtils {
 
     public static Long getAmountFromEventLogs(String verificationCode, PlayerEventsDTO eventsDTO) {
         for (TornPlayerEvent event : eventsDTO.getEvents()) {
-            if (event.getEvent().contains(verificationCode)) {
-                
-                
+            if (event.getEventText().contains(verificationCode)) {
+                return getAmountFromEvents(event.getEventText());
             }
         }
         return null;
