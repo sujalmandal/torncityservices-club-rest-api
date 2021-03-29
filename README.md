@@ -2,4 +2,4 @@
 torncityservices.club
 
 REST-APIs 
-http://localhost:8080/torncityservices/swagger-ui/index.html
+http://localhost:8080/torncityservices/swagger-ui.html
