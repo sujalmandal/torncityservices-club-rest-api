@@ -6,6 +6,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import sujalmandal.torncityservicesclub.exceptions.InvalidAPIKeyException;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
@@ -57,6 +59,9 @@ public class TornAPIServiceImpl implements TornAPIService {
                 event.setId((String) k);
                 playerEventsDTO.getEvents().add(event);
             });
+        }
+        else{
+            throw new InvalidAPIKeyException(String.format("The API KEY [%s] is invalid!", APIKey));
         }
         return playerEventsDTO;
     }

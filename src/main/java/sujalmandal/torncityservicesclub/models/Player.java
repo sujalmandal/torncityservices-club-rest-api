@@ -21,6 +21,7 @@ public class Player {
     private Integer tornUserId;
     private String tornUserName;
     private LocalDateTime registeredAt;
+    private String subscriberId;
 
     public Player(TornPlayer tornPlayerInfo){
         this.tornUserName=tornPlayerInfo.getName();
