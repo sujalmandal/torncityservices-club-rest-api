@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sujalmandal.torncityservicesclub.enums.SubscriptionType;
 import sujalmandal.torncityservicesclub.torn.models.TornPlayer;
 
 @Data
@@ -22,6 +23,7 @@ public class Player {
     private String tornUserName;
     private LocalDateTime registeredAt;
     private String subscriberId;
+    private SubscriptionType activeSubscriptionType;
 
     public Player(TornPlayer tornPlayerInfo){
         this.tornUserName=tornPlayerInfo.getName();

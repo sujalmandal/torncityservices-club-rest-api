@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.exceptions.UnRegisteredPlayerException;
 import sujalmandal.torncityservicesclub.models.Player;
@@ -28,7 +29,7 @@ public class PlayerController {
 
     @RequestMapping(method = RequestMethod.POST,path = "/auth/{APIKey}")
     public ResponseEntity<?> authenticateAndReturnPlayer(@PathVariable("APIKey") String APIKey){
-        Player player = null;
+        PlayerDTO player = null;
         try{
             player = playerService.authenticateAndReturnPlayer(APIKey);
         }
