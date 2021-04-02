@@ -21,6 +21,7 @@ import sujalmandal.torncityservicesclub.dtos.JobDetailKeyDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
@@ -30,6 +31,7 @@ import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.repositories.JobRepository;
 import sujalmandal.torncityservicesclub.repositories.PlayerRepository;
 import sujalmandal.torncityservicesclub.services.JobService;
+import sujalmandal.torncityservicesclub.services.PlayerService;
 import sujalmandal.torncityservicesclub.utils.MongoUtil;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
@@ -42,6 +44,8 @@ public class JobServiceImpl implements JobService {
     private JobRepository jobRepo;
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private PlayerService playerService;
 
     @Override
     public JobFilterResponseDTO getJobsByFilter(JobFilterRequestDTO filterRequest) {
@@ -62,7 +66,8 @@ public class JobServiceImpl implements JobService {
     @Override
     public Job postJob(CreateJobRequestDTO createJobRequestDTO) {
 	Job newJob = PojoUtils.getJobFromDTO(createJobRequestDTO);
-	Optional<Player> poster = playerRepo.findById(createJobRequestDTO.getListedByPlayerId());
+	PlayerDTO listedByPlayer = playerService.authenticateAndReturnPlayer(createJobRequestDTO.getApiKey());
+	Optional<Player> poster = playerRepo.findById(listedByPlayer.getInternalId());
 	if (poster.isPresent()) {
 	    newJob.setListedByPlayerId(poster.get().getInternalId());
 	    newJob.setPostedDate(LocalDateTime.now());

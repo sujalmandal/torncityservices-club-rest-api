@@ -110,7 +110,7 @@ public class AppUtils {
 		fieldDescriptor.setLabel(fieldLabel);
 		fieldDescriptor.setType(fieldType);
 		fieldDescriptor.setServiceType(serviceType);
-
+		fieldDescriptor.setName(field.getName());
 		if (field.isAnnotationPresent(HighlightField.class)) {
 		    fieldDescriptor.setIsHighlighted(Boolean.TRUE);
 		    fieldDescriptor

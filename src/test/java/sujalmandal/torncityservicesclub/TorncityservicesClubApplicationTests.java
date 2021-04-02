@@ -3,28 +3,30 @@ package sujalmandal.torncityservicesclub;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
+
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
+
+import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
 import sujalmandal.torncityservicesclub.enums.ServiceType;
 import sujalmandal.torncityservicesclub.models.Job;
-import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.models.Subscription;
 import sujalmandal.torncityservicesclub.models.jobdetails.HospitalizeJobDetails;
+import sujalmandal.torncityservicesclub.models.jobdetails.MugJobDetails;
 import sujalmandal.torncityservicesclub.services.JobService;
 import sujalmandal.torncityservicesclub.services.PlayerService;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
@@ -99,10 +101,13 @@ class TorncityservicesClubApplicationTests {
 	log.info("testJobPosting()");
 	log.info("using previously fetched player {}", player);
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setAmount(3);
 	createJobRequestDTO.setServiceType(ServiceType.OFFERING);
-	createJobRequestDTO.setListedByPlayerId(player.getInternalId());
-	createJobRequestDTO.setPay(100_000_000L);
+	createJobRequestDTO.setApiKey(myAPIKey);
+	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
+	hospJob.setPay(2_000_000);
+	hospJob.setTargetPlayerId(player.getTornUserId());
+	hospJob.setTotalHospitalizations(20);
+	createJobRequestDTO.setJobDetails(hospJob);
 	Job postedJob = jobService.postJob(createJobRequestDTO);
 	Assert.notNull(postedJob, "failed to post a job!");
     }
@@ -111,8 +116,6 @@ class TorncityservicesClubApplicationTests {
     @Order(5)
     public void testFetchingJobs() {
 	postHospitalizeJob();
-	postBountyRevealJob();
-	postMugJob();
 	postBountyJob();
 	JobFilterRequestDTO filterReq = new JobFilterRequestDTO();
 	List<ServiceType> serviceTypes = new ArrayList<>();
@@ -135,10 +138,8 @@ class TorncityservicesClubApplicationTests {
 
     private void postHospitalizeJob() {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setAmount(3);
 	createJobRequestDTO.setServiceType(ServiceType.OFFERING);
-	createJobRequestDTO.setListedByPlayerId(player.getInternalId());
-	createJobRequestDTO.setPay(10_000_000L);
+	createJobRequestDTO.setApiKey(myAPIKey);
 	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
 	hospJob.setPay(2_000_000);
 	hospJob.setTargetPlayerId(player.getTornUserId());
@@ -147,29 +148,14 @@ class TorncityservicesClubApplicationTests {
 	jobService.postJob(createJobRequestDTO);
     }
 
-    private void postBountyRevealJob() {
-	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.REQUESTING);
-	createJobRequestDTO.setListedByPlayerId(player.getInternalId());
-	createJobRequestDTO.setPay(350_000L);
-	jobService.postJob(createJobRequestDTO);
-    }
-
-    private void postMugJob() {
-	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.OFFERING);
-	createJobRequestDTO.setAmount(20);
-	createJobRequestDTO.setListedByPlayerId(player.getInternalId());
-	createJobRequestDTO.setPay(50_000L);
-	jobService.postJob(createJobRequestDTO);
-    }
-
     private void postBountyJob() {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 	createJobRequestDTO.setServiceType(ServiceType.REQUESTING);
-	createJobRequestDTO.setAmount(100);
-	createJobRequestDTO.setListedByPlayerId(player.getInternalId());
-	createJobRequestDTO.setPay(100_000L);
+	createJobRequestDTO.setApiKey(myAPIKey);
+	MugJobDetails mugJobDetails = new MugJobDetails();
+	mugJobDetails.setPay(50_000);
+	mugJobDetails.setTargetPlayerId(player.getTornUserId());
+	mugJobDetails.setTotalMugs(5);
 	jobService.postJob(createJobRequestDTO);
     }
 
