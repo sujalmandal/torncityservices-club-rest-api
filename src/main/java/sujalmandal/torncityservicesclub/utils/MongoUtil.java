@@ -10,7 +10,7 @@ import org.springframework.util.CollectionUtils;
 
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
-import sujalmandal.torncityservicesclub.enums.JobType;
+import sujalmandal.torncityservicesclub.enums.ServiceType;
 
 public class MongoUtil {
 
@@ -21,9 +21,9 @@ public class MongoUtil {
         criteriaList.add(new Criteria("status").is(JobStatus.AVAILABLE));
         criteriaList.add(new Criteria("isDeleted").is(Boolean.FALSE));
 
-        if (!CollectionUtils.isEmpty(jobFilterRequestDTO.getJobTypes())) {
-            criteriaList.add(new Criteria("jobType").in(
-                    jobFilterRequestDTO.getJobTypes().stream().map(JobType::toString).collect(Collectors.toList())));
+        if (!CollectionUtils.isEmpty(jobFilterRequestDTO.getServiceTypes())) {
+            criteriaList.add(new Criteria("serviceType").in(
+                    jobFilterRequestDTO.getServiceTypes().stream().map(ServiceType::toString).collect(Collectors.toList())));
         }
 
         if (jobFilterRequestDTO.getAmountGreaterThan() != null) {

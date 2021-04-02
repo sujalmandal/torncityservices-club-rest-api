@@ -15,19 +15,19 @@ import sujalmandal.torncityservicesclub.torn.models.TornPlayer;
 @Document(collection = "Player")
 @NoArgsConstructor
 public class Player {
-    
+
     @Id
     private String internalId;
     @Indexed(name = "tornUserId", unique = true, sparse = true)
-    private Integer tornUserId;
+    private String tornUserId;
     private String tornUserName;
     private LocalDateTime registeredAt;
     private String subscriberId;
     private SubscriptionType activeSubscriptionType;
 
-    public Player(TornPlayer tornPlayerInfo){
-        this.tornUserName=tornPlayerInfo.getName();
-        this.tornUserId=tornPlayerInfo.getPlayerId();
+    public Player(TornPlayer tornPlayerInfo) {
+	this.tornUserName = tornPlayerInfo.getName();
+	this.tornUserId = Integer.toString(tornPlayerInfo.getPlayerId());
     }
-    
+
 }

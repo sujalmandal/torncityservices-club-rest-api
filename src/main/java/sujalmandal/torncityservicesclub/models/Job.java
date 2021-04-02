@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import sujalmandal.torncityservicesclub.dtos.JobDTO;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
-import sujalmandal.torncityservicesclub.enums.JobType;
+import sujalmandal.torncityservicesclub.enums.ServiceType;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Data
@@ -18,23 +18,22 @@ import sujalmandal.torncityservicesclub.utils.PojoUtils;
 public class Job {
     @Id
     private String id;
-    private JobType jobType;
     private JobStatus status = JobStatus.AVAILABLE;
     private Boolean isDeleted = Boolean.FALSE;
-    private int amount;
-    private Long pay;
 
     private String listedByPlayerId;
     private String acceptedByPlayerId;
-    private String targetPlayerId;
-    
+
     private LocalDateTime postedDate;
     private LocalDateTime acceptedDate;
     private LocalDateTime finishedDate;
 
-    public JobDTO toJobDTO(){
-        JobDTO jobDTO = new JobDTO();
-        PojoUtils.getModelMapper().map(this, jobDTO);
-        return jobDTO;
+    private JobDetails jobDetails;
+    private ServiceType serviceType;
+
+    public JobDTO toJobDTO() {
+	JobDTO jobDTO = new JobDTO();
+	PojoUtils.getModelMapper().map(this, jobDTO);
+	return jobDTO;
     }
 }
