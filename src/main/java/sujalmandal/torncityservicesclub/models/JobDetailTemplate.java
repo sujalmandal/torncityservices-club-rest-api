@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.Getter;
 import lombok.Setter;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Getter

@@ -2,6 +2,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
@@ -18,6 +19,7 @@ public class DirtyBombJobDetails extends JobDetails {
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
     private String factionName;
 
+    @HighlightField
     @JobDetailFieldLabel("Pay for this job (better be good)")
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     private Integer pay;

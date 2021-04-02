@@ -2,6 +2,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
@@ -14,16 +15,19 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @JobDetailTemplateKey(JobDetailTemplateValue.EMPLOYEE)
 public class EmployeeJobDetails extends JobDetails {
 
+    @HighlightField
     @JobDetailFieldLabel("Company type")
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
     private String companyType;
 
+    @HighlightField
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("stars")
+    @JobDetailFieldLabel("Company star/level")
     private Integer companyStar;
 
+    @HighlightField
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Pay")
+    @JobDetailFieldLabel("Daily pay")
     private Integer pay;
 
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)

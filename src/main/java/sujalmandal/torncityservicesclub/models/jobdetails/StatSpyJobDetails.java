@@ -2,6 +2,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
@@ -21,6 +22,7 @@ public class StatSpyJobDetails extends JobDetails {
     @JobDetailFieldLabel("Torn id of the player to spy on")
     private String targetPlayerId;
 
+    @HighlightField
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay")
@@ -30,9 +32,5 @@ public class StatSpyJobDetails extends JobDetails {
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total spies to sell")
     private Integer totalSpy;
-
-    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("How much money per bounty")
-    private Integer amountPerSpy;
 
 }

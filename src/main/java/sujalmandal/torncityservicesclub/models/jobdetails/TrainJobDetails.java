@@ -2,6 +2,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
@@ -18,7 +19,8 @@ public class TrainJobDetails extends JobDetails {
     @JobDetailFieldLabel("How many trains in total")
     private Integer totalTrains;
 
+    @HighlightField
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Value of each train")
+    @JobDetailFieldLabel("Money per train")
     private Integer amountPerTrain;
 }

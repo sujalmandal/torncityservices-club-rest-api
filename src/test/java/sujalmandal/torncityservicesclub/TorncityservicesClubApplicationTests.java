@@ -140,7 +140,7 @@ class TorncityservicesClubApplicationTests {
 	createJobRequestDTO.setListedByPlayerId(player.getInternalId());
 	createJobRequestDTO.setPay(10_000_000L);
 	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
-	hospJob.setPayPerHospitalization(200_000);
+	hospJob.setPay(2_000_000);
 	hospJob.setTargetPlayerId(player.getTornUserId());
 	hospJob.setTotalHospitalizations(20);
 	createJobRequestDTO.setJobDetails(hospJob);

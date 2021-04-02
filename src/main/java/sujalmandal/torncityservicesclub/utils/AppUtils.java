@@ -11,13 +11,13 @@ import org.reflections.Reflections;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
 import sujalmandal.torncityservicesclub.annotations.OfferServiceAttribute;
 import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
 import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceType;
 import sujalmandal.torncityservicesclub.enums.SubscriptionType;
@@ -110,6 +110,13 @@ public class AppUtils {
 		fieldDescriptor.setLabel(fieldLabel);
 		fieldDescriptor.setType(fieldType);
 		fieldDescriptor.setServiceType(serviceType);
+
+		if (field.isAnnotationPresent(HighlightField.class)) {
+		    fieldDescriptor.setIsHighlighted(Boolean.TRUE);
+		    fieldDescriptor
+			    .setServiceTypeToHighlightOn(field.getAnnotation(HighlightField.class).value().toString());
+		}
+
 		formDescriptor.getElements().add(fieldDescriptor);
 	    }
 	    formDescriptors.add(formDescriptor);

@@ -2,6 +2,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
@@ -20,6 +21,7 @@ public class ItemsRunnerJobDetails extends JobDetails {
     @JobDetailFieldLabel("Item to run")
     private String itemType;
 
+    @HighlightField
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay for this job")
     private Integer payPerTrip;

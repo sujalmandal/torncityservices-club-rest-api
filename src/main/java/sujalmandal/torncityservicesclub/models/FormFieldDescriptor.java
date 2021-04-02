@@ -8,4 +8,6 @@ public class FormFieldDescriptor {
     private String type;
     private String label;
     private String serviceType;
+    private Boolean isHighlighted;
+    private String serviceTypeToHighlightOn;
 }

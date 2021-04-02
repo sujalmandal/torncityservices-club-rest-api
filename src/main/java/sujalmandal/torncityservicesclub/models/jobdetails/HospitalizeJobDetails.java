@@ -26,5 +26,5 @@ public class HospitalizeJobDetails extends JobDetails {
 
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay for this job")
-    private Integer payPerHospitalization;
+    private Integer pay;
 }

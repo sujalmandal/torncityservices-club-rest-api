@@ -2,6 +2,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
@@ -34,6 +35,7 @@ public class BountyPlayerJobDetails extends JobDetails {
     @JobDetailFieldLabel("Anonymous bounties?")
     private Boolean isAnon = Boolean.FALSE;
 
+    @HighlightField
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("How much money per bounty")
     private Integer amountPerBounty;
