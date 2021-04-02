@@ -14,9 +14,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
+import sujalmandal.torncityservicesclub.annotations.OfferServiceAttribute;
+import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
 import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
+import sujalmandal.torncityservicesclub.enums.ServiceType;
 import sujalmandal.torncityservicesclub.enums.SubscriptionType;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.FormFieldDescriptor;
@@ -94,10 +97,19 @@ public class AppUtils {
 		String fieldType = field.getAnnotation(JobDetailFieldType.class) != null
 			? field.getAnnotation(JobDetailFieldType.class).value().toString()
 			: null;
+		String serviceType = null;
+		if (field.isAnnotationPresent(RequestServiceAttribute.class)) {
+		    serviceType = ServiceType.REQUESTING.toString();
+		} else if (field.isAnnotationPresent(OfferServiceAttribute.class)) {
+		    serviceType = ServiceType.OFFERING.toString();
+		} else {
+		    serviceType = ServiceType.ALL.toString();
+		}
 		FormFieldDescriptor fieldDescriptor = new FormFieldDescriptor();
 		fieldDescriptor.setId(UUID.randomUUID().toString());
 		fieldDescriptor.setLabel(fieldLabel);
 		fieldDescriptor.setType(fieldType);
+		fieldDescriptor.setServiceType(serviceType);
 		formDescriptor.getElements().add(fieldDescriptor);
 	    }
 	    formDescriptors.add(formDescriptor);
