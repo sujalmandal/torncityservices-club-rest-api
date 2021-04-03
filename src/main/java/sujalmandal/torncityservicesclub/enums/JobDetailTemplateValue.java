@@ -7,31 +7,31 @@ public enum JobDetailTemplateValue {
 
     EMPLOYEE("EMPLOYEE", "Employee", "EMPLOYEE_FILTER", "employee"),
 
-    HOSPITALIZE("HOSPITALIZE", "Hospitalize a player", "HOSPITALIZE_FILTER", "hospitalizes"),
+    HOSPITALIZE("HOSPITALIZE", "Hospitalize a player", "HOSPITALIZE_FILTER", "hospitalize"),
 
-    PROFILE_WATCH("PROFILE_WATCH", "Profile watching", "PROFILE_WATCH_FILTER", "profile watches"),
+    PROFILE_WATCH("PROFILE_WATCH", "Profile watching", "PROFILE_WATCH_FILTER", "profile watche"),
 
-    ITEMS_RUNNER("ITEMS_RUNNER", "Abroad item runner", "ITEMS_RUNNER_FILTER", "item runners"),
+    ITEMS_RUNNER("ITEMS_RUNNER", "Abroad item runner", "ITEMS_RUNNER_FILTER", "item runner"),
 
-    ATTACK_FACTION("ATTACK_FACTION", "Attack a faction", "ATTACK_FACTION_FILTER", "faction attacks"),
+    ATTACK_FACTION("ATTACK_FACTION", "Attack a faction", "ATTACK_FACTION_FILTER", "faction attack"),
 
-    TRAINS("TRAINS", "Trains", "TRAINS_FILTER", "trains"),
+    TRAINS("TRAINS", "Trains", "TRAINS_FILTER", "train"),
 
-    STAT_SPY("STAT_SPY", "Spy someone's stats", "STAT_SPY_FILTER", "stat spies"),
+    STAT_SPY("STAT_SPY", "Spy someone's stats", "STAT_SPY_FILTER", "stat spie"),
 
-    ATTACK("ATTACK", "Attack someone", "ATTACK_FILTER", "attacks"),
+    ATTACK("ATTACK", "Attack someone", "ATTACK_FILTER", "attack"),
 
-    DEFEND_FACTION("DEFEND_FACTION", "Defend a faction", "DEFEND_FACTION_FILTER", "faction defends"),
+    DEFEND_FACTION("DEFEND_FACTION", "Defend a faction", "DEFEND_FACTION_FILTER", "faction defend"),
 
-    BOUNTY_PLAYER("BOUNTY_PLAYER", "Bounty a player", "BOUNTY_PLAYER_FILTER", "bounties"),
+    BOUNTY_PLAYER("BOUNTY_PLAYER", "Bounty a player", "BOUNTY_PLAYER_FILTER", "bountie"),
 
-    BOUNTY_REVEAL("BOUNTY_REVEAL", "Reveal bounty", "BOUNTY_REVEAL_FILTER", "bounty reveals"),
+    BOUNTY_REVEAL("BOUNTY_REVEAL", "Reveal bounty", "BOUNTY_REVEAL_FILTER", "bounty reveal"),
 
-    DIRTY_BOMB_A_FACTION("DIRTY_BOMB_A_FACTION", "Nuke a faction", "DIRTY_BOMB_A_FACTION_FILTER", "dirty bombs"),
+    DIRTY_BOMB_A_FACTION("DIRTY_BOMB_A_FACTION", "Nuke a faction", "DIRTY_BOMB_A_FACTION_FILTER", "dirty bomb"),
 
-    RENT("RENT", "Rent", "RENT_FILTER", "rents"),
+    RENT("RENT", "Rent", "RENT_FILTER", "rent"),
 
-    MUG("MUG", "Mug someone", "MUG_FILTER", "mugs");
+    MUG("MUG", "Mug someone", "MUG_FILTER", "mug");
 
     private String formTemplateName;
     private String formTemplateLabel;

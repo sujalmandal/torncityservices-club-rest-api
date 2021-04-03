@@ -14,12 +14,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplate;
 import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
+import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.enums.SubscriptionType;
@@ -40,6 +42,8 @@ public class AppUtils {
     private static final Reflections reflections = new Reflections(
 	    "sujalmandal.torncityservicesclub.models.jobdetails");
     private static Set<Class<?>> jobDetailImplClasses;
+    private static final String MIN_PREFIX = "min";
+    private static final String MAX_PREFIX = "max";
 
     public static String generateCode() {
 	UUID uuid = UUID.randomUUID();
@@ -98,10 +102,8 @@ public class AppUtils {
 	    JobDetailFormTemplate formDescriptor = new JobDetailFormTemplate();
 	    String formTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value().getFormTemplateName();
 	    String formTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value().getFormTemplateLabel();
-	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value()
-		    .getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value()
-		    .getFilterTemplateLabel();
+	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateName();
+	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateLabel();
 	    formDescriptor.setFormTemplateName(formTemplateName);
 	    formDescriptor.setFormTemplateLabel(formTemplateLabel);
 	    formDescriptor.setFilterTemplateName(filterTemplateName);
@@ -144,29 +146,59 @@ public class AppUtils {
 	Set<JobDetailFilterTemplate> filterTemplates = new HashSet<>();
 	for (Class<?> clazz : jobDetailImplClasses) {
 	    JobDetailFilterTemplate filterTemplate = new JobDetailFilterTemplate();
-	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value()
-		    .getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value()
-		    .getFilterTemplateLabel();
+	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateName();
+	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateLabel();
 	    filterTemplate.setFilterTemplateName(filterTemplateName);
 	    filterTemplate.setFilterTemplateLabel(filterTemplateLabel);
 	    for (Field field : clazz.getDeclaredFields()) {
 
-		String fieldLabel = field.getAnnotation(JobDetailFieldLabel.class).value();
+		boolean isFilterable = field.isAnnotationPresent(FilterableField.class);
+		if (isFilterable) {
+		    FilterableField filterableField = field.getAnnotation(FilterableField.class);
 
-		String fieldType = field.getAnnotation(JobDetailFieldType.class) != null
-			? field.getAnnotation(JobDetailFieldType.class).value().toString()
-			: null;
+		    JobDetailFieldTypeValue fieldType = field.getAnnotation(JobDetailFieldType.class) != null
+			    ? field.getAnnotation(JobDetailFieldType.class).value()
+			    : null;
+		    String fieldName = field.getName();
+		    String fieldLabel = filterableField.label();
+		    ServiceTypeValue serviceType = null;
+		    if (field.isAnnotationPresent(ServiceType.class)) {
+			serviceType = field.getAnnotation(ServiceType.class).value();
+		    } else {
+			serviceType = ServiceTypeValue.ALL;
+		    }
+		    String format = null;
+		    if (field.isAnnotationPresent(FieldFormatter.class)) {
+			format = field.getAnnotation(FieldFormatter.class).value().toString();
+		    }
+		    if (fieldType == JobDetailFieldTypeValue.NUMBER) {
+			String minFieldName = MIN_PREFIX + fieldName.substring(0, 1).toUpperCase()
+				+ fieldName.substring(1, fieldName.length());
+			String minFieldLabel = filterableField.minFieldLabel();
 
-		ServiceTypeValue serviceType = null;
-		if (field.isAnnotationPresent(ServiceType.class)) {
-		    serviceType = field.getAnnotation(ServiceType.class).value();
-		} else {
-		    serviceType = ServiceTypeValue.ALL;
+			String maxFieldName = MAX_PREFIX + fieldName.substring(0, 1).toUpperCase()
+				+ fieldName.substring(1, fieldName.length());
+			String maxFieldLabel = filterableField.maxFieldLabel();
+
+			FilterFieldDescriptor minFieldDescriptor = new FilterFieldDescriptor(serviceType,
+				fieldType.toString(), minFieldName, minFieldLabel);
+			minFieldDescriptor.setLimit(filterableField.limit());
+			minFieldDescriptor.setFormat(format);
+
+			FilterFieldDescriptor maxFieldDescriptor = new FilterFieldDescriptor(serviceType,
+				fieldType.toString(), maxFieldName, maxFieldLabel);
+			maxFieldDescriptor.setLimit(filterableField.limit());
+			maxFieldDescriptor.setFormat(format);
+
+			filterTemplate.getFilterElements().add(minFieldDescriptor);
+			filterTemplate.getFilterElements().add(maxFieldDescriptor);
+		    } else {
+			FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor(serviceType,
+				fieldType.toString(), fieldName, fieldLabel);
+			fieldDescriptor.setFormat(format);
+			filterTemplate.getFilterElements().add(fieldDescriptor);
+		    }
 		}
-		FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor(serviceType, field.getName(),
-			fieldType, fieldLabel);
-		filterTemplate.getFilterElements().add(fieldDescriptor);
 	    }
 	    filterTemplates.add(filterTemplate);
 	}

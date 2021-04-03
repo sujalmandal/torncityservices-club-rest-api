@@ -8,6 +8,13 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target(ElementType.FIELD)
-public @interface DefaultValue {
+public @interface FilterableField {
+    public String label();
+
+    public String maxFieldLabel() default "";;
+
+    public String minFieldLabel() default "";;
+
+    public String limit() default "";
 
 }

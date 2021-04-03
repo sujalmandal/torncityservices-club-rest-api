@@ -3,6 +3,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
@@ -26,6 +27,7 @@ public class AttackFactionJobDetails implements JobDetails {
     @FieldFormatter(FieldFormatterValue.NUMBER)
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total attacks on faction members")
+    @FilterableField(label = "total attacks", maxFieldLabel = "maximum no. of attacks", minFieldLabel = "minimum no. of attacks", limit = "200")
     private String totalAttacks;
 
     @FieldFormatter(FieldFormatterValue.NUMBER)
@@ -37,5 +39,6 @@ public class AttackFactionJobDetails implements JobDetails {
     @HighlightWhen
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay for this job")
+    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay", limit = "500_000_000")
     private Integer pay;
 }
