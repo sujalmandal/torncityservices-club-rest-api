@@ -17,7 +17,7 @@ import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
-import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateName;
+import sujalmandal.torncityservicesclub.annotations.JobDetailTemplate;
 import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
@@ -96,11 +96,11 @@ public class AppUtils {
 	Set<JobDetailFormTemplate> formDescriptors = new HashSet<>();
 	for (Class<?> clazz : jobDetailImplClasses) {
 	    JobDetailFormTemplate formDescriptor = new JobDetailFormTemplate();
-	    String formTemplateName = clazz.getAnnotation(JobDetailTemplateName.class).value().getFormTemplateName();
-	    String formTemplateLabel = clazz.getAnnotation(JobDetailTemplateName.class).value().getFormTemplateLabel();
-	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplateName.class).value()
+	    String formTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value().getFormTemplateName();
+	    String formTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value().getFormTemplateLabel();
+	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value()
 		    .getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplateName.class).value()
+	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value()
 		    .getFilterTemplateLabel();
 	    formDescriptor.setFormTemplateName(formTemplateName);
 	    formDescriptor.setFormTemplateLabel(formTemplateLabel);
@@ -144,9 +144,9 @@ public class AppUtils {
 	Set<JobDetailFilterTemplate> filterTemplates = new HashSet<>();
 	for (Class<?> clazz : jobDetailImplClasses) {
 	    JobDetailFilterTemplate filterTemplate = new JobDetailFilterTemplate();
-	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplateName.class).value()
+	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value()
 		    .getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplateName.class).value()
+	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value()
 		    .getFilterTemplateLabel();
 	    filterTemplate.setFilterTemplateName(filterTemplateName);
 	    filterTemplate.setFilterTemplateLabel(filterTemplateLabel);
@@ -181,7 +181,7 @@ public class AppUtils {
 	if (jobDetailImplClasses == null) {
 	    log.info("loading JobDetail implementation classes..");
 	    AppUtils.jobDetailImplClasses = Collections
-		    .unmodifiableSet(reflections.getTypesAnnotatedWith(JobDetailTemplateName.class));
+		    .unmodifiableSet(reflections.getTypesAnnotatedWith(JobDetailTemplate.class));
 	}
     }
 

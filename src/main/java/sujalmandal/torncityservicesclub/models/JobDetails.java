@@ -3,7 +3,7 @@ package sujalmandal.torncityservicesclub.models;
 import java.util.HashMap;
 import java.util.Optional;
 
-import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateName;
+import sujalmandal.torncityservicesclub.annotations.JobDetailTemplate;
 import sujalmandal.torncityservicesclub.utils.AppUtils;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
@@ -11,7 +11,7 @@ public interface JobDetails {
 
     public static JobDetails fromMap(String jobDetailFormeTemplateName, HashMap<String, Object> data) {
 	Optional<Class<?>> clazz = AppUtils.getJobDetailImplClasses().stream().filter(implClass -> {
-	    return implClass.getAnnotation(JobDetailTemplateName.class).value().getFormTemplateName()
+	    return implClass.getAnnotation(JobDetailTemplate.class).value().getFormTemplateName()
 		    .equals(jobDetailFormeTemplateName);
 	}).findFirst();
 	if (clazz.isPresent()) {
@@ -27,6 +27,6 @@ public interface JobDetails {
     }
 
     default public String getJobDetailType() {
-	return this.getClass().getAnnotation(JobDetailTemplateName.class).value().getFormTemplateName();
+	return this.getClass().getAnnotation(JobDetailTemplate.class).value().getFormTemplateName();
     }
 }

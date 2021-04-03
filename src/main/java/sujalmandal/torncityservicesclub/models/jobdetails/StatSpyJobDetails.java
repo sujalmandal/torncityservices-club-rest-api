@@ -6,7 +6,7 @@ import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
-import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateName;
+import sujalmandal.torncityservicesclub.annotations.JobDetailTemplate;
 import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
@@ -16,7 +16,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@JobDetailTemplateName(JobDetailTemplateValue.STAT_SPY)
+@JobDetailTemplate(JobDetailTemplateValue.STAT_SPY)
 public class StatSpyJobDetails implements JobDetails {
 
     @ServiceType(ServiceTypeValue.REQUEST)
