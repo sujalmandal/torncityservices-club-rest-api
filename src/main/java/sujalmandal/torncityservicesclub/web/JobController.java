@@ -49,15 +49,21 @@ public class JobController {
 	return ResponseEntity.ok().body(jobService.getJobsByFilter(request));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/detailTemplate/{key}")
-    public ResponseEntity<?> getJobDetailTemplateForkey(@PathVariable("key") String key)
+    @RequestMapping(method = RequestMethod.GET, path = "/jobDetailFormTemplate/{templateName}")
+    public ResponseEntity<?> getJobDetailFormTemplateByName(@PathVariable("templateName") String templateName)
 	    throws JsonProcessingException {
-	return ResponseEntity.ok().body(jobService.getJobDetailTemplateForkey(key).toJson());
+	return ResponseEntity.ok().body(jobService.getJobDetailFormTemplateForTemplateName(templateName).toJson());
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/detailTemplates")
+    @RequestMapping(method = RequestMethod.GET, path = "/jobDetailFilterTemplate/{templateName}")
+    public ResponseEntity<?> getJobDetailFilterTemplateByName(@PathVariable("templateName") String templateName)
+	    throws JsonProcessingException {
+	return ResponseEntity.ok().body(jobService.getJobDetailFilterTemplateForTemplateName(templateName).toJson());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/jobDetailTemplates")
     public ResponseEntity<?> getAvailableJobDetailTemplateKeys() throws JsonProcessingException {
-	return ResponseEntity.ok().body(jobService.getJobDetailTemplateKeys());
+	return ResponseEntity.ok().body(jobService.getJobDetailTemplateInforamation());
     }
 
 }

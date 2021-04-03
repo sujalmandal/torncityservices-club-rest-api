@@ -6,8 +6,11 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.Getter;
 import lombok.Setter;
+import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Getter
 @Setter
@@ -43,6 +46,13 @@ public class JobDetailFilterTemplate {
 	} else if (!filterTemplateName.equals(other.filterTemplateName))
 	    return false;
 	return true;
+    }
+
+    public Object toJson() throws JsonProcessingException {
+	JobDetailFilterTemplate copyOfThis = new JobDetailFilterTemplate();
+	PojoUtils.getModelMapper().map(this, copyOfThis);
+	copyOfThis.id = null;
+	return PojoUtils.getObjectMapper().writeValueAsString(copyOfThis);
     }
 
 }

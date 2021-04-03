@@ -26,6 +26,7 @@ import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
+import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.Player;
@@ -126,24 +127,39 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobDetailFormTemplate getJobDetailTemplateForkey(String jobDetailkey) {
-	if (StringUtils.isNotEmpty(jobDetailkey)) {
-	    List<JobDetailFormTemplate> templates = mongoTemplate.find(new Query(Criteria.where("key").is(jobDetailkey)),
-		    JobDetailFormTemplate.class);
+    public JobDetailFormTemplate getJobDetailFormTemplateForTemplateName(String templateName) {
+	if (StringUtils.isNotEmpty(templateName)) {
+	    List<JobDetailFormTemplate> templates = mongoTemplate
+		    .find(new Query(Criteria.where("formTemplateName").is(templateName)), JobDetailFormTemplate.class);
 	    if (CollectionUtils.isEmpty(templates)) {
-		throw new ServiceException(String.format("No template found for the passed key : {} !", jobDetailkey),
-			400);
+		throw new ServiceException(
+			String.format("No template found for the passed template name : {%s} !", templateName), 400);
 	    }
 	    return templates.get(0);
 	} else {
-	    throw new ServiceException("Job detail key cannot be empty!", 400);
+	    throw new ServiceException("Job detail template name cannot be empty!", 400);
 	}
     }
 
     @Override
-    public List<JobDetailTemplateDTO> getJobDetailTemplateKeys() {
+    public List<JobDetailTemplateDTO> getJobDetailTemplateInforamation() {
 	return Arrays.asList(JobDetailTemplateValue.values()).stream().map(JobDetailTemplateDTO::new)
 		.collect(Collectors.toList());
+    }
+
+    @Override
+    public JobDetailFilterTemplate getJobDetailFilterTemplateForTemplateName(String templateName) {
+	if (StringUtils.isNotEmpty(templateName)) {
+	    List<JobDetailFilterTemplate> templates = mongoTemplate.find(
+		    new Query(Criteria.where("filterTemplateName").is(templateName)), JobDetailFilterTemplate.class);
+	    if (CollectionUtils.isEmpty(templates)) {
+		throw new ServiceException(
+			String.format("No template found for the passed template name : {%s} !", templateName), 400);
+	    }
+	    return templates.get(0);
+	} else {
+	    throw new ServiceException("Job detail template name  cannot be empty!", 400);
+	}
     }
 
 }
