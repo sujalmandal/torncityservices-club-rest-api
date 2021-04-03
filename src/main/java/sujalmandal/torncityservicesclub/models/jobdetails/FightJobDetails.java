@@ -14,7 +14,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.ATTACK)
-public class FightJobDetails extends JobDetails {
+public class FightJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)

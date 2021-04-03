@@ -14,7 +14,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.BOUNTY_REVEAL)
-public class BountyRevealJobDetails extends JobDetails {
+public class BountyRevealJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.CHECKBOX)

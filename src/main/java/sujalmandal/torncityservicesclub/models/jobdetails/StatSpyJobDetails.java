@@ -15,7 +15,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.STAT_SPY)
-public class StatSpyJobDetails extends JobDetails {
+public class StatSpyJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)

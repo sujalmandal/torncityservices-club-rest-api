@@ -101,13 +101,13 @@ class TorncityservicesClubApplicationTests {
 	log.info("testJobPosting()");
 	log.info("using previously fetched player {}", player);
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.OFFERING);
+	createJobRequestDTO.setServiceType(ServiceType.OFFER);
 	createJobRequestDTO.setApiKey(myAPIKey);
 	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
 	hospJob.setPay(2_000_000);
 	hospJob.setTargetPlayerId(player.getTornUserId());
 	hospJob.setTotalHospitalizations(20);
-	createJobRequestDTO.setJobDetails(hospJob);
+	createJobRequestDTO.setJobDetails(hospJob.toMap());
 	Job postedJob = jobService.postJob(createJobRequestDTO);
 	Assert.notNull(postedJob, "failed to post a job!");
     }
@@ -119,8 +119,8 @@ class TorncityservicesClubApplicationTests {
 	postBountyJob();
 	JobFilterRequestDTO filterReq = new JobFilterRequestDTO();
 	List<ServiceType> serviceTypes = new ArrayList<>();
-	serviceTypes.add(ServiceType.OFFERING);
-	serviceTypes.add(ServiceType.REQUESTING);
+	serviceTypes.add(ServiceType.OFFER);
+	serviceTypes.add(ServiceType.REQUEST);
 	filterReq.setServiceTypes(serviceTypes);
 	List<Job> foundJobs = jobService.getJobsByFilter(filterReq).getJobs();
 	Assert.notEmpty(foundJobs, "failed to fetch jobs");
@@ -138,19 +138,19 @@ class TorncityservicesClubApplicationTests {
 
     private void postHospitalizeJob() {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.OFFERING);
+	createJobRequestDTO.setServiceType(ServiceType.OFFER);
 	createJobRequestDTO.setApiKey(myAPIKey);
 	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
 	hospJob.setPay(2_000_000);
 	hospJob.setTargetPlayerId(player.getTornUserId());
 	hospJob.setTotalHospitalizations(20);
-	createJobRequestDTO.setJobDetails(hospJob);
+	createJobRequestDTO.setJobDetails(hospJob.toMap());
 	jobService.postJob(createJobRequestDTO);
     }
 
     private void postBountyJob() {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.REQUESTING);
+	createJobRequestDTO.setServiceType(ServiceType.REQUEST);
 	createJobRequestDTO.setApiKey(myAPIKey);
 	MugJobDetails mugJobDetails = new MugJobDetails();
 	mugJobDetails.setPay(50_000);

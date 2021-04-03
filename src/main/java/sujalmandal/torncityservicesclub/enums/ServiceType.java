@@ -1,5 +1,5 @@
 package sujalmandal.torncityservicesclub.enums;
 
 public enum ServiceType {
-    OFFERING, REQUESTING, ALL
+    OFFER, REQUEST, ALL
 }

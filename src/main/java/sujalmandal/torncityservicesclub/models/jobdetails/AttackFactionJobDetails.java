@@ -9,13 +9,12 @@ import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
 import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.ServiceType;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.ATTACK_FACTION)
-public class AttackFactionJobDetails extends JobDetails {
+public class AttackFactionJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldLabel("Faction to attack")

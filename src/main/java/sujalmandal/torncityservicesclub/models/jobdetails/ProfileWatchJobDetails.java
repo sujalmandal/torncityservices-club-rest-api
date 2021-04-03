@@ -9,11 +9,12 @@ import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
 import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.PROFILE_WATCH)
-public class ProfileWatchJobDetails {
+public class ProfileWatchJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)

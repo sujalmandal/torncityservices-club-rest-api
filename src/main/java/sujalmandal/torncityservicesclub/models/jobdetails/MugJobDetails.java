@@ -14,7 +14,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.MUG)
-public class MugJobDetails extends JobDetails {
+public class MugJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)

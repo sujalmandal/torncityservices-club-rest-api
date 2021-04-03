@@ -13,7 +13,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.TRAINS)
-public class TrainJobDetails extends JobDetails {
+public class TrainJobDetails implements JobDetails {
 
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("How many trains in total")

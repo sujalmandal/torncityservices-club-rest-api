@@ -2,6 +2,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
@@ -12,8 +13,9 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+@ToString
 @JobDetailTemplateKey(JobDetailTemplateValue.HOSPITALIZE)
-public class HospitalizeJobDetails extends JobDetails {
+public class HospitalizeJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)

@@ -14,7 +14,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.ITEMS_RUNNER)
-public class ItemsRunnerJobDetails extends JobDetails {
+public class ItemsRunnerJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
@@ -23,7 +23,7 @@ public class ItemsRunnerJobDetails extends JobDetails {
 
     @HighlightField
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total pay for this job")
+    @JobDetailFieldLabel("Total pay per trip")
     private Integer payPerTrip;
 
 }

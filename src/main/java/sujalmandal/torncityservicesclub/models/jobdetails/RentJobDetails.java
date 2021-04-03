@@ -14,14 +14,14 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.RENT)
-public class RentJobDetails extends JobDetails {
+public class RentJobDetails implements JobDetails {
 
-    @HighlightField(ServiceType.REQUESTING)
+    @HighlightField(ServiceType.REQUEST)
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total happy")
     private String happy;
 
-    @HighlightField(ServiceType.OFFERING)
+    @HighlightField(ServiceType.OFFER)
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total rent")
     private Integer rent;

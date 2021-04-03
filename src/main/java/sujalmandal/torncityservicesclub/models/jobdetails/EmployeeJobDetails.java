@@ -13,7 +13,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.EMPLOYEE)
-public class EmployeeJobDetails extends JobDetails {
+public class EmployeeJobDetails implements JobDetails {
 
     @HighlightField
     @JobDetailFieldLabel("Company type")

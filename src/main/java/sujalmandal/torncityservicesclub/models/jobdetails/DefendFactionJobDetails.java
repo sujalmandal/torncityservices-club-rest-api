@@ -14,7 +14,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.DEFEND_FACTION)
-public class DefendFactionJobDetails extends JobDetails {
+public class DefendFactionJobDetails implements JobDetails {
 
     @RequestServiceAttribute
     @JobDetailFieldLabel("Faction to defend")

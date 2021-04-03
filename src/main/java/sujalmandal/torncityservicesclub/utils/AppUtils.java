@@ -1,6 +1,7 @@
 package sujalmandal.torncityservicesclub.utils;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import org.reflections.Reflections;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
@@ -28,10 +30,14 @@ import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
 import sujalmandal.torncityservicesclub.torn.models.TornPlayerEvent;
 
+@Slf4j
 public class AppUtils {
 
     private static final String paymentRedirectedLinkStub = "https://www.torn.com/sendcash.php#/XID=%s";
     private static final Pattern moneyPattern = Pattern.compile("\\$[0-9]+");
+    private static final Reflections reflections = new Reflections(
+	    "sujalmandal.torncityservicesclub.models.jobdetails");
+    private static Set<Class<?>> jobDetailImplClasses;
 
     public static String generateCode() {
 	UUID uuid = UUID.randomUUID();
@@ -84,9 +90,9 @@ public class AppUtils {
     }
 
     public static Set<JobDetailTemplate> generateJobDetailTemplates() throws JsonProcessingException {
+	AppUtils.loadJobDetailImplClasses();
 	Set<JobDetailTemplate> formDescriptors = new HashSet<>();
-	Reflections reflections = new Reflections("sujalmandal.torncityservicesclub.models.jobdetails");
-	for (Class<?> clazz : reflections.getTypesAnnotatedWith(JobDetailTemplateKey.class)) {
+	for (Class<?> clazz : jobDetailImplClasses) {
 	    JobDetailTemplate formDescriptor = new JobDetailTemplate();
 	    String key = clazz.getAnnotation(JobDetailTemplateKey.class).value().getKey();
 	    String label = clazz.getAnnotation(JobDetailTemplateKey.class).value().getLabel();
@@ -99,9 +105,9 @@ public class AppUtils {
 			: null;
 		String serviceType = null;
 		if (field.isAnnotationPresent(RequestServiceAttribute.class)) {
-		    serviceType = ServiceType.REQUESTING.toString();
+		    serviceType = ServiceType.REQUEST.toString();
 		} else if (field.isAnnotationPresent(OfferServiceAttribute.class)) {
-		    serviceType = ServiceType.OFFERING.toString();
+		    serviceType = ServiceType.OFFER.toString();
 		} else {
 		    serviceType = ServiceType.ALL.toString();
 		}
@@ -116,11 +122,22 @@ public class AppUtils {
 		    fieldDescriptor
 			    .setServiceTypeToHighlightOn(field.getAnnotation(HighlightField.class).value().toString());
 		}
-
 		formDescriptor.getElements().add(fieldDescriptor);
 	    }
 	    formDescriptors.add(formDescriptor);
 	}
 	return formDescriptors;
     }
+
+    public static Set<Class<?>> getJobDetailImplClasses() {
+	return jobDetailImplClasses;
+    }
+
+    public static <V, K> void loadJobDetailImplClasses() {
+	log.info("loading JobDetail implementation classes..");
+	AppUtils.jobDetailImplClasses = Collections
+		.unmodifiableSet(reflections.getTypesAnnotatedWith(JobDetailTemplateKey.class));
+
+    }
+
 }

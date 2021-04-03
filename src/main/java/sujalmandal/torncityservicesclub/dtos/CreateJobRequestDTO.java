@@ -1,12 +1,14 @@
 package sujalmandal.torncityservicesclub.dtos;
 
+import java.util.HashMap;
+
 import lombok.Data;
 import sujalmandal.torncityservicesclub.enums.ServiceType;
-import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 public class CreateJobRequestDTO {
     private ServiceType serviceType;
     private String apiKey;
-    private JobDetails jobDetails;
+    private String jobDetailType;
+    private HashMap<String, Object> jobDetails;
 }

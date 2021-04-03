@@ -1,10 +1,5 @@
 package sujalmandal.torncityservicesclub.enums;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import sujalmandal.torncityservicesclub.exceptions.ServiceException;
-import sujalmandal.torncityservicesclub.utils.PojoUtils;
-
 public enum JobDetailTemplateValue {
 
     EMPLOYEE("Employee", "EMPLOYEE"), HOSPITALIZE("Hospitalize a player", "HOSPITALIZE"),

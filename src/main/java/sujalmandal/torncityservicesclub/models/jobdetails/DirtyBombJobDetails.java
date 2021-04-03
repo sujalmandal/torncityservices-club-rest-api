@@ -13,7 +13,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JobDetailTemplateKey(JobDetailTemplateValue.DIRTY_BOMB_A_FACTION)
-public class DirtyBombJobDetails extends JobDetails {
+public class DirtyBombJobDetails implements JobDetails {
 
     @JobDetailFieldLabel("Faction to attack")
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)

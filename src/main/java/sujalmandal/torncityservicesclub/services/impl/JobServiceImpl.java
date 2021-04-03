@@ -27,6 +27,7 @@ import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.JobDetailTemplate;
+import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.repositories.JobRepository;
 import sujalmandal.torncityservicesclub.repositories.PlayerRepository;
@@ -71,6 +72,8 @@ public class JobServiceImpl implements JobService {
 	if (poster.isPresent()) {
 	    newJob.setListedByPlayerId(poster.get().getInternalId());
 	    newJob.setPostedDate(LocalDateTime.now());
+	    newJob.setJobDetails(
+		    JobDetails.fromMap(createJobRequestDTO.getJobDetailType(), createJobRequestDTO.getJobDetails()));
 	    return jobRepo.save(newJob);
 	} else {
 	    throw new ServiceException(500, "Player not found in the database!", null);
