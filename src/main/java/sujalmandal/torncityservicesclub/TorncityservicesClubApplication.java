@@ -16,7 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.models.JobDetailTemplate;
+import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
+import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
 import sujalmandal.torncityservicesclub.utils.AppUtils;
 
 @SpringBootApplication
@@ -35,7 +36,8 @@ public class TorncityservicesClubApplication implements CommandLineRunner, WebMv
 
     @Override
     public void run(String... args) throws Exception {
-	updateJobDetailTemplates();
+	updateJobDetailFormTemplates();
+	updateJobDetailFilterTemplates();
 	log.info("loaded TorncityservicesClubApplication !");
     }
 
@@ -47,13 +49,24 @@ public class TorncityservicesClubApplication implements CommandLineRunner, WebMv
 	});
     }
 
-    private void updateJobDetailTemplates() throws JsonProcessingException {
-	log.info("Creating job detail templates..");
-	Set<JobDetailTemplate> savedTemplates = new HashSet<>(mongoTemplate.findAll(JobDetailTemplate.class));
-	Set<JobDetailTemplate> generatedTemplates = AppUtils.generateJobDetailTemplates();
-	generatedTemplates.removeAll(savedTemplates);
-	for (JobDetailTemplate template : generatedTemplates) {
-	    log.info("Saving {} template!", template.getLabel());
+    private void updateJobDetailFormTemplates() throws JsonProcessingException {
+	log.info("Creating job detail form templates..");
+	Set<JobDetailFormTemplate> savedTemplates = new HashSet<>(mongoTemplate.findAll(JobDetailFormTemplate.class));
+	Set<JobDetailFormTemplate> generatedFormTemplates = AppUtils.generateJobDetailTemplates();
+	generatedFormTemplates.removeAll(savedTemplates);
+	for (JobDetailFormTemplate template : generatedFormTemplates) {
+	    mongoTemplate.save(template);
+	}
+    }
+
+    private void updateJobDetailFilterTemplates() throws JsonProcessingException {
+	log.info("Creating job detail filter templates..");
+	Set<JobDetailFilterTemplate> savedTemplates = new HashSet<>(
+		mongoTemplate.findAll(JobDetailFilterTemplate.class));
+	Set<JobDetailFilterTemplate> generatedFilterTemplates = AppUtils.generateJobDetailFilterTemplates();
+	generatedFilterTemplates.removeAll(savedTemplates);
+	for (JobDetailFilterTemplate template : generatedFilterTemplates) {
+	    log.info("Saving {} filter template!", template.getFilterTemplateName());
 	    mongoTemplate.save(template);
 	}
     }

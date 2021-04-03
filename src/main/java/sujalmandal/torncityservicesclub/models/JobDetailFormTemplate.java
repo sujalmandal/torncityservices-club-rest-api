@@ -15,16 +15,18 @@ import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Getter
 @Setter
-@Document(collection = "JobDetailTemplate")
-public class JobDetailTemplate {
+@Document(collection = "JobDetailFormTemplate")
+public class JobDetailFormTemplate {
     @Id
     private String id;
-    private String key;
-    private String label;
+    private String formTemplateName;
+    private String formTemplateLabel;
+    private String filterTemplateName;
+    private String filterTemplateLabel;
     private List<FormFieldDescriptor> elements = new ArrayList<FormFieldDescriptor>();
 
     public String toJson() throws JsonProcessingException {
-	JobDetailTemplate copyOfThis = new JobDetailTemplate();
+	JobDetailFormTemplate copyOfThis = new JobDetailFormTemplate();
 	PojoUtils.getModelMapper().map(this, copyOfThis);
 	copyOfThis.id = null;
 	return PojoUtils.getObjectMapper().writeValueAsString(copyOfThis);
@@ -38,18 +40,18 @@ public class JobDetailTemplate {
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	JobDetailTemplate other = (JobDetailTemplate) obj;
-	if (key == null) {
-	    if (other.key != null)
+	JobDetailFormTemplate other = (JobDetailFormTemplate) obj;
+	if (formTemplateName == null) {
+	    if (other.formTemplateName != null)
 		return false;
-	} else if (!key.equals(other.key))
+	} else if (!formTemplateName.equals(other.formTemplateName))
 	    return false;
 	return true;
     }
 
     @Override
     public int hashCode() {
-	return Objects.hash(key);
+	return Objects.hash(formTemplateName);
     }
 
 }

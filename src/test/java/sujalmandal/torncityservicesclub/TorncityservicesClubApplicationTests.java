@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
-import sujalmandal.torncityservicesclub.enums.ServiceType;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.models.Player;
@@ -101,7 +101,7 @@ class TorncityservicesClubApplicationTests {
 	log.info("testJobPosting()");
 	log.info("using previously fetched player {}", player);
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.OFFER);
+	createJobRequestDTO.setServiceType(ServiceTypeValue.OFFER);
 	createJobRequestDTO.setApiKey(myAPIKey);
 	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
 	hospJob.setPay(2_000_000);
@@ -118,9 +118,9 @@ class TorncityservicesClubApplicationTests {
 	postHospitalizeJob();
 	postBountyJob();
 	JobFilterRequestDTO filterReq = new JobFilterRequestDTO();
-	List<ServiceType> serviceTypes = new ArrayList<>();
-	serviceTypes.add(ServiceType.OFFER);
-	serviceTypes.add(ServiceType.REQUEST);
+	List<ServiceTypeValue> serviceTypes = new ArrayList<>();
+	serviceTypes.add(ServiceTypeValue.OFFER);
+	serviceTypes.add(ServiceTypeValue.REQUEST);
 	filterReq.setServiceTypes(serviceTypes);
 	List<Job> foundJobs = jobService.getJobsByFilter(filterReq).getJobs();
 	Assert.notEmpty(foundJobs, "failed to fetch jobs");
@@ -138,7 +138,7 @@ class TorncityservicesClubApplicationTests {
 
     private void postHospitalizeJob() {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.OFFER);
+	createJobRequestDTO.setServiceType(ServiceTypeValue.OFFER);
 	createJobRequestDTO.setApiKey(myAPIKey);
 	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
 	hospJob.setPay(2_000_000);
@@ -150,7 +150,7 @@ class TorncityservicesClubApplicationTests {
 
     private void postBountyJob() {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
-	createJobRequestDTO.setServiceType(ServiceType.REQUEST);
+	createJobRequestDTO.setServiceType(ServiceTypeValue.REQUEST);
 	createJobRequestDTO.setApiKey(myAPIKey);
 	MugJobDetails mugJobDetails = new MugJobDetails();
 	mugJobDetails.setPay(50_000);

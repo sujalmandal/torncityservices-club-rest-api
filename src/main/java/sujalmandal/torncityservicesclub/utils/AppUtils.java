@@ -14,20 +14,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
-import sujalmandal.torncityservicesclub.annotations.HighlightField;
+import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
-import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
-import sujalmandal.torncityservicesclub.annotations.OfferServiceAttribute;
-import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
+import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateName;
+import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
-import sujalmandal.torncityservicesclub.enums.FieldFormat;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
-import sujalmandal.torncityservicesclub.enums.ServiceType;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.enums.SubscriptionType;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
+import sujalmandal.torncityservicesclub.models.FilterFieldDescriptor;
 import sujalmandal.torncityservicesclub.models.FormFieldDescriptor;
-import sujalmandal.torncityservicesclub.models.JobDetailTemplate;
+import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
+import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
 import sujalmandal.torncityservicesclub.torn.models.TornPlayerEvent;
@@ -91,38 +91,43 @@ public class AppUtils {
 	return null;
     }
 
-    public static Set<JobDetailTemplate> generateJobDetailTemplates() throws JsonProcessingException {
+    public static Set<JobDetailFormTemplate> generateJobDetailTemplates() throws JsonProcessingException {
 	AppUtils.loadJobDetailImplClasses();
-	Set<JobDetailTemplate> formDescriptors = new HashSet<>();
+	Set<JobDetailFormTemplate> formDescriptors = new HashSet<>();
 	for (Class<?> clazz : jobDetailImplClasses) {
-	    JobDetailTemplate formDescriptor = new JobDetailTemplate();
-	    String key = clazz.getAnnotation(JobDetailTemplateKey.class).value().getKey();
-	    String label = clazz.getAnnotation(JobDetailTemplateKey.class).value().getLabel();
-	    formDescriptor.setKey(key);
-	    formDescriptor.setLabel(label);
+	    JobDetailFormTemplate formDescriptor = new JobDetailFormTemplate();
+	    String formTemplateName = clazz.getAnnotation(JobDetailTemplateName.class).value().getFormTemplateName();
+	    String formTemplateLabel = clazz.getAnnotation(JobDetailTemplateName.class).value().getFormTemplateLabel();
+	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplateName.class).value()
+		    .getFilterTemplateName();
+	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplateName.class).value()
+		    .getFilterTemplateLabel();
+	    formDescriptor.setFormTemplateName(formTemplateName);
+	    formDescriptor.setFormTemplateLabel(formTemplateLabel);
+	    formDescriptor.setFilterTemplateName(filterTemplateName);
+	    formDescriptor.setFilterTemplateLabel(filterTemplateLabel);
 	    for (Field field : clazz.getDeclaredFields()) {
+		FormFieldDescriptor fieldDescriptor = new FormFieldDescriptor();
 		String fieldLabel = field.getAnnotation(JobDetailFieldLabel.class).value();
 		String fieldType = field.getAnnotation(JobDetailFieldType.class) != null
 			? field.getAnnotation(JobDetailFieldType.class).value().toString()
 			: null;
-		String serviceType = null;
-		if (field.isAnnotationPresent(RequestServiceAttribute.class)) {
-		    serviceType = ServiceType.REQUEST.toString();
-		} else if (field.isAnnotationPresent(OfferServiceAttribute.class)) {
-		    serviceType = ServiceType.OFFER.toString();
+		ServiceTypeValue serviceType = null;
+		if (field.isAnnotationPresent(ServiceType.class)) {
+		    serviceType = field.getAnnotation(ServiceType.class).value();
 		} else {
-		    serviceType = ServiceType.ALL.toString();
+		    serviceType = ServiceTypeValue.ALL;
 		}
-		FormFieldDescriptor fieldDescriptor = new FormFieldDescriptor();
+
 		fieldDescriptor.setId(UUID.randomUUID().toString());
 		fieldDescriptor.setLabel(fieldLabel);
 		fieldDescriptor.setType(fieldType);
 		fieldDescriptor.setServiceType(serviceType);
 		fieldDescriptor.setName(field.getName());
-		if (field.isAnnotationPresent(HighlightField.class)) {
+		if (field.isAnnotationPresent(HighlightWhen.class)) {
 		    fieldDescriptor.setIsHighlighted(Boolean.TRUE);
 		    fieldDescriptor
-			    .setServiceTypeToHighlightOn(field.getAnnotation(HighlightField.class).value().toString());
+			    .setServiceTypeToHighlightOn(field.getAnnotation(HighlightWhen.class).value().toString());
 		}
 		if (field.isAnnotationPresent(FieldFormatter.class)) {
 		    fieldDescriptor.setFormat(field.getAnnotation(FieldFormatter.class).value().toString());
@@ -134,15 +139,50 @@ public class AppUtils {
 	return formDescriptors;
     }
 
+    public static Set<JobDetailFilterTemplate> generateJobDetailFilterTemplates() throws JsonProcessingException {
+	AppUtils.loadJobDetailImplClasses();
+	Set<JobDetailFilterTemplate> filterTemplates = new HashSet<>();
+	for (Class<?> clazz : jobDetailImplClasses) {
+	    JobDetailFilterTemplate filterTemplate = new JobDetailFilterTemplate();
+	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplateName.class).value()
+		    .getFilterTemplateName();
+	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplateName.class).value()
+		    .getFilterTemplateLabel();
+	    filterTemplate.setFilterTemplateName(filterTemplateName);
+	    filterTemplate.setFilterTemplateLabel(filterTemplateLabel);
+	    for (Field field : clazz.getDeclaredFields()) {
+
+		String fieldLabel = field.getAnnotation(JobDetailFieldLabel.class).value();
+
+		String fieldType = field.getAnnotation(JobDetailFieldType.class) != null
+			? field.getAnnotation(JobDetailFieldType.class).value().toString()
+			: null;
+
+		ServiceTypeValue serviceType = null;
+		if (field.isAnnotationPresent(ServiceType.class)) {
+		    serviceType = field.getAnnotation(ServiceType.class).value();
+		} else {
+		    serviceType = ServiceTypeValue.ALL;
+		}
+		FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor(serviceType, field.getName(),
+			fieldType, fieldLabel);
+		filterTemplate.getFilterElements().add(fieldDescriptor);
+	    }
+	    filterTemplates.add(filterTemplate);
+	}
+	return filterTemplates;
+    }
+
     public static Set<Class<?>> getJobDetailImplClasses() {
 	return jobDetailImplClasses;
     }
 
     public static <V, K> void loadJobDetailImplClasses() {
-	log.info("loading JobDetail implementation classes..");
-	AppUtils.jobDetailImplClasses = Collections
-		.unmodifiableSet(reflections.getTypesAnnotatedWith(JobDetailTemplateKey.class));
-
+	if (jobDetailImplClasses == null) {
+	    log.info("loading JobDetail implementation classes..");
+	    AppUtils.jobDetailImplClasses = Collections
+		    .unmodifiableSet(reflections.getTypesAnnotatedWith(JobDetailTemplateName.class));
+	}
     }
 
 }

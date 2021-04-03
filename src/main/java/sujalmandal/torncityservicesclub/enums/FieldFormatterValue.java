@@ -1,5 +1,5 @@
 package sujalmandal.torncityservicesclub.enums;
 
-public enum FieldFormat {
+public enum FieldFormatterValue {
     CURRENCY, NUMBER, TEXT
 }

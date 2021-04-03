@@ -28,7 +28,7 @@ public class JobDetailTemplateTests {
     @Test
     public void testJobDetailKeyNameFromImpl() {
 	log.info(details.getJobDetailType());
-	Assert.isTrue(details.getJobDetailType().equals(JobDetailTemplateValue.HOSPITALIZE.getKey()));
+	Assert.isTrue(details.getJobDetailType().equals(JobDetailTemplateValue.HOSPITALIZE.getFilterTemplateName()));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class JobDetailTemplateTests {
 	detailsAsMap.put("targetPlayerId", "678232");
 	detailsAsMap.put("totalHospitalizations", 20);
 	HospitalizeJobDetails generatedHospJobDetails = (HospitalizeJobDetails) JobDetails
-		.fromMap(JobDetailTemplateValue.HOSPITALIZE.getKey(), detailsAsMap);
+		.fromMap(JobDetailTemplateValue.HOSPITALIZE.getFilterTemplateName(), detailsAsMap);
 	log.info(generatedHospJobDetails.toString());
 	Assert.isTrue(generatedHospJobDetails != null);
 	Assert.isTrue(generatedHospJobDetails.equals(details));

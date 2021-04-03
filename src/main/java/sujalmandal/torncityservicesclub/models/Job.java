@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import sujalmandal.torncityservicesclub.dtos.JobDTO;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
-import sujalmandal.torncityservicesclub.enums.ServiceType;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Data
@@ -29,7 +29,7 @@ public class Job {
     private LocalDateTime finishedDate;
 
     private JobDetails jobDetails;
-    private ServiceType serviceType;
+    private ServiceTypeValue serviceType;
 
     public JobDTO toJobDTO() {
 	JobDTO jobDTO = new JobDTO();

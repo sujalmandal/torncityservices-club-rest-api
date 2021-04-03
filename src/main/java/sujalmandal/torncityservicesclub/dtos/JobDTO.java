@@ -3,7 +3,7 @@ package sujalmandal.torncityservicesclub.dtos;
 import java.time.LocalDateTime;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.enums.ServiceType;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
@@ -12,7 +12,7 @@ import sujalmandal.torncityservicesclub.utils.PojoUtils;
 public class JobDTO {
 
     private String id;
-    private ServiceType serviceType;
+    private ServiceTypeValue serviceType;
     private int amount;
     private Long pay;
     private LocalDateTime postedDate;

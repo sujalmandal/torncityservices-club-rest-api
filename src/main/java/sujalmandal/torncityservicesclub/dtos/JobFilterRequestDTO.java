@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.enums.ServiceType;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Data
 public class JobFilterRequestDTO {
     
-    private List<ServiceType> serviceTypes;
+    private List<ServiceTypeValue> serviceTypes;
     private Integer amountGreaterThan;
     private Long payGreaterThan;
     private Integer amountLessThan;

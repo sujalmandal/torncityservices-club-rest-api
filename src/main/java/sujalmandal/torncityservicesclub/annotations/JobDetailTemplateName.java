@@ -4,9 +4,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface RequestServiceAttribute {
-
+@Target(ElementType.TYPE)
+public @interface JobDetailTemplateName {
+    public JobDetailTemplateValue value();
 }

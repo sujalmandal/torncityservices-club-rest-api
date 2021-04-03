@@ -6,10 +6,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import sujalmandal.torncityservicesclub.enums.ServiceType;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Retention(RUNTIME)
 @Target(ElementType.FIELD)
-public @interface HighlightField {
-    public ServiceType value() default ServiceType.ALL;
+public @interface HighlightWhen {
+    public ServiceTypeValue value() default ServiceTypeValue.ALL;
 }

@@ -6,10 +6,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import sujalmandal.torncityservicesclub.enums.FieldFormat;
+import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 
 @Retention(RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FieldFormatter {
-    public FieldFormat value() default FieldFormat.TEXT;
+    public FieldFormatterValue value() default FieldFormatterValue.TEXT;
 }

@@ -3,35 +3,35 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
-import sujalmandal.torncityservicesclub.annotations.HighlightField;
+import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
-import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
-import sujalmandal.torncityservicesclub.annotations.OfferServiceAttribute;
-import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
-import sujalmandal.torncityservicesclub.enums.FieldFormat;
+import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateName;
+import sujalmandal.torncityservicesclub.annotations.ServiceType;
+import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@JobDetailTemplateKey(JobDetailTemplateValue.STAT_SPY)
+@JobDetailTemplateName(JobDetailTemplateValue.STAT_SPY)
 public class StatSpyJobDetails implements JobDetails {
 
-    @RequestServiceAttribute
+    @ServiceType(ServiceTypeValue.REQUEST)
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
     @JobDetailFieldLabel("Torn id of the player to spy on")
     private String targetPlayerId;
 
-    @FieldFormatter(FieldFormat.CURRENCY)
-    @HighlightField
-    @RequestServiceAttribute
+    @FieldFormatter(FieldFormatterValue.CURRENCY)
+    @HighlightWhen
+    @ServiceType
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay")
     private String pay;
 
-    @OfferServiceAttribute
+    @ServiceType(ServiceTypeValue.OFFER)
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total spies to sell")
     private Integer totalSpy;

@@ -17,7 +17,7 @@ import org.springframework.util.CollectionUtils;
 import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobAcceptRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobCancelRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobDetailKeyDTO;
+import sujalmandal.torncityservicesclub.dtos.JobDetailTemplateDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
@@ -26,7 +26,7 @@ import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
-import sujalmandal.torncityservicesclub.models.JobDetailTemplate;
+import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.repositories.JobRepository;
@@ -126,10 +126,10 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobDetailTemplate getJobDetailTemplateForkey(String jobDetailkey) {
+    public JobDetailFormTemplate getJobDetailTemplateForkey(String jobDetailkey) {
 	if (StringUtils.isNotEmpty(jobDetailkey)) {
-	    List<JobDetailTemplate> templates = mongoTemplate.find(new Query(Criteria.where("key").is(jobDetailkey)),
-		    JobDetailTemplate.class);
+	    List<JobDetailFormTemplate> templates = mongoTemplate.find(new Query(Criteria.where("key").is(jobDetailkey)),
+		    JobDetailFormTemplate.class);
 	    if (CollectionUtils.isEmpty(templates)) {
 		throw new ServiceException(String.format("No template found for the passed key : {} !", jobDetailkey),
 			400);
@@ -141,8 +141,8 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobDetailKeyDTO> getJobDetailTemplateKeys() {
-	return Arrays.asList(JobDetailTemplateValue.values()).stream().map(JobDetailKeyDTO::new)
+    public List<JobDetailTemplateDTO> getJobDetailTemplateKeys() {
+	return Arrays.asList(JobDetailTemplateValue.values()).stream().map(JobDetailTemplateDTO::new)
 		.collect(Collectors.toList());
     }
 
