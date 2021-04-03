@@ -3,10 +3,12 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
 import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
+import sujalmandal.torncityservicesclub.enums.FieldFormat;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
@@ -26,6 +28,7 @@ public class HospitalizeJobDetails implements JobDetails {
     @JobDetailFieldLabel("Total number of times to hospitalize a target")
     private Integer totalHospitalizations;
 
+    @FieldFormatter(FieldFormat.CURRENCY)
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay for this job")
     private Integer pay;

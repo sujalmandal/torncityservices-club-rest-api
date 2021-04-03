@@ -2,10 +2,12 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
+import sujalmandal.torncityservicesclub.enums.FieldFormat;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
@@ -19,6 +21,7 @@ public class DirtyBombJobDetails implements JobDetails {
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
     private String factionName;
 
+    @FieldFormatter(FieldFormat.CURRENCY)
     @HighlightField
     @JobDetailFieldLabel("Pay for this job (better be good)")
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)

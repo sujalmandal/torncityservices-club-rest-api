@@ -2,11 +2,13 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.HighlightField;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplateKey;
 import sujalmandal.torncityservicesclub.annotations.RequestServiceAttribute;
+import sujalmandal.torncityservicesclub.enums.FieldFormat;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
@@ -21,6 +23,7 @@ public class ItemsRunnerJobDetails implements JobDetails {
     @JobDetailFieldLabel("Item to run")
     private String itemType;
 
+    @FieldFormatter(FieldFormat.CURRENCY)
     @HighlightField
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay per trip")

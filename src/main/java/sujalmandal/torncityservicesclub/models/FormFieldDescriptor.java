@@ -12,4 +12,5 @@ public class FormFieldDescriptor {
     private Boolean isHighlighted;
     private String serviceTypeToHighlightOn;
     private String infoText;
+    private String format;
 }
