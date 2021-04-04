@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobAcceptRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobCancelRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
 import sujalmandal.torncityservicesclub.services.JobService;
 
 @RestController
@@ -30,27 +28,27 @@ public class JobController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/accept")
-    public ResponseEntity<?> acceptJob(@RequestBody JobAcceptRequestDTO request) {
+    public ResponseEntity<?> acceptJob(@RequestBody JobUpateRequestDTO request) {
 	return ResponseEntity.ok().body(jobService.acceptJob(request));
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/finish")
-    public ResponseEntity<?> finishJob(@RequestBody JobFinishRequestDTO request) {
+    public ResponseEntity<?> finishJob(@RequestBody JobUpateRequestDTO request) {
 	return ResponseEntity.ok().body(jobService.finishJob(request));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/cancel")
-    public ResponseEntity<?> cancelJob(@RequestBody JobCancelRequestDTO request) {
+    public ResponseEntity<?> cancelJob(@RequestBody JobUpateRequestDTO request) {
 	return ResponseEntity.ok().body(jobService.cancelJob(request));
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/search/{serviceType}/{postedXDaysAgo}")
-    public ResponseEntity<?> search(@PathVariable("serviceType") String serviceType,
-	    @PathVariable("postedXDaysAgo") Integer postedXDaysAgo) {
-	return ResponseEntity.ok().body(jobService.getJobsByFilter(serviceType, postedXDaysAgo));
+    @RequestMapping(method = RequestMethod.POST, path = "/search")
+    public ResponseEntity<?> search(@RequestBody JobFilterRequestDTO request) {
+	request.setFilterFields(null);
+	return ResponseEntity.ok().body(jobService.getJobsByFilter(request));
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/search/advanced")
+    @RequestMapping(method = RequestMethod.POST, path = "/advancedSearch")
     public ResponseEntity<?> advancedSearch(@RequestBody JobFilterRequestDTO request) {
 	return ResponseEntity.ok().body(jobService.getJobsByFilter(request));
     }

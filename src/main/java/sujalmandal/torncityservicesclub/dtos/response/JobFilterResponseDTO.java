@@ -1,4 +1,4 @@
-package sujalmandal.torncityservicesclub.dtos;
+package sujalmandal.torncityservicesclub.dtos.response;
 
 import java.util.List;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package sujalmandal.torncityservicesclub.services;
 
-import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
 

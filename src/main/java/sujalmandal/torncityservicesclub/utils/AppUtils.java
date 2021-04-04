@@ -20,7 +20,7 @@ import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplate;
 import sujalmandal.torncityservicesclub.annotations.ServiceType;
-import sujalmandal.torncityservicesclub.dtos.SubscriptionPaymentDetailsDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.SubscriptionPaymentDetailsDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.PaymentStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;

@@ -1,4 +1,4 @@
-package sujalmandal.torncityservicesclub.dtos;
+package sujalmandal.torncityservicesclub.dtos.commons;
 
 import java.time.LocalDateTime;
 

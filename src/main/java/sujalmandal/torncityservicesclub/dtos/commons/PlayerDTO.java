@@ -1,4 +1,4 @@
-package sujalmandal.torncityservicesclub.dtos;
+package sujalmandal.torncityservicesclub.dtos.commons;
 
 import java.time.LocalDateTime;
 
@@ -11,4 +11,5 @@ public class PlayerDTO {
     private String tornUserName;
     private LocalDateTime registeredAt;
     private String activeSubscriptionType;
+    private String fingerPrint;
 }

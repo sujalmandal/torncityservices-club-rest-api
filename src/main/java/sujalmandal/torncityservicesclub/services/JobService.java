@@ -2,13 +2,11 @@ package sujalmandal.torncityservicesclub.services;
 
 import java.util.List;
 
-import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobAcceptRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobCancelRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobDetailTemplateDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFilterResponseDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
+import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
@@ -17,15 +15,13 @@ public interface JobService {
 
     public JobFilterResponseDTO getJobsByFilter(JobFilterRequestDTO jobFilterRequestDTO);
 
-    public JobFilterResponseDTO getJobsByFilter(String serviceType, Integer postedXDaysAgo);
-
     public Job postJob(CreateJobRequestDTO createJobRequestDTO);
 
-    public Job acceptJob(JobAcceptRequestDTO updateJobRequestDTO);
+    public Job acceptJob(JobUpateRequestDTO updateJobRequestDTO);
 
-    public Job finishJob(JobFinishRequestDTO updateJobRequestDTO);
+    public Job finishJob(JobUpateRequestDTO updateJobRequestDTO);
 
-    public Job cancelJob(JobCancelRequestDTO updateJobRequestDTO);
+    public Job cancelJob(JobUpateRequestDTO updateJobRequestDTO);
 
     public JobDetailFormTemplate getJobDetailFormTemplateForTemplateName(String jobDetailFormTemplateName);
 

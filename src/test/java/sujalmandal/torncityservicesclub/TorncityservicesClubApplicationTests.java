@@ -17,9 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
+import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.Payment;
@@ -121,7 +121,6 @@ class TorncityservicesClubApplicationTests {
 	List<ServiceTypeValue> serviceTypes = new ArrayList<>();
 	serviceTypes.add(ServiceTypeValue.OFFER);
 	serviceTypes.add(ServiceTypeValue.REQUEST);
-	filterReq.setServiceTypes(serviceTypes);
 	List<Job> foundJobs = jobService.getJobsByFilter(filterReq).getJobs();
 	Assert.notEmpty(foundJobs, "failed to fetch jobs");
 	log.info("found {} jobs {}", foundJobs.size(), foundJobs);

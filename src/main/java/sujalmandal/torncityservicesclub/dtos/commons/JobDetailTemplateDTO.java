@@ -1,4 +1,4 @@
-package sujalmandal.torncityservicesclub.dtos;
+package sujalmandal.torncityservicesclub.dtos.commons;
 
 import lombok.Data;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;

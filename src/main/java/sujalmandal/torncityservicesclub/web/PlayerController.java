@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
 import sujalmandal.torncityservicesclub.exceptions.UnRegisteredPlayerException;
 import sujalmandal.torncityservicesclub.services.PlayerService;
 

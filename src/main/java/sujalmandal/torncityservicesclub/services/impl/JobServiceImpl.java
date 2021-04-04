@@ -14,14 +14,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobAcceptRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobCancelRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobDetailTemplateDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFilterRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFilterResponseDTO;
-import sujalmandal.torncityservicesclub.dtos.JobFinishRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.PlayerDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
+import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
@@ -82,7 +80,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job acceptJob(JobAcceptRequestDTO updateJobRequestDTO) {
+    public Job acceptJob(JobUpateRequestDTO updateJobRequestDTO) {
 	String jobId = updateJobRequestDTO.getId();
 	Optional<Job> job = jobRepo.findById(jobId);
 	if (job.isPresent()) {
@@ -97,7 +95,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job finishJob(JobFinishRequestDTO updateJobRequestDTO) {
+    public Job finishJob(JobUpateRequestDTO updateJobRequestDTO) {
 	String jobId = updateJobRequestDTO.getId();
 	Optional<Job> job = jobRepo.findById(jobId);
 	if (job.isPresent()) {
@@ -114,7 +112,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job cancelJob(JobCancelRequestDTO updateJobRequestDTO) {
+    public Job cancelJob(JobUpateRequestDTO updateJobRequestDTO) {
 	String jobId = updateJobRequestDTO.getId();
 	Optional<Job> job = jobRepo.findById(jobId);
 	if (job.isPresent()) {
@@ -160,11 +158,6 @@ public class JobServiceImpl implements JobService {
 	} else {
 	    throw new ServiceException("Job detail template name  cannot be empty!", 400);
 	}
-    }
-
-    @Override
-    public JobFilterResponseDTO getJobsByFilter(String serviceType, Integer postedXDaysAgo) {
-	return null;
     }
 
 }

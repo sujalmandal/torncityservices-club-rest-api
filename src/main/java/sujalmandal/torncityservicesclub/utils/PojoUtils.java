@@ -5,7 +5,8 @@ import org.modelmapper.ModelMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import sujalmandal.torncityservicesclub.dtos.CreateJobRequestDTO;
+
+import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.models.Job;
 
 public class PojoUtils {

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import sujalmandal.torncityservicesclub.dtos.SubscriptionRequestDTO;
-import sujalmandal.torncityservicesclub.dtos.SubscriptionVerificationRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.SubscriptionRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.request.SubscriptionVerificationRequestDTO;
 import sujalmandal.torncityservicesclub.services.SubscriptionService;
 
 @RestController
