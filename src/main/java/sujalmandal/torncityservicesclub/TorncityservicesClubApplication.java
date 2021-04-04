@@ -17,7 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
-import sujalmandal.torncityservicesclub.utils.AppUtils;
+import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
 
 @SpringBootApplication
 @Slf4j
@@ -51,7 +51,7 @@ public class TorncityservicesClubApplication implements CommandLineRunner, WebMv
     private void updateJobDetailFormTemplates() throws JsonProcessingException {
 	mongoTemplate.dropCollection(JobDetailFormTemplate.class);
 	log.info("Creating job detail form templates..");
-	Set<JobDetailFormTemplate> generatedFormTemplates = AppUtils.generateJobDetailTemplates();
+	Set<JobDetailFormTemplate> generatedFormTemplates = TemplateGeneratorUtil.generateJobDetailFormTemplates();
 	for (JobDetailFormTemplate template : generatedFormTemplates) {
 	    mongoTemplate.save(template);
 	}
@@ -60,7 +60,7 @@ public class TorncityservicesClubApplication implements CommandLineRunner, WebMv
     private void updateJobDetailFilterTemplates() throws JsonProcessingException {
 	mongoTemplate.dropCollection(JobDetailFilterTemplate.class);
 	log.info("Creating job detail filter templates..");
-	Set<JobDetailFilterTemplate> generatedFilterTemplates = AppUtils.generateJobDetailFilterTemplates();
+	Set<JobDetailFilterTemplate> generatedFilterTemplates = TemplateGeneratorUtil.generateJobDetailFilterTemplates();
 	for (JobDetailFilterTemplate template : generatedFilterTemplates) {
 	    log.info("Saving {} filter template!", template.getFilterTemplateName());
 	    mongoTemplate.save(template);

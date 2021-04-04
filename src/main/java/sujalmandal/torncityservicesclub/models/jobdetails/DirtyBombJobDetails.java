@@ -7,10 +7,12 @@ import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
+import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
@@ -18,6 +20,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.DIRTY_BOMB_A_FACTION)
 public class DirtyBombJobDetails implements JobDetails {
 
+    @ServiceType(ServiceTypeValue.REQUEST)
     @JobDetailFieldLabel("Faction to attack")
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
     private String factionName;

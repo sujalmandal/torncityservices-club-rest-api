@@ -1,6 +1,7 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
 import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,26 +35,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private SubscriptionRepository subscriptionRepo;
 
     private SubscriptionPaymentDetailsDTO initSubscribeForLifeTime(Subscription subscription) {
-        Payment lifeTimeSubPayment = paymentService.initiatePayment(subscription.getPlayerId(), transhumanistId,
-                AppUtils.getSubscriptionCost(subscription.getSubscriptionType()));
-        subscription.getPaymentIds().add(lifeTimeSubPayment.getId());
-        subscription.setSubscriptionType(SubscriptionType.LIFE_TIME);
-        subscriptionRepo.save(subscription);
-        SubscriptionPaymentDetailsDTO paymentDetailsDTO = AppUtils.getSubscriptionPaymentDetails(lifeTimeSubPayment);
-        paymentDetailsDTO.setSubscriptionId(subscription.getId());
-        return paymentDetailsDTO;
+	Payment lifeTimeSubPayment = paymentService.initiatePayment(subscription.getPlayerId(), transhumanistId,
+		AppUtils.getSubscriptionCost(subscription.getSubscriptionType()));
+	subscription.getPaymentIds().add(lifeTimeSubPayment.getId());
+	subscription.setSubscriptionType(SubscriptionType.LIFE_TIME);
+	subscriptionRepo.save(subscription);
+	SubscriptionPaymentDetailsDTO paymentDetailsDTO = getSubscriptionPaymentDetails(lifeTimeSubPayment);
+	paymentDetailsDTO.setSubscriptionId(subscription.getId());
+	return paymentDetailsDTO;
     }
 
     private SubscriptionPaymentDetailsDTO initSubscribeForAMonth(Subscription subscription) {
-        Payment paymentForOneMonthTimeSub = paymentService.initiatePayment(subscription.getPlayerId(), transhumanistId,
-                AppUtils.getSubscriptionCost(subscription.getSubscriptionType()));
-        subscription.getPaymentIds().add(paymentForOneMonthTimeSub.getId());
-        subscription.setSubscriptionType(SubscriptionType.ONE_MONTH);
-        subscriptionRepo.save(subscription);
-        SubscriptionPaymentDetailsDTO paymentDetailsDTO = AppUtils
-                .getSubscriptionPaymentDetails(paymentForOneMonthTimeSub);
-        paymentDetailsDTO.setSubscriptionId(subscription.getId());
-        return paymentDetailsDTO;
+	Payment paymentForOneMonthTimeSub = paymentService.initiatePayment(subscription.getPlayerId(), transhumanistId,
+		AppUtils.getSubscriptionCost(subscription.getSubscriptionType()));
+	subscription.getPaymentIds().add(paymentForOneMonthTimeSub.getId());
+	subscription.setSubscriptionType(SubscriptionType.ONE_MONTH);
+	subscriptionRepo.save(subscription);
+	SubscriptionPaymentDetailsDTO paymentDetailsDTO = getSubscriptionPaymentDetails(paymentForOneMonthTimeSub);
+	paymentDetailsDTO.setSubscriptionId(subscription.getId());
+	return paymentDetailsDTO;
     }
 
     @Override
@@ -63,49 +63,56 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public SubscriptionPaymentDetailsDTO initiateSubscription(SubscriptionRequestDTO request) {
-        Subscription subscription = subscriptionRepo.findByPlayerId(request.getPlayerId());
-        switch (subscription.getSubscriptionType()) {
-        case LIFE_TIME:
-            return initSubscribeForLifeTime(subscription);
-        case ONE_MONTH:
-            return initSubscribeForAMonth(subscription);
-        default:
-            throw new ServiceException(
-                    String.format("Unsupported subscription type {} !", subscription.getSubscriptionType()), 400);
-        }
+	Subscription subscription = subscriptionRepo.findByPlayerId(request.getPlayerId());
+	switch (subscription.getSubscriptionType()) {
+	case LIFE_TIME:
+	    return initSubscribeForLifeTime(subscription);
+	case ONE_MONTH:
+	    return initSubscribeForAMonth(subscription);
+	default:
+	    throw new ServiceException(
+		    String.format("Unsupported subscription type {} !", subscription.getSubscriptionType()), 400);
+	}
     }
 
     @Override
     public SubscriptionVerificationResponseDTO verifySubscription(
-            SubscriptionVerificationRequestDTO verificationRequest) {
+	    SubscriptionVerificationRequestDTO verificationRequest) {
 
-        Subscription subscription = subscriptionRepo.findByPlayerId(verificationRequest.getPlayerId());
-        boolean isPaymentIdValid = subscription.getPaymentIds().stream().anyMatch(pId -> {
-            return pId.equals(verificationRequest.getPaymentId());
-        });
-        if (isPaymentIdValid) {
-            SubscriptionVerificationResponseDTO responseDTO = new SubscriptionVerificationResponseDTO();
-            Payment verifiedPayment = paymentService.verifyPaymentOnReceiverSide(verificationRequest.getPaymentId(),
-                    transhumanistId, transhumanistAPIKey);
-            if (verifiedPayment != null) {
+	Subscription subscription = subscriptionRepo.findByPlayerId(verificationRequest.getPlayerId());
+	boolean isPaymentIdValid = subscription.getPaymentIds().stream().anyMatch(pId -> {
+	    return pId.equals(verificationRequest.getPaymentId());
+	});
+	if (isPaymentIdValid) {
+	    SubscriptionVerificationResponseDTO responseDTO = new SubscriptionVerificationResponseDTO();
+	    Payment verifiedPayment = paymentService.verifyPaymentOnReceiverSide(verificationRequest.getPaymentId(),
+		    transhumanistId, transhumanistAPIKey);
+	    if (verifiedPayment != null) {
 
-                responseDTO.setPaymentId(verifiedPayment.getId());
-                responseDTO.setPlayerId(verificationRequest.getPlayerId());
-                responseDTO.setPaymentStatus(verifiedPayment.getStatus());
+		responseDTO.setPaymentId(verifiedPayment.getId());
+		responseDTO.setPlayerId(verificationRequest.getPlayerId());
+		responseDTO.setPaymentStatus(verifiedPayment.getStatus());
 
-                Long amountPaid = verifiedPayment.getAmount();
-                if (amountPaid >= AppUtils.getSubscriptionCost(subscription.getSubscriptionType())) {
-                    subscription.setSubscribedOn(LocalDate.now());
-                    subscription.setIsActive(Boolean.TRUE);
-                    subscriptionRepo.save(subscription);
-                }
-                return responseDTO;
-            }
-        } else {
-            throw new ServiceException(String.format("Payment id {%s} not found!", verificationRequest.getPaymentId()),
-                    400);
-        }
-        return null;
+		Long amountPaid = verifiedPayment.getAmount();
+		if (amountPaid >= AppUtils.getSubscriptionCost(subscription.getSubscriptionType())) {
+		    subscription.setSubscribedOn(LocalDate.now());
+		    subscription.setIsActive(Boolean.TRUE);
+		    subscriptionRepo.save(subscription);
+		}
+		return responseDTO;
+	    }
+	} else {
+	    throw new ServiceException(String.format("Payment id {%s} not found!", verificationRequest.getPaymentId()),
+		    400);
+	}
+	return null;
     }
 
+    public static SubscriptionPaymentDetailsDTO getSubscriptionPaymentDetails(Payment payment) {
+	SubscriptionPaymentDetailsDTO subscribeRequestResponseDTO = new SubscriptionPaymentDetailsDTO();
+	subscribeRequestResponseDTO.setPaymentLink(AppUtils.getPaymentLink(payment));
+	subscribeRequestResponseDTO.setAmount(payment.getAmount());
+	subscribeRequestResponseDTO.setReferenceCode(payment.getVerificationCode());
+	return subscribeRequestResponseDTO;
+    }
 }

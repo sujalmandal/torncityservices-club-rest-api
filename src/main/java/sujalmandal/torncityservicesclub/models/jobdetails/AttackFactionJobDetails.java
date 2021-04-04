@@ -12,6 +12,7 @@ import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
@@ -19,7 +20,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.ATTACK_FACTION)
 public class AttackFactionJobDetails implements JobDetails {
 
-    @ServiceType
+    @ServiceType(ServiceTypeValue.REQUEST)
     @JobDetailFieldLabel("Faction to attack")
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
     private String factionName;

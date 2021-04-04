@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.jobdetails.HospitalizeJobDetails;
-import sujalmandal.torncityservicesclub.utils.AppUtils;
+import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
 
 @Slf4j
 public class JobDetailTemplateTests {
@@ -42,7 +42,7 @@ public class JobDetailTemplateTests {
 
     @Test
     public void testJobDetailFromMap() {
-	AppUtils.loadJobDetailImplClasses();
+	TemplateGeneratorUtil.loadJobDetailImplClasses();
 	HashMap<String, Object> detailsAsMap = new HashMap<>();
 	detailsAsMap.put("pay", 250_000);
 	detailsAsMap.put("targetPlayerId", "678232");

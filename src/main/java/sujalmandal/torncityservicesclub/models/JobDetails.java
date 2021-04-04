@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.utils.AppUtils;
+import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 public interface JobDetails {
 
     public static JobDetails fromMap(String jobDetailFormeTemplateName, HashMap<String, Object> data) {
-	Optional<Class<?>> clazz = AppUtils.getJobDetailImplClasses().stream().filter(implClass -> {
+	Optional<Class<?>> clazz = TemplateGeneratorUtil.getJobDetailImplClasses().stream().filter(implClass -> {
 	    return implClass.getAnnotation(GenerateTemplate.class).value().getFormTemplateName()
 		    .equals(jobDetailFormeTemplateName);
 	}).findFirst();

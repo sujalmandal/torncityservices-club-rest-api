@@ -13,6 +13,7 @@ import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
@@ -21,7 +22,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.HOSPITALIZE)
 public class HospitalizeJobDetails implements JobDetails {
 
-    @ServiceType
+    @ServiceType(ServiceTypeValue.REQUEST)
     @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
     @JobDetailFieldLabel("Torn id of the player who has to be attacked")
     private String targetPlayerId;
