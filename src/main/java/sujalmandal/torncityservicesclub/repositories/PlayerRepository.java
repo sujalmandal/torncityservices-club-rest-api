@@ -7,5 +7,5 @@ import sujalmandal.torncityservicesclub.models.Player;
 public interface PlayerRepository extends CrudRepository<Player, String> {
     public Player findByTornUserId(String tornUserId);
 
-    public Player findByFingerPrint(String fingerPrint);
+    public Player findByFingerprint(String fingerPrint);
 }

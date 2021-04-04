@@ -7,8 +7,7 @@ public class FilterFieldDTO {
 
     private String type;
     private String name;
-    private String minValue;
-    private String maxValue;
+    private String groupName;
     private String value;
 
 }

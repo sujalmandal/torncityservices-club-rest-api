@@ -36,7 +36,7 @@ public class PlayerServiceImpl implements PlayerService {
 	    if (fetchedFromTorn != null && fetchedFromTorn.getTornUserId() != null) {
 		log.info("player data successfully fetched from torn {}", fetchedFromTorn);
 		fetchedFromTorn.setRegisteredAt(LocalDateTime.now());
-		fetchedFromTorn.setFingerPrint(FingerprintUtil.getFingerprintForAPIKey(APIKey));
+		fetchedFromTorn.setFingerprint(FingerprintUtil.getFingerprintForAPIKey(APIKey));
 		Player registeredPlayer = playerRepo.save(fetchedFromTorn);
 		Subscription subscription = new Subscription();
 		subscription.setPlayerId(registeredPlayer.getInternalId());
@@ -73,6 +73,21 @@ public class PlayerServiceImpl implements PlayerService {
 	} else {
 	    throw new InvalidAPIKeyException(String.format("The API KEY [%s] is invalid!", APIKey));
 	}
+    }
+
+    @Override
+    public PlayerDTO authenticateAndReturnPlayerByFingerprint(String fingerprint) {
+
+	Player fetchedPlayerDb = playerRepo.findByFingerprint(fingerprint);
+	if (fetchedPlayerDb != null && fetchedPlayerDb.getInternalId() != null) {
+	    PlayerDTO playerDTO = new PlayerDTO();
+	    PojoUtils.getModelMapper().map(fetchedPlayerDb, playerDTO);
+	    return playerDTO;
+	} else {
+	    throw new UnRegisteredPlayerException(
+		    String.format("User %s is not registered!", fetchedPlayerDb.getTornUserName()), 404);
+	}
+
     }
 
     @Override

@@ -1,5 +1,5 @@
 package sujalmandal.torncityservicesclub.enums;
 
 public enum JobStatus {
-    AVAILABLE,ACCEPTED,FINISHED
+    AVAILABLE, ACCEPTED, FINISHED, EXPIRED
 }

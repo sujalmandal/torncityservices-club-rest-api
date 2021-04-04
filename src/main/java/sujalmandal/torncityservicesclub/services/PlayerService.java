@@ -14,4 +14,6 @@ public interface PlayerService {
 
     public PlayerEventsDTO getEvents(String APIKey);
 
+    PlayerDTO authenticateAndReturnPlayerByFingerprint(String fingerprint);
+
 }

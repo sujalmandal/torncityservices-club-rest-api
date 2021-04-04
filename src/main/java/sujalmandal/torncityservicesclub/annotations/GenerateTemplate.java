@@ -8,6 +8,6 @@ import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface JobDetailTemplate {
+public @interface GenerateTemplate {
     public JobDetailTemplateValue value();
 }

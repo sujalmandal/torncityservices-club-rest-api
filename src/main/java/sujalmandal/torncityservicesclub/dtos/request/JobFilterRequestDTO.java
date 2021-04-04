@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import sujalmandal.torncityservicesclub.dtos.commons.FilterFieldDTO;
+import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Getter
@@ -16,8 +17,9 @@ import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 public class JobFilterRequestDTO extends RequestDTO {
 
     private ServiceTypeValue serviceType;
-    private Integer postedXDaysAgo;
+    private Integer postedXDaysAgo = 3;
     private List<FilterFieldDTO> filterFields;
+    private JobStatus jobStatus = JobStatus.AVAILABLE;
     private int pageSize = 25;
     private int pageNumber = 0;
 

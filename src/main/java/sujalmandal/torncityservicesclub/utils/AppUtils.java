@@ -18,7 +18,7 @@ import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
-import sujalmandal.torncityservicesclub.annotations.JobDetailTemplate;
+import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
 import sujalmandal.torncityservicesclub.annotations.ServiceType;
 import sujalmandal.torncityservicesclub.dtos.commons.SubscriptionPaymentDetailsDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
@@ -33,17 +33,14 @@ import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
 import sujalmandal.torncityservicesclub.torn.models.TornPlayerEvent;
+import static sujalmandal.torncityservicesclub.enums.AppConstants.*;
 
 @Slf4j
 public class AppUtils {
 
-    private static final String paymentRedirectedLinkStub = "https://www.torn.com/sendcash.php#/XID=%s";
-    private static final Pattern moneyPattern = Pattern.compile("\\$[0-9]+");
-    private static final Reflections reflections = new Reflections(
-	    "sujalmandal.torncityservicesclub.models.jobdetails");
+    private static final Pattern moneyPattern = Pattern.compile(MONEY_EVENT_PATTERN.toString());
+    private static final Reflections reflections = new Reflections(JOB_DETAIL_IMPL_SEARCH_PACKAGE.toString());
     private static Set<Class<?>> jobDetailImplClasses;
-    private static final String MIN_PREFIX = "min";
-    private static final String MAX_PREFIX = "max";
 
     public static String generateCode() {
 	UUID uuid = UUID.randomUUID();
@@ -60,7 +57,7 @@ public class AppUtils {
 
     public static String getPaymentLink(Payment payment) {
 	if (payment.getStatus() == PaymentStatus.INITIATED) {
-	    return String.format(paymentRedirectedLinkStub, payment.getToPlayerId());
+	    return String.format(TORN_CASH_PAYMENT_REDIRECT_URL_STUB.toString(), payment.getToPlayerId());
 	}
 	throw new ServiceException("Payment is already finished or cancelled!", 400);
     }
@@ -100,10 +97,10 @@ public class AppUtils {
 	Set<JobDetailFormTemplate> formDescriptors = new HashSet<>();
 	for (Class<?> clazz : jobDetailImplClasses) {
 	    JobDetailFormTemplate formDescriptor = new JobDetailFormTemplate();
-	    String formTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value().getFormTemplateName();
-	    String formTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value().getFormTemplateLabel();
-	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateLabel();
+	    String formTemplateName = clazz.getAnnotation(GenerateTemplate.class).value().getFormTemplateName();
+	    String formTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFormTemplateLabel();
+	    String filterTemplateName = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
+	    String filterTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateLabel();
 	    formDescriptor.setFormTemplateName(formTemplateName);
 	    formDescriptor.setFormTemplateLabel(formTemplateLabel);
 	    formDescriptor.setFilterTemplateName(filterTemplateName);
@@ -152,8 +149,8 @@ public class AppUtils {
 	Set<JobDetailFilterTemplate> filterTemplates = new HashSet<>();
 	for (Class<?> clazz : jobDetailImplClasses) {
 	    JobDetailFilterTemplate filterTemplate = new JobDetailFilterTemplate();
-	    String filterTemplateName = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(JobDetailTemplate.class).value().getFilterTemplateLabel();
+	    String filterTemplateName = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
+	    String filterTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateLabel();
 	    filterTemplate.setFilterTemplateName(filterTemplateName);
 	    filterTemplate.setFilterTemplateLabel(filterTemplateLabel);
 	    for (Field field : clazz.getDeclaredFields()) {
@@ -179,12 +176,12 @@ public class AppUtils {
 		    }
 		    if (fieldType == JobDetailFieldTypeValue.NUMBER) {
 			String limit = filterableField.limit().replaceAll("_", "");
-			String minFieldName = MIN_PREFIX + fieldName.substring(0, 1).toUpperCase()
-				+ fieldName.substring(1, fieldName.length());
+			String minFieldName = NUMBER_TYPE_FIELD_MIN_PREFIX.toString()
+				+ fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
 			String minFieldLabel = filterableField.minFieldLabel();
 
-			String maxFieldName = MAX_PREFIX + fieldName.substring(0, 1).toUpperCase()
-				+ fieldName.substring(1, fieldName.length());
+			String maxFieldName = NUMBER_TYPE_FIELD_MAX_PREFIX.toString()
+				+ fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
 			String maxFieldLabel = filterableField.maxFieldLabel();
 
 			FilterFieldDescriptor minFieldDescriptor = new FilterFieldDescriptor(serviceType,
@@ -222,7 +219,7 @@ public class AppUtils {
 	if (jobDetailImplClasses == null) {
 	    log.info("loading JobDetail implementation classes..");
 	    AppUtils.jobDetailImplClasses = Collections
-		    .unmodifiableSet(reflections.getTypesAnnotatedWith(JobDetailTemplate.class));
+		    .unmodifiableSet(reflections.getTypesAnnotatedWith(GenerateTemplate.class));
 	}
     }
 

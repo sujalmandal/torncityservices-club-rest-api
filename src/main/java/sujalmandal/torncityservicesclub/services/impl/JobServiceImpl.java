@@ -22,6 +22,7 @@ import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
+import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
@@ -64,19 +65,30 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job postJob(CreateJobRequestDTO createJobRequestDTO) {
-	Job newJob = PojoUtils.getJobFromDTO(createJobRequestDTO);
-	PlayerDTO listedByPlayer = playerService.authenticateAndReturnPlayer(createJobRequestDTO.getApiKey());
-	Optional<Player> poster = playerRepo.findById(listedByPlayer.getInternalId());
-	if (poster.isPresent()) {
-	    newJob.setListedByPlayerId(poster.get().getInternalId());
-	    newJob.setPostedDate(LocalDateTime.now());
-	    newJob.setJobDetails(
-		    JobDetails.fromMap(createJobRequestDTO.getJobDetailType(), createJobRequestDTO.getJobDetails()));
-	    return jobRepo.save(newJob);
-	} else {
-	    throw new ServiceException(500, "Player not found in the database!", null);
+    public Job postJob(CreateJobRequestDTO request) {
+	if (request.getServiceType() == null) {
+	    throw new ServiceException("Request must have a valid, non-empty ServiceType !", 400);
 	}
+	if (request.getServiceType() != ServiceTypeValue.OFFER
+		&& request.getServiceType() != ServiceTypeValue.REQUEST) {
+	    throw new ServiceException(
+		    String.format("Request has invalid ServiceType {%s}", request.getServiceType().toString()), 400);
+	}
+	Job newJob = PojoUtils.getJobFromDTO(request);
+	PlayerDTO listedByPlayer = playerService.authenticateAndReturnPlayer(request.getApiKey());
+	Optional<Player> poster = playerRepo.findById(listedByPlayer.getInternalId());
+	if (!poster.isPresent()) {
+	    throw new ServiceException("Player not found in the database!", 500);
+	}
+	if (request.getServiceType() == null) {
+
+	}
+
+	newJob.setListedByPlayerId(poster.get().getInternalId());
+	newJob.setPostedDate(LocalDateTime.now());
+	newJob.setJobDetails(JobDetails.fromMap(request.getJobDetailType(), request.getJobDetails()));
+	return jobRepo.save(newJob);
+
     }
 
     @Override
@@ -140,7 +152,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobDetailTemplateDTO> getJobDetailTemplateInforamation() {
+    public List<JobDetailTemplateDTO> getJobDetailTemplateInformation() {
 	return Arrays.asList(JobDetailTemplateValue.values()).stream().map(JobDetailTemplateDTO::new)
 		.collect(Collectors.toList());
     }

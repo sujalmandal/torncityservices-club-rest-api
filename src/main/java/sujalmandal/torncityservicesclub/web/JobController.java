@@ -67,7 +67,7 @@ public class JobController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/jobDetailTemplates")
     public ResponseEntity<?> getAvailableJobDetailTemplateKeys() throws JsonProcessingException {
-	return ResponseEntity.ok().body(jobService.getJobDetailTemplateInforamation());
+	return ResponseEntity.ok().body(jobService.getJobDetailTemplateInformation());
     }
 
 }

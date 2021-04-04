@@ -27,6 +27,6 @@ public interface JobService {
 
     public JobDetailFilterTemplate getJobDetailFilterTemplateForTemplateName(String templateName);
 
-    public List<JobDetailTemplateDTO> getJobDetailTemplateInforamation();
+    public List<JobDetailTemplateDTO> getJobDetailTemplateInformation();
 
 }

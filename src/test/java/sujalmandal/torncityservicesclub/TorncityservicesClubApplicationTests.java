@@ -1,6 +1,5 @@
 package sujalmandal.torncityservicesclub;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -118,9 +117,7 @@ class TorncityservicesClubApplicationTests {
 	postHospitalizeJob();
 	postBountyJob();
 	JobFilterRequestDTO filterReq = new JobFilterRequestDTO();
-	List<ServiceTypeValue> serviceTypes = new ArrayList<>();
-	serviceTypes.add(ServiceTypeValue.OFFER);
-	serviceTypes.add(ServiceTypeValue.REQUEST);
+	filterReq.setServiceType(ServiceTypeValue.ALL);
 	List<Job> foundJobs = jobService.getJobsByFilter(filterReq).getJobs();
 	Assert.notEmpty(foundJobs, "failed to fetch jobs");
 	log.info("found {} jobs {}", foundJobs.size(), foundJobs);
