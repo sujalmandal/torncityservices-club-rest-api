@@ -3,6 +3,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
@@ -24,13 +25,15 @@ public class MugJobDetails implements JobDetails {
     private String targetPlayerId;
 
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total attacks")
+    @JobDetailFieldLabel("Total mugs")
+    @FilterableField(label = "total mugs", maxFieldLabel = "maximum no. of mugs", minFieldLabel = "minimum no. of mugs", limit = "100")
     private Integer totalMugs;
 
     @FieldFormatter(FieldFormatterValue.CURRENCY)
     @HighlightWhen
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total pay for this job")
+    @JobDetailFieldLabel("Pay per mug")
+    @FilterableField(label = "pay per mug", maxFieldLabel = "maximum pay per mug", minFieldLabel = "minimum pay per mug", limit = "5_000_000")
     private Integer pay;
 
 }

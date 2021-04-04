@@ -3,6 +3,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
@@ -27,5 +28,6 @@ public class BountyRevealJobDetails implements JobDetails {
     @HighlightWhen
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Cost of a bounty reveal")
+    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay", limit = "100_000_000")
     private Integer pay;
 }

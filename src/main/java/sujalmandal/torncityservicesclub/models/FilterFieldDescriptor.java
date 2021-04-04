@@ -12,6 +12,7 @@ public class FilterFieldDescriptor {
     private String fieldLabel;
     private String limit;
     private String format;
+    private String groupName;
 
     public FilterFieldDescriptor() {
     }

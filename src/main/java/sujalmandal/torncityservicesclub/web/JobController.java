@@ -44,8 +44,14 @@ public class JobController {
 	return ResponseEntity.ok().body(jobService.cancelJob(request));
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/search")
-    public ResponseEntity<?> cancelJob(@RequestBody JobFilterRequestDTO request) {
+    @RequestMapping(method = RequestMethod.POST, path = "/search/{serviceType}/{postedXDaysAgo}")
+    public ResponseEntity<?> search(@PathVariable("serviceType") String serviceType,
+	    @PathVariable("postedXDaysAgo") Integer postedXDaysAgo) {
+	return ResponseEntity.ok().body(jobService.getJobsByFilter(serviceType, postedXDaysAgo));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/search/advanced")
+    public ResponseEntity<?> advancedSearch(@RequestBody JobFilterRequestDTO request) {
 	return ResponseEntity.ok().body(jobService.getJobsByFilter(request));
     }
 

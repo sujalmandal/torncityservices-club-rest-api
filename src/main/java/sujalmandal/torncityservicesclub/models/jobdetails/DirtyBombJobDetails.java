@@ -3,6 +3,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
@@ -25,6 +26,7 @@ public class DirtyBombJobDetails implements JobDetails {
     @HighlightWhen
     @JobDetailFieldLabel("Pay for this job (better be good)")
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
+    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay", limit = "1_000_000_000")
     private Integer pay;
 
 }

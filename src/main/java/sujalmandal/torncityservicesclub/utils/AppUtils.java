@@ -110,7 +110,13 @@ public class AppUtils {
 	    formDescriptor.setFilterTemplateLabel(filterTemplateLabel);
 	    for (Field field : clazz.getDeclaredFields()) {
 		FormFieldDescriptor fieldDescriptor = new FormFieldDescriptor();
-		String fieldLabel = field.getAnnotation(JobDetailFieldLabel.class).value();
+		String fieldLabel = null;
+		if (field.isAnnotationPresent(JobDetailFieldLabel.class)) {
+		    fieldLabel = field.getAnnotation(JobDetailFieldLabel.class).value();
+		} else {
+		    throw new ServiceException(String.format("{%s} of {%s} missing a mandatory annotation!",
+			    field.getName(), clazz.getSimpleName()));
+		}
 		String fieldType = field.getAnnotation(JobDetailFieldType.class) != null
 			? field.getAnnotation(JobDetailFieldType.class).value().toString()
 			: null;
@@ -172,6 +178,7 @@ public class AppUtils {
 			format = field.getAnnotation(FieldFormatter.class).value().toString();
 		    }
 		    if (fieldType == JobDetailFieldTypeValue.NUMBER) {
+			String limit = filterableField.limit().replaceAll("_", "");
 			String minFieldName = MIN_PREFIX + fieldName.substring(0, 1).toUpperCase()
 				+ fieldName.substring(1, fieldName.length());
 			String minFieldLabel = filterableField.minFieldLabel();
@@ -182,20 +189,22 @@ public class AppUtils {
 
 			FilterFieldDescriptor minFieldDescriptor = new FilterFieldDescriptor(serviceType,
 				fieldType.toString(), minFieldName, minFieldLabel);
-			minFieldDescriptor.setLimit(filterableField.limit());
+			minFieldDescriptor.setLimit(limit);
 			minFieldDescriptor.setFormat(format);
+			minFieldDescriptor.setGroupName(fieldName);
 
 			FilterFieldDescriptor maxFieldDescriptor = new FilterFieldDescriptor(serviceType,
 				fieldType.toString(), maxFieldName, maxFieldLabel);
-			maxFieldDescriptor.setLimit(filterableField.limit());
+			maxFieldDescriptor.setLimit(limit);
 			maxFieldDescriptor.setFormat(format);
+			maxFieldDescriptor.setGroupName(fieldName);
 
 			filterTemplate.getFilterElements().add(minFieldDescriptor);
 			filterTemplate.getFilterElements().add(maxFieldDescriptor);
 		    } else {
 			FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor(serviceType,
 				fieldType.toString(), fieldName, fieldLabel);
-			fieldDescriptor.setFormat(format);
+			fieldDescriptor.setGroupName(fieldName);
 			filterTemplate.getFilterElements().add(fieldDescriptor);
 		    }
 		}

@@ -15,6 +15,7 @@ import sujalmandal.torncityservicesclub.repositories.SubscriptionRepository;
 import sujalmandal.torncityservicesclub.services.PlayerService;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;
+import sujalmandal.torncityservicesclub.utils.FingerprintUtil;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Service
@@ -35,6 +36,7 @@ public class PlayerServiceImpl implements PlayerService {
 	    if (fetchedFromTorn != null && fetchedFromTorn.getTornUserId() != null) {
 		log.info("player data successfully fetched from torn {}", fetchedFromTorn);
 		fetchedFromTorn.setRegisteredAt(LocalDateTime.now());
+		fetchedFromTorn.setFingerPrint(FingerprintUtil.getFingerprintForAPIKey(APIKey));
 		Player registeredPlayer = playerRepo.save(fetchedFromTorn);
 		Subscription subscription = new Subscription();
 		subscription.setPlayerId(registeredPlayer.getInternalId());

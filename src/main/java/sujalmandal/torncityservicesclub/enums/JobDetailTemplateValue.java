@@ -9,7 +9,7 @@ public enum JobDetailTemplateValue {
 
     HOSPITALIZE("HOSPITALIZE", "Hospitalize a player", "HOSPITALIZE_FILTER", "hospitalize"),
 
-    PROFILE_WATCH("PROFILE_WATCH", "Profile watching", "PROFILE_WATCH_FILTER", "profile watche"),
+    PROFILE_WATCH("PROFILE_WATCH", "Profile watching", "PROFILE_WATCH_FILTER", "profile watch"),
 
     ITEMS_RUNNER("ITEMS_RUNNER", "Abroad item runner", "ITEMS_RUNNER_FILTER", "item runner"),
 
@@ -17,13 +17,13 @@ public enum JobDetailTemplateValue {
 
     TRAINS("TRAINS", "Trains", "TRAINS_FILTER", "train"),
 
-    STAT_SPY("STAT_SPY", "Spy someone's stats", "STAT_SPY_FILTER", "stat spie"),
+    STAT_SPY("STAT_SPY", "Spy someone's stats", "STAT_SPY_FILTER", "stat spy"),
 
     ATTACK("ATTACK", "Attack someone", "ATTACK_FILTER", "attack"),
 
     DEFEND_FACTION("DEFEND_FACTION", "Defend a faction", "DEFEND_FACTION_FILTER", "faction defend"),
 
-    BOUNTY_PLAYER("BOUNTY_PLAYER", "Bounty a player", "BOUNTY_PLAYER_FILTER", "bountie"),
+    BOUNTY_PLAYER("BOUNTY_PLAYER", "Bounty a player", "BOUNTY_PLAYER_FILTER", "bounty"),
 
     BOUNTY_REVEAL("BOUNTY_REVEAL", "Reveal bounty", "BOUNTY_REVEAL_FILTER", "bounty reveal"),
 

@@ -33,6 +33,7 @@ public class AttackFactionJobDetails implements JobDetails {
     @FieldFormatter(FieldFormatterValue.NUMBER)
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total duration in days over which the attack has to take place")
+    @FilterableField(label = "total duration in days", maxFieldLabel = "maximum no. of days", minFieldLabel = "minimum no. of days", limit = "10")
     private String duration;
 
     @FieldFormatter(FieldFormatterValue.CURRENCY)

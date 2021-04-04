@@ -162,4 +162,9 @@ public class JobServiceImpl implements JobService {
 	}
     }
 
+    @Override
+    public JobFilterResponseDTO getJobsByFilter(String serviceType, Integer postedXDaysAgo) {
+	return null;
+    }
+
 }

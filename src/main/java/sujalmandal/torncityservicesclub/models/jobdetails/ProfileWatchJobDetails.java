@@ -3,6 +3,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
@@ -25,11 +26,13 @@ public class ProfileWatchJobDetails implements JobDetails {
 
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Minimum watch hours")
+    @FilterableField(label = "total duration in hours", maxFieldLabel = "maximum no. of hours", minFieldLabel = "minimum no. of hours", limit = "5")
     private Integer durationHours;
 
     @FieldFormatter(FieldFormatterValue.CURRENCY)
     @HighlightWhen
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay for this job")
+    @FilterableField(label = "total pay for this job", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay", limit = "100_000_000")
     private Integer pay;
 }

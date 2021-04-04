@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
+import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.annotations.JobDetailTemplate;
@@ -24,12 +26,15 @@ public class HospitalizeJobDetails implements JobDetails {
     @JobDetailFieldLabel("Torn id of the player who has to be attacked")
     private String targetPlayerId;
 
-    @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
+    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total number of times to hospitalize a target")
+    @FilterableField(label = "total hospitalizations", maxFieldLabel = "maximum no. of hospitalizations", minFieldLabel = "minimum no. of hospitalizations", limit = "100")
     private Integer totalHospitalizations;
 
     @FieldFormatter(FieldFormatterValue.CURRENCY)
-    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total pay for this job")
+    @HighlightWhen
+    @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
+    @JobDetailFieldLabel("Pay per hospitalization for this job")
+    @FilterableField(label = "total pay per hospitalization", maxFieldLabel = "maximum pay per hospitalization", minFieldLabel = "minimum pay per hospitalization", limit = "5_000_000")
     private Integer pay;
 }

@@ -3,6 +3,7 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
+import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
 import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
@@ -25,11 +26,13 @@ public class DefendFactionJobDetails implements JobDetails {
 
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total duration for which attackers on this factions have to be hit")
-    private String duration;
+    @FilterableField(label = "total duration in days", maxFieldLabel = "maximum days protection", minFieldLabel = "minimum days protection", limit = "10")
+    private String durationDays;
 
     @FieldFormatter(FieldFormatterValue.CURRENCY)
     @HighlightWhen
     @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
     @JobDetailFieldLabel("Total pay for this job")
+    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay", limit = "500_000_000")
     private Integer pay;
 }

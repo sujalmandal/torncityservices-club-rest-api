@@ -1,6 +1,5 @@
 package sujalmandal.torncityservicesclub;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -50,21 +49,18 @@ public class TorncityservicesClubApplication implements CommandLineRunner, WebMv
     }
 
     private void updateJobDetailFormTemplates() throws JsonProcessingException {
+	mongoTemplate.dropCollection(JobDetailFormTemplate.class);
 	log.info("Creating job detail form templates..");
-	Set<JobDetailFormTemplate> savedTemplates = new HashSet<>(mongoTemplate.findAll(JobDetailFormTemplate.class));
 	Set<JobDetailFormTemplate> generatedFormTemplates = AppUtils.generateJobDetailTemplates();
-	generatedFormTemplates.removeAll(savedTemplates);
 	for (JobDetailFormTemplate template : generatedFormTemplates) {
 	    mongoTemplate.save(template);
 	}
     }
 
     private void updateJobDetailFilterTemplates() throws JsonProcessingException {
+	mongoTemplate.dropCollection(JobDetailFilterTemplate.class);
 	log.info("Creating job detail filter templates..");
-	Set<JobDetailFilterTemplate> savedTemplates = new HashSet<>(
-		mongoTemplate.findAll(JobDetailFilterTemplate.class));
 	Set<JobDetailFilterTemplate> generatedFilterTemplates = AppUtils.generateJobDetailFilterTemplates();
-	generatedFilterTemplates.removeAll(savedTemplates);
 	for (JobDetailFilterTemplate template : generatedFilterTemplates) {
 	    log.info("Saving {} filter template!", template.getFilterTemplateName());
 	    mongoTemplate.save(template);

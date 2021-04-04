@@ -23,6 +23,7 @@ public class Player {
     private String tornUserName;
     private LocalDateTime registeredAt;
     private String subscriberId;
+    private String fingerPrint;
     private SubscriptionType activeSubscriptionType;
 
     public Player(TornPlayer tornPlayerInfo) {

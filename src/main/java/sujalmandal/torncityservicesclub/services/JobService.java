@@ -17,6 +17,8 @@ public interface JobService {
 
     public JobFilterResponseDTO getJobsByFilter(JobFilterRequestDTO jobFilterRequestDTO);
 
+    public JobFilterResponseDTO getJobsByFilter(String serviceType, Integer postedXDaysAgo);
+
     public Job postJob(CreateJobRequestDTO createJobRequestDTO);
 
     public Job acceptJob(JobAcceptRequestDTO updateJobRequestDTO);
