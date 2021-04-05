@@ -112,15 +112,17 @@ public class TemplateGeneratorUtil {
 				    serviceType, format, defaultValue, maxValue, minValue);
 			    break;
 			case CHECKBOX:
-			    extractCheckboxFilterField(filterTemplate, fieldType, fieldName, fieldLabel, defaultValue);
+			    extractCheckboxFilterField(filterTemplate, fieldType, fieldName, serviceType, fieldLabel,
+				    defaultValue);
 			    break;
 			case SELECT:
 			    String[] options = formField.options();
-			    extractSelectFilterField(filterTemplate, fieldType, fieldName, fieldLabel, defaultValue,
-				    options);
+			    extractSelectFilterField(filterTemplate, fieldType, fieldName, serviceType, fieldLabel,
+				    defaultValue, options);
 			    break;
 			default:
-			    extractTextFilterField(filterTemplate, fieldType, fieldName, fieldLabel, defaultValue);
+			    extractTextFilterField(filterTemplate, fieldType, fieldName, serviceType, fieldLabel,
+				    defaultValue);
 			}
 
 		    } else {
@@ -135,35 +137,38 @@ public class TemplateGeneratorUtil {
     }
 
     private static void extractSelectFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
-	    String fieldName, String fieldLabel, String defaultValue, String[] options) {
+	    String fieldName, ServiceTypeValue serviceType, String fieldLabel, String defaultValue, String[] options) {
 	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
 	fieldDescriptor.setGroupName(fieldName);
 	fieldDescriptor.setFieldName(fieldName);
 	fieldDescriptor.setFieldLabel(fieldLabel);
 	fieldDescriptor.setDefaultValue(defaultValue);
 	fieldDescriptor.setOptions(Arrays.asList(options));
+	fieldDescriptor.setServiceType(serviceType);
 	fieldDescriptor.setFieldType(type);
 	filterTemplate.getFilterElements().add(fieldDescriptor);
     }
 
     private static void extractCheckboxFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
-	    String fieldName, String fieldLabel, String defaultValue) {
+	    String fieldName, ServiceTypeValue serviceType, String fieldLabel, String defaultValue) {
 	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
 	fieldDescriptor.setGroupName(fieldName);
 	fieldDescriptor.setFieldName(fieldName);
 	fieldDescriptor.setFieldLabel(fieldLabel);
 	fieldDescriptor.setDefaultValue(defaultValue);
+	fieldDescriptor.setServiceType(serviceType);
 	fieldDescriptor.setFieldType(type);
 	filterTemplate.getFilterElements().add(fieldDescriptor);
     }
 
     private static void extractTextFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
-	    String fieldName, String fieldLabel, String defaultValue) {
+	    String fieldName, ServiceTypeValue serviceType, String fieldLabel, String defaultValue) {
 	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
 	fieldDescriptor.setGroupName(fieldName);
 	fieldDescriptor.setFieldName(fieldName);
 	fieldDescriptor.setDefaultValue(defaultValue);
 	fieldDescriptor.setFieldLabel(fieldLabel);
+	fieldDescriptor.setServiceType(serviceType);
 	fieldDescriptor.setFieldType(type);
 	filterTemplate.getFilterElements().add(fieldDescriptor);
     }

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
+import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
 
 public interface JobDetails {
 

@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import sujalmandal.torncityservicesclub.enums.PaymentStatus;
 
 import lombok.Data;
+import sujalmandal.torncityservicesclub.enums.PaymentStatus;
 
 @Data
 @Document(collection = "Payment")

@@ -9,7 +9,6 @@ import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
@@ -17,8 +16,8 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.ITEMS_RUNNER)
 public class ItemsRunnerJobDetails implements JobDetails {
 
-    @FormField(label = "Type of items to run", type = FormFieldTypeValue.SELECT, serviceType = ServiceTypeValue.REQUEST, options = {
-	    "Temporaries", "Plushies", "Flowers", "High value items", "Weapons" })
+    @FormField(label = "Type of items to run", type = FormFieldTypeValue.SELECT, options = { "Temporaries", "Plushies",
+	    "Flowers", "High value items", "Weapons" }, defaultValue = "Plushies")
     @FilterableField(label = "Type of the item")
     private String itemType;
 

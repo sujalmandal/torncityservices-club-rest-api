@@ -1,6 +1,7 @@
 package sujalmandal.torncityservicesclub.dtos.response;
 
 import java.util.List;
+
 import lombok.Data;
 import sujalmandal.torncityservicesclub.models.Job;
 
