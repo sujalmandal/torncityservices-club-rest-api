@@ -3,15 +3,12 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
+import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.annotations.ServiceType;
+import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
@@ -22,20 +19,15 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.HOSPITALIZE)
 public class HospitalizeJobDetails implements JobDetails {
 
-    @ServiceType(ServiceTypeValue.REQUEST)
-    @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
-    @JobDetailFieldLabel("Torn id of the player who has to be attacked")
+    @FormField(label = "Torn id of the player who has to be attacked", serviceType = ServiceTypeValue.REQUEST)
     private String targetPlayerId;
 
-    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total number of times to hospitalize a target")
-    @FilterableField(label = "total hospitalizations", maxFieldLabel = "maximum no. of hospitalizations", minFieldLabel = "minimum no. of hospitalizations", limit = "100")
+    @FormField(label = "Total number of times to hospitalize a target", type = FormFieldTypeValue.NUMBER, minValue = "1", maxValue = "50")
+    @FilterableField(label = "total hospitalizations", maxFieldLabel = "maximum no. of hospitalizations", minFieldLabel = "minimum no. of hospitalizations")
     private Integer totalHospitalizations;
 
-    @FieldFormatter(FieldFormatterValue.CURRENCY)
     @HighlightWhen
-    @JobDetailFieldType(JobDetailFieldTypeValue.TEXT)
-    @JobDetailFieldLabel("Pay per hospitalization for this job")
-    @FilterableField(label = "total pay per hospitalization", maxFieldLabel = "maximum pay per hospitalization", minFieldLabel = "minimum pay per hospitalization", limit = "5_000_000")
+    @FormField(label = "Pay per hospitalization for this job", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, maxValue = "5_000_000")
+    @FilterableField(label = "total pay per hospitalization", maxFieldLabel = "maximum pay per hospitalization", minFieldLabel = "minimum pay per hospitalization")
     private Integer pay;
 }

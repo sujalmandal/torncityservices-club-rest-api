@@ -21,7 +21,7 @@ import org.springframework.util.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.dtos.commons.FilterFieldDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
-import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
@@ -51,7 +51,7 @@ public class MongoUtil {
 	    Map<String, List<FilterFieldDTO>> groupedFilterFields = filter.getFilterFields().stream()
 		    .collect(Collectors.groupingBy(FilterFieldDTO::getGroupName));
 	    groupedFilterFields.forEach((groupName, fields) -> {
-		JobDetailFieldTypeValue type = JobDetailFieldTypeValue.valueOf(fields.get(0).getType());
+		FormFieldTypeValue type = FormFieldTypeValue.valueOf(fields.get(0).getType());
 		switch (type) {
 		case TEXT:
 		    criteriaList.add(new Criteria(groupName).in(Collections.singletonList(fields.get(0).getValue())));

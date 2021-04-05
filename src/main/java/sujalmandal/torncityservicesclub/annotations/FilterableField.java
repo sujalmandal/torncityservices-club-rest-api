@@ -15,6 +15,4 @@ public @interface FilterableField {
 
     public String minFieldLabel() default "";;
 
-    public String limit() default "";
-
 }

@@ -2,14 +2,11 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.FilterableField;
+import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
@@ -19,22 +16,16 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.RENT)
 public class RentJobDetails implements JobDetails {
 
-    @HighlightWhen(ServiceTypeValue.REQUEST)
-    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total happy")
-    @FilterableField(label = "total happy for the property", maxFieldLabel = "maximum happy", minFieldLabel = "minimum happy", limit = "5000")
+    @FormField(label = "Total happy", type = FormFieldTypeValue.NUMBER, serviceType = ServiceTypeValue.OFFER, minValue = "100", maxValue = "5000")
+    @FilterableField(label = "total happy for the property", maxFieldLabel = "maximum happy", minFieldLabel = "minimum happy")
     private String happy;
 
-    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total number of days for rent")
-    @FilterableField(label = "total rent duration in days", maxFieldLabel = "maximum rented days", minFieldLabel = "minimum rented days", limit = "90")
+    @FormField(label = "Total number of days for rent", type = FormFieldTypeValue.NUMBER, minValue = "7", maxValue = "100")
+    @FilterableField(label = "total rent duration in days", maxFieldLabel = "maximum rented days", minFieldLabel = "minimum rented days")
     private Integer durationInDays;
 
-    @FieldFormatter(FieldFormatterValue.CURRENCY)
-    @HighlightWhen(ServiceTypeValue.OFFER)
-    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Total rent")
-    @FilterableField(label = "total rent", maxFieldLabel = "maximum rent", minFieldLabel = "minimum rent", limit = "100_000_000")
+    @FormField(label = "Total rent", serviceType = ServiceTypeValue.OFFER, type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, maxValue = "100_000_000")
+    @FilterableField(label = "total rent", maxFieldLabel = "maximum rent", minFieldLabel = "minimum rent")
     private Integer rent;
 
 }

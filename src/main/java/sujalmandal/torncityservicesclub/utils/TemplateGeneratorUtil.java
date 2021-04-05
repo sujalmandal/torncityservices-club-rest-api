@@ -5,6 +5,7 @@ import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FI
 import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,14 +16,11 @@ import org.reflections.Reflections;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.FilterableField;
+import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
-import sujalmandal.torncityservicesclub.annotations.ServiceType;
-import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
+import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.FilterFieldDescriptor;
@@ -34,6 +32,7 @@ import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
 public class TemplateGeneratorUtil {
 
     private static final Reflections reflections = new Reflections(JOB_DETAIL_IMPL_SEARCH_PACKAGE.toString());
+
     private static Set<Class<?>> jobDetailImplClasses;
 
     public static Set<JobDetailFormTemplate> generateJobDetailFormTemplates() throws JsonProcessingException {
@@ -51,41 +50,34 @@ public class TemplateGeneratorUtil {
 	    formDescriptor.setFilterTemplateLabel(filterTemplateLabel);
 	    for (Field field : clazz.getDeclaredFields()) {
 		FormFieldDescriptor fieldDescriptor = new FormFieldDescriptor();
-		String fieldLabel = null;
-		if (field.isAnnotationPresent(JobDetailFieldLabel.class)) {
-		    fieldLabel = field.getAnnotation(JobDetailFieldLabel.class).value();
+		if (field.isAnnotationPresent(FormField.class)) {
+		    extractFormFieldDescriptor(field, fieldDescriptor);
+		    formDescriptor.getElements().add(fieldDescriptor);
 		} else {
 		    throw new ServiceException(String.format("{%s} of {%s} missing a mandatory annotation!",
 			    field.getName(), clazz.getSimpleName()));
 		}
-		String fieldType = field.getAnnotation(JobDetailFieldType.class) != null
-			? field.getAnnotation(JobDetailFieldType.class).value().toString()
-			: null;
-		ServiceTypeValue serviceType = null;
-		if (field.isAnnotationPresent(ServiceType.class)) {
-		    serviceType = field.getAnnotation(ServiceType.class).value();
-		} else {
-		    serviceType = ServiceTypeValue.ALL;
-		}
-
-		fieldDescriptor.setId(UUID.randomUUID().toString());
-		fieldDescriptor.setLabel(fieldLabel);
-		fieldDescriptor.setType(fieldType);
-		fieldDescriptor.setServiceType(serviceType);
-		fieldDescriptor.setName(field.getName());
-		if (field.isAnnotationPresent(HighlightWhen.class)) {
-		    fieldDescriptor.setIsHighlighted(Boolean.TRUE);
-		    fieldDescriptor
-			    .setServiceTypeToHighlightOn(field.getAnnotation(HighlightWhen.class).value().toString());
-		}
-		if (field.isAnnotationPresent(FieldFormatter.class)) {
-		    fieldDescriptor.setFormat(field.getAnnotation(FieldFormatter.class).value().toString());
-		}
-		formDescriptor.getElements().add(fieldDescriptor);
 	    }
 	    formDescriptors.add(formDescriptor);
 	}
 	return formDescriptors;
+    }
+
+    private static void extractFormFieldDescriptor(Field field, FormFieldDescriptor fieldDescriptor) {
+	FormField formField = field.getAnnotation(FormField.class);
+	ServiceTypeValue serviceType = formField.serviceType();
+	fieldDescriptor.setId(UUID.randomUUID().toString());
+	fieldDescriptor.setLabel(formField.label());
+	fieldDescriptor.setType(formField.type());
+	fieldDescriptor.setServiceType(serviceType);
+	fieldDescriptor.setName(field.getName());
+	fieldDescriptor.setMaxValue(getNumber(formField.maxValue()));
+	fieldDescriptor.setMinValue(getNumber(formField.minValue()));
+	fieldDescriptor.setDefaultValue(formField.defaultValue());
+	fieldDescriptor.setOptions(Arrays.asList(formField.options()));
+	if (fieldDescriptor.getType() == FormFieldTypeValue.NUMBER) {
+	    fieldDescriptor.setFormat(formField.formatter());
+	}
     }
 
     public static Set<JobDetailFilterTemplate> generateJobDetailFilterTemplates() throws JsonProcessingException {
@@ -101,58 +93,120 @@ public class TemplateGeneratorUtil {
 
 		boolean isFilterable = field.isAnnotationPresent(FilterableField.class);
 		if (isFilterable) {
-		    FilterableField filterableField = field.getAnnotation(FilterableField.class);
+		    if (field.isAnnotationPresent(FormField.class)) {
+			FormField formField = field.getAnnotation(FormField.class);
+			FilterableField filterableField = field.getAnnotation(FilterableField.class);
 
-		    JobDetailFieldTypeValue fieldType = field.getAnnotation(JobDetailFieldType.class) != null
-			    ? field.getAnnotation(JobDetailFieldType.class).value()
-			    : null;
-		    String fieldName = field.getName();
-		    String fieldLabel = filterableField.label();
-		    ServiceTypeValue serviceType = null;
-		    if (field.isAnnotationPresent(ServiceType.class)) {
-			serviceType = field.getAnnotation(ServiceType.class).value();
+			FormFieldTypeValue fieldType = formField.type();
+			String fieldName = field.getName();
+			String fieldLabel = filterableField.label();
+			String defaultValue = formField.defaultValue();
+			ServiceTypeValue serviceType = formField.serviceType();
+			FieldFormatterValue format = formField.formatter();
+
+			switch (fieldType) {
+			case NUMBER:
+			    int maxValue = getNumber(formField.maxValue());
+			    int minValue = getNumber(formField.maxValue());
+			    extractNumberFilterFields(filterTemplate, fieldType, filterableField, fieldName,
+				    serviceType, format, defaultValue, maxValue, minValue);
+			    break;
+			case CHECKBOX:
+			    extractCheckboxFilterField(filterTemplate, fieldType, fieldName, fieldLabel, defaultValue);
+			    break;
+			case SELECT:
+			    String[] options = formField.options();
+			    extractSelectFilterField(filterTemplate, fieldType, fieldName, fieldLabel, defaultValue,
+				    options);
+			    break;
+			default:
+			    extractTextFilterField(filterTemplate, fieldType, fieldName, fieldLabel, defaultValue);
+			}
+
 		    } else {
-			serviceType = ServiceTypeValue.ALL;
-		    }
-		    String format = null;
-		    if (field.isAnnotationPresent(FieldFormatter.class)) {
-			format = field.getAnnotation(FieldFormatter.class).value().toString();
-		    }
-		    if (fieldType == JobDetailFieldTypeValue.NUMBER) {
-			String limit = filterableField.limit().replaceAll("_", "");
-			String minFieldName = NUMBER_TYPE_FIELD_MIN_PREFIX.toString()
-				+ fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
-			String minFieldLabel = filterableField.minFieldLabel();
-
-			String maxFieldName = NUMBER_TYPE_FIELD_MAX_PREFIX.toString()
-				+ fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
-			String maxFieldLabel = filterableField.maxFieldLabel();
-
-			FilterFieldDescriptor minFieldDescriptor = new FilterFieldDescriptor(serviceType,
-				fieldType.toString(), minFieldName, minFieldLabel);
-			minFieldDescriptor.setLimit(limit);
-			minFieldDescriptor.setFormat(format);
-			minFieldDescriptor.setGroupName(fieldName);
-
-			FilterFieldDescriptor maxFieldDescriptor = new FilterFieldDescriptor(serviceType,
-				fieldType.toString(), maxFieldName, maxFieldLabel);
-			maxFieldDescriptor.setLimit(limit);
-			maxFieldDescriptor.setFormat(format);
-			maxFieldDescriptor.setGroupName(fieldName);
-
-			filterTemplate.getFilterElements().add(minFieldDescriptor);
-			filterTemplate.getFilterElements().add(maxFieldDescriptor);
-		    } else {
-			FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor(serviceType,
-				fieldType.toString(), fieldName, fieldLabel);
-			fieldDescriptor.setGroupName(fieldName);
-			filterTemplate.getFilterElements().add(fieldDescriptor);
+			throw new ServiceException(String.format("{%s} of {%s} missing a mandatory annotation!",
+				field.getName(), clazz.getSimpleName()));
 		    }
 		}
 	    }
 	    filterTemplates.add(filterTemplate);
 	}
 	return filterTemplates;
+    }
+
+    private static void extractSelectFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
+	    String fieldName, String fieldLabel, String defaultValue, String[] options) {
+	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
+	fieldDescriptor.setGroupName(fieldName);
+	fieldDescriptor.setFieldName(fieldName);
+	fieldDescriptor.setFieldLabel(fieldLabel);
+	fieldDescriptor.setDefaultValue(defaultValue);
+	fieldDescriptor.setOptions(Arrays.asList(options));
+	fieldDescriptor.setFieldType(type);
+	filterTemplate.getFilterElements().add(fieldDescriptor);
+    }
+
+    private static void extractCheckboxFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
+	    String fieldName, String fieldLabel, String defaultValue) {
+	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
+	fieldDescriptor.setGroupName(fieldName);
+	fieldDescriptor.setFieldName(fieldName);
+	fieldDescriptor.setFieldLabel(fieldLabel);
+	fieldDescriptor.setDefaultValue(defaultValue);
+	fieldDescriptor.setFieldType(type);
+	filterTemplate.getFilterElements().add(fieldDescriptor);
+    }
+
+    private static void extractTextFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
+	    String fieldName, String fieldLabel, String defaultValue) {
+	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
+	fieldDescriptor.setGroupName(fieldName);
+	fieldDescriptor.setFieldName(fieldName);
+	fieldDescriptor.setDefaultValue(defaultValue);
+	fieldDescriptor.setFieldLabel(fieldLabel);
+	fieldDescriptor.setFieldType(type);
+	filterTemplate.getFilterElements().add(fieldDescriptor);
+    }
+
+    private static void extractNumberFilterFields(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
+	    FilterableField filterableField, String fieldName, ServiceTypeValue serviceType, FieldFormatterValue format,
+	    String defaultValue, int maxValue, int minValue) {
+	String maxFieldName = NUMBER_TYPE_FIELD_MAX_PREFIX.toString() + fieldName.substring(0, 1).toUpperCase()
+		+ fieldName.substring(1, fieldName.length());
+	String maxFieldLabel = filterableField.maxFieldLabel();
+
+	String minFieldName = NUMBER_TYPE_FIELD_MIN_PREFIX.toString() + fieldName.substring(0, 1).toUpperCase()
+		+ fieldName.substring(1, fieldName.length());
+	String minFieldLabel = filterableField.minFieldLabel();
+
+	FilterFieldDescriptor minFieldDescriptor = new FilterFieldDescriptor();
+	minFieldDescriptor.setMaxValue(maxValue);
+	minFieldDescriptor.setMinValue(minValue);
+	minFieldDescriptor.setFormat(format);
+	minFieldDescriptor.setFieldName(minFieldName);
+	minFieldDescriptor.setFieldLabel(minFieldLabel);
+	minFieldDescriptor.setGroupName(fieldName);
+	minFieldDescriptor.setServiceType(serviceType);
+	minFieldDescriptor.setDefaultValue(defaultValue);
+	minFieldDescriptor.setFieldType(type);
+
+	FilterFieldDescriptor maxFieldDescriptor = new FilterFieldDescriptor();
+	minFieldDescriptor.setMaxValue(maxValue);
+	minFieldDescriptor.setMinValue(minValue);
+	maxFieldDescriptor.setFormat(format);
+	maxFieldDescriptor.setFieldName(maxFieldName);
+	maxFieldDescriptor.setFieldLabel(maxFieldLabel);
+	maxFieldDescriptor.setGroupName(fieldName);
+	maxFieldDescriptor.setServiceType(serviceType);
+	maxFieldDescriptor.setDefaultValue(defaultValue);
+	maxFieldDescriptor.setFieldType(type);
+
+	filterTemplate.getFilterElements().add(minFieldDescriptor);
+	filterTemplate.getFilterElements().add(maxFieldDescriptor);
+    }
+
+    private static int getNumber(String decoratedNumberAsString) {
+	return Integer.parseInt(decoratedNumberAsString.replaceAll("_", ""));
     }
 
     public static Set<Class<?>> getJobDetailImplClasses() {

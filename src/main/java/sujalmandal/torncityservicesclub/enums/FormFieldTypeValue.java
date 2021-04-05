@@ -1,11 +1,11 @@
 package sujalmandal.torncityservicesclub.enums;
 
-public enum JobDetailFieldTypeValue {
-    TEXT("text"), NUMBER("number"), CHECKBOX("checkbox");
+public enum FormFieldTypeValue {
+    TEXT("text"), NUMBER("number"), CHECKBOX("checkbox"), SELECT("select");
 
     String value;
 
-    private JobDetailFieldTypeValue(String value) {
+    private FormFieldTypeValue(String value) {
 	this.value = value;
     }
 

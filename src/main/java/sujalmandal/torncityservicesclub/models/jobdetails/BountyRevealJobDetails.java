@@ -2,15 +2,12 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FieldFormatter;
 import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldLabel;
-import sujalmandal.torncityservicesclub.annotations.JobDetailFieldType;
+import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.annotations.ServiceType;
+import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
@@ -20,15 +17,11 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.BOUNTY_REVEAL)
 public class BountyRevealJobDetails implements JobDetails {
 
-    @ServiceType(ServiceTypeValue.REQUEST)
-    @JobDetailFieldType(JobDetailFieldTypeValue.CHECKBOX)
-    @JobDetailFieldLabel("Player whose bounty has to be revealed")
+    @FormField(label = "Player whose bounty has to be revealed", serviceType = ServiceTypeValue.REQUEST)
     private String playerId;
 
-    @FieldFormatter(FieldFormatterValue.CURRENCY)
     @HighlightWhen
-    @JobDetailFieldType(JobDetailFieldTypeValue.NUMBER)
-    @JobDetailFieldLabel("Cost of a bounty reveal")
-    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay", limit = "100_000_000")
+    @FormField(label = "Cost of a bounty reveal", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, maxValue = "100_000_000")
+    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
     private Integer pay;
 }
