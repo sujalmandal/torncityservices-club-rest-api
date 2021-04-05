@@ -16,8 +16,19 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.EMPLOYEE)
 public class EmployeeJobDetails implements JobDetails {
 
-    @HighlightWhen
-    @FormField(label = "Company type")
+    /*
+     * API: https://api.torn.com/torn/?selections=companies&key=<API_KEY>
+     * 
+     * filter response with JMESPath 'companies.[*][0][*].name'
+     */
+    @FormField(label = "Company type", type = FormFieldTypeValue.SELECT, options = { "Hair Salon", "Law Firm",
+	    "Flower Shop", "Car Dealership", "Clothing Store", "Gun Shop", "Game Shop", "Candle Shop", "Toy Shop",
+	    "Adult Novelties", "Cyber Cafe", "Grocery Store", "Theater", "Sweet Shop", "Cruise Line",
+	    "Television Network", "Zoo", "Firework Stand", "Property Broker", "Furniture Store", "Gas Station",
+	    "Music Store", "Nightclub", "Pub", "Gents Strip Club", "Restaurant", "Oil Rig", "Fitness Center",
+	    "Mechanic Shop", "Amusement Park", "Lingerie Store", "Meat Warehouse", "Farm", "Software Corporation",
+	    "Ladies Strip Club", "Private Security Firm", "Mining Corporation", "Detective Agency",
+	    "Logistics Management" }, defaultValue = "Candle Shop")
     @FilterableField(label = "company type")
     private String companyType;
 
