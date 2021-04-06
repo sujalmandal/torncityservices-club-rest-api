@@ -48,7 +48,7 @@ public class PlayerServiceImpl implements PlayerService {
 		log.info("player successfully registered {}", registeredPlayer);
 		registeredPlayer = playerRepo.save(registeredPlayer);
 		PlayerDTO playerDTO = new PlayerDTO();
-		PojoUtils.getModelMapper().map(registeredPlayer, playerDTO);
+		PojoUtils.map(registeredPlayer, playerDTO);
 		playerDTO.setActiveSubscriptionType(subscription.getSubscriptionType().toString());
 		return playerDTO;
 	    }
@@ -66,7 +66,7 @@ public class PlayerServiceImpl implements PlayerService {
 	    Player fetchedPlayerDb = this.getPlayerByPlayerTornId(fetchedFromTorn.getTornUserId());
 	    if (fetchedPlayerDb != null && fetchedPlayerDb.getInternalId() != null) {
 		PlayerDTO playerDTO = new PlayerDTO();
-		PojoUtils.getModelMapper().map(fetchedPlayerDb, playerDTO);
+		PojoUtils.map(fetchedPlayerDb, playerDTO);
 		return playerDTO;
 	    } else {
 		throw new UnRegisteredPlayerException(
@@ -83,7 +83,7 @@ public class PlayerServiceImpl implements PlayerService {
 	Player fetchedPlayerDb = playerRepo.findByFingerprint(fingerprint);
 	if (fetchedPlayerDb != null && fetchedPlayerDb.getInternalId() != null) {
 	    PlayerDTO playerDTO = new PlayerDTO();
-	    PojoUtils.getModelMapper().map(fetchedPlayerDb, playerDTO);
+	    PojoUtils.map(fetchedPlayerDb, playerDTO);
 	    return playerDTO;
 	} else {
 	    throw new UnRegisteredPlayerException(

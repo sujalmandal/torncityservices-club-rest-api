@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.Payment;
@@ -118,7 +119,7 @@ class TorncityservicesClubApplicationTests {
 	postBountyJob();
 	JobFilterRequestDTO filterReq = new JobFilterRequestDTO();
 	filterReq.setServiceType(ServiceTypeValue.ALL);
-	List<Job> foundJobs = jobService.getJobsByFilter(filterReq).getJobs();
+	List<JobResponseDTO> foundJobs = jobService.getJobsByFilter(filterReq).getJobs();
 	Assert.notEmpty(foundJobs, "failed to fetch jobs");
 	log.info("found {} jobs {}", foundJobs.size(), foundJobs);
     }

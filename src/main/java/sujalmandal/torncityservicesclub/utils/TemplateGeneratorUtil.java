@@ -107,7 +107,7 @@ public class TemplateGeneratorUtil {
 			switch (fieldType) {
 			case NUMBER:
 			    int maxValue = getNumber(formField.maxValue());
-			    int minValue = getNumber(formField.maxValue());
+			    int minValue = getNumber(formField.minValue());
 			    extractNumberFilterFields(filterTemplate, fieldType, filterableField, fieldName,
 				    serviceType, format, defaultValue, maxValue, minValue);
 			    break;
@@ -196,8 +196,8 @@ public class TemplateGeneratorUtil {
 	minFieldDescriptor.setFieldType(type);
 
 	FilterFieldDescriptor maxFieldDescriptor = new FilterFieldDescriptor();
-	minFieldDescriptor.setMaxValue(maxValue);
-	minFieldDescriptor.setMinValue(minValue);
+	maxFieldDescriptor.setMaxValue(maxValue);
+	maxFieldDescriptor.setMinValue(minValue);
 	maxFieldDescriptor.setFormat(format);
 	maxFieldDescriptor.setFieldName(maxFieldName);
 	maxFieldDescriptor.setFieldLabel(maxFieldLabel);

@@ -17,7 +17,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class TrainJobDetails implements JobDetails {
 
     @FormField(label = "How many trains in total", type = FormFieldTypeValue.NUMBER, minValue = "50", maxValue = "500", defaultValue = "50")
-    @FilterableField(label = "total spies", maxFieldLabel = "maximum no. of spies", minFieldLabel = "minimum no. of spies")
+    @FilterableField(label = "Total trains", maxFieldLabel = "maximum no. of trains", minFieldLabel = "minimum no. of trains")
     private Integer totalTrains;
 
     @HighlightWhen

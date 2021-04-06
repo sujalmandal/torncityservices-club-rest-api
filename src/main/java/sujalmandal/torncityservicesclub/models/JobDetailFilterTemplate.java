@@ -50,7 +50,7 @@ public class JobDetailFilterTemplate {
 
     public Object toJson() throws JsonProcessingException {
 	JobDetailFilterTemplate copyOfThis = new JobDetailFilterTemplate();
-	PojoUtils.getModelMapper().map(this, copyOfThis);
+	PojoUtils.map(this, copyOfThis);
 	copyOfThis.id = null;
 	return PojoUtils.getObjectMapper().writeValueAsString(copyOfThis);
     }

@@ -1,6 +1,8 @@
 package sujalmandal.torncityservicesclub.utils;
 
+import static sujalmandal.torncityservicesclub.enums.AppConstants.JOB_DETAILS;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MAX_PREFIX;
+import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.IS_DELETED;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.POSTED_DATE;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.SERVICE_TYPE;
@@ -24,7 +26,6 @@ import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
-import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 
 @Slf4j
 public class MongoUtil {
@@ -53,36 +54,40 @@ public class MongoUtil {
 	    groupedFilterFields.forEach((groupName, fields) -> {
 		FormFieldTypeValue type = FormFieldTypeValue.valueOf(fields.get(0).getType());
 		switch (type) {
-		case TEXT:
-		    criteriaList.add(new Criteria(groupName).in(Collections.singletonList(fields.get(0).getValue())));
-		    break;
 		case NUMBER:
 		    Optional<FilterFieldDTO> minField = fields.stream().filter(field -> {
-			return field.getName().startsWith(NUMBER_TYPE_FIELD_MAX_PREFIX.toString());
+			return field.getName().startsWith(NUMBER_TYPE_FIELD_MIN_PREFIX.toString());
 		    }).findAny();
 		    Optional<FilterFieldDTO> maxField = fields.stream().filter(field -> {
 			return field.getName().startsWith(NUMBER_TYPE_FIELD_MAX_PREFIX.toString());
 		    }).findAny();
 		    if (minField.isPresent()) {
-			criteriaList.add(Criteria.where(groupName).gte(minField.get().getValue()));
+			criteriaList.add(Criteria.where(getJobDetailField(groupName)).gte(minField.get().getValue()));
 		    } else {
-			log.warn("minField for field name {} not found in the filter", groupName);
+			log.warn("minField for field name {} not found in the filter", getJobDetailField(groupName));
 		    }
 		    if (maxField.isPresent()) {
-			criteriaList.add(Criteria.where(groupName).lte(minField.get().getValue()));
+			criteriaList.add(Criteria.where(getJobDetailField(groupName)).lte(maxField.get().getValue()));
 		    } else {
-			log.warn("maxField for field name {} not found in the filter", groupName);
+			log.warn("maxField for field name {} not found in the filter", getJobDetailField(groupName));
 		    }
 		    break;
 		case CHECKBOX:
-		    criteriaList.add(Criteria.where(groupName).is(fields.get(0).getValue()));
+		    criteriaList.add(Criteria.where(getJobDetailField(groupName)).is(fields.get(0).getValue()));
 		    break;
 		default:
-		    throw new ServiceException(String.format("Invalid type {%s} of filter field passed!", type), 400);
+		    criteriaList.add(new Criteria(getJobDetailField(groupName))
+			    .in(Collections.singletonList(fields.get(0).getValue())));
+		    // throw new ServiceException(String.format("Invalid type {%s} of filter field
+		    // passed!", type), 400);
 		}
 	    });
 	}
 	return new Criteria().andOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
+    }
+
+    private static String getJobDetailField(String groupName) {
+	return JOB_DETAILS.toString() + "." + groupName;
     }
 
     public static void paginateQuery(Query query, int pageNumber, int pageSize) {

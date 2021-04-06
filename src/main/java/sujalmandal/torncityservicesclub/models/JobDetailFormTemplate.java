@@ -27,7 +27,7 @@ public class JobDetailFormTemplate {
 
     public String toJson() throws JsonProcessingException {
 	JobDetailFormTemplate copyOfThis = new JobDetailFormTemplate();
-	PojoUtils.getModelMapper().map(this, copyOfThis);
+	PojoUtils.map(this, copyOfThis);
 	copyOfThis.id = null;
 	return PojoUtils.getObjectMapper().writeValueAsString(copyOfThis);
     }

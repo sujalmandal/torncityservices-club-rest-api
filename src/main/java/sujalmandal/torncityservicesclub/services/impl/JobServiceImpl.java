@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
 import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
@@ -37,6 +38,7 @@ import sujalmandal.torncityservicesclub.utils.MongoUtil;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Service
+@Slf4j
 public class JobServiceImpl implements JobService {
 
     @Autowired
@@ -54,8 +56,10 @@ public class JobServiceImpl implements JobService {
 	    Criteria filterCriteria = MongoUtil.getCriteriaForJobFilterRequest(filterRequest);
 	    Query filterQuery = new Query(filterCriteria);
 	    MongoUtil.paginateQuery(filterQuery, filterRequest.getPageNumber(), filterRequest.getPageSize());
+	    log.info("query : " + filterQuery);
 	    JobFilterResponseDTO response = new JobFilterResponseDTO();
-	    response.setJobs(mongoTemplate.find(filterQuery, Job.class));
+	    response.setJobs(mongoTemplate.find(filterQuery, Job.class).stream().map(Job::toJobResponseDTO)
+		    .collect(Collectors.toList()));
 	    response.setPageNumber(filterRequest.getPageNumber());
 	    response.setPageSize(filterRequest.getPageSize());
 	    return response;
@@ -74,19 +78,19 @@ public class JobServiceImpl implements JobService {
 	    throw new ServiceException(
 		    String.format("Request has invalid ServiceType {%s}", request.getServiceType().toString()), 400);
 	}
-	Job newJob = PojoUtils.getJobFromDTO(request);
+	Job newJob = PojoUtils.map(request, new Job());
 	PlayerDTO listedByPlayer = playerService.authenticateAndReturnPlayer(request.getApiKey());
 	Optional<Player> poster = playerRepo.findById(listedByPlayer.getInternalId());
 	if (!poster.isPresent()) {
 	    throw new ServiceException("Player not found in the database!", 500);
 	}
-	if (request.getServiceType() == null) {
-
+	if (request.getServiceType() == null || request.getServiceType() == ServiceTypeValue.ALL) {
+	    throw new ServiceException("Invalid service type selected.", 400);
 	}
-
 	newJob.setListedByPlayerId(poster.get().getInternalId());
+	newJob.setListedByPlayerName(poster.get().getTornUserName());
 	newJob.setPostedDate(LocalDateTime.now());
-	newJob.setJobDetails(JobDetails.fromMap(request.getJobDetailType(), request.getJobDetails()));
+	newJob.setJobDetails(JobDetails.fromMap(request.getTemplateName(), request.getJobDetails()));
 	return jobRepo.save(newJob);
 
     }

@@ -23,6 +23,7 @@ public class Player {
     private String tornUserName;
     private LocalDateTime registeredAt;
     private String subscriberId;
+    @Indexed(name = "fingerprint", unique = true, sparse = true)
     private String fingerprint;
     private SubscriptionType activeSubscriptionType;
 

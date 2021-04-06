@@ -14,6 +14,7 @@ import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 @ToString
 public class CreateJobRequestDTO extends RequestDTO {
     private ServiceTypeValue serviceType;
-    private String jobDetailType;
+    private String templateName;
     private HashMap<String, Object> jobDetails;
+
 }

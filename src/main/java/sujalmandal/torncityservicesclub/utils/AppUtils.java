@@ -1,8 +1,11 @@
 package sujalmandal.torncityservicesclub.utils;
 
+import static sujalmandal.torncityservicesclub.enums.AppConstants.DD_MM_YYYY_DATE_FORMAT;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.MONEY_EVENT_PATTERN;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.TORN_CASH_PAYMENT_REDIRECT_URL_STUB;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +19,7 @@ import sujalmandal.torncityservicesclub.torn.models.TornPlayerEvent;
 
 public class AppUtils {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DD_MM_YYYY_DATE_FORMAT.toString());
     private static final Pattern moneyPattern = Pattern.compile(MONEY_EVENT_PATTERN.toString());
 
     public static String generateCode() {
@@ -58,5 +62,12 @@ public class AppUtils {
 	    return Long.parseLong(moneySentMatch.group(0).replace("$", ""));
 	}
 	return null;
+    }
+
+    public static String dateToDD_MM_YYYYString(LocalDateTime localDateTime) {
+	if (localDateTime != null) {
+	    return formatter.format(localDateTime);
+	}
+	return "";
     }
 }
