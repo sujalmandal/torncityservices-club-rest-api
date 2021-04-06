@@ -62,12 +62,14 @@ public class MongoUtil {
 			return field.getName().startsWith(NUMBER_TYPE_FIELD_MAX_PREFIX.toString());
 		    }).findAny();
 		    if (minField.isPresent()) {
-			criteriaList.add(Criteria.where(getJobDetailField(groupName)).gte(minField.get().getValue()));
+			criteriaList.add(Criteria.where(getJobDetailField(groupName))
+				.gte(Integer.parseInt(minField.get().getValue())));
 		    } else {
 			log.warn("minField for field name {} not found in the filter", getJobDetailField(groupName));
 		    }
 		    if (maxField.isPresent()) {
-			criteriaList.add(Criteria.where(getJobDetailField(groupName)).lte(maxField.get().getValue()));
+			criteriaList.add(Criteria.where(getJobDetailField(groupName))
+				.lte(Integer.parseInt(maxField.get().getValue())));
 		    } else {
 			log.warn("maxField for field name {} not found in the filter", getJobDetailField(groupName));
 		    }
