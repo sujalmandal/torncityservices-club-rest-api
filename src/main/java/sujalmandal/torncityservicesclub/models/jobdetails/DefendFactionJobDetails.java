@@ -16,16 +16,16 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @EqualsAndHashCode(callSuper = false)
 @GenerateTemplate(JobDetailTemplateValue.DEFEND_FACTION)
 public class DefendFactionJobDetails implements JobDetails {
-
-    @FormField(label = "Faction to defend", serviceType = ServiceTypeValue.REQUEST)
-    private String factionName;
-
-    @FormField(label = "Total duration for which attackers on this factions have to be hit", type = FormFieldTypeValue.NUMBER, minValue = "1", maxValue = "5")
-    @FilterableField(label = "total duration in days", maxFieldLabel = "maximum days protection", minFieldLabel = "minimum days protection")
-    private String durationDays;
-
-    @HighlightWhen
-    @FormField(label = "Total pay for this job", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, maxValue = "500_000_000")
-    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
-    private Integer pay;
+	
+	@FormField(label = "Faction to defend", serviceType = ServiceTypeValue.REQUEST)
+	private String factionName;
+	
+	@FormField(label = "Total duration for which attackers on this factions have to be hit", type = FormFieldTypeValue.NUMBER, minValue = "1", maxValue = "5")
+	@FilterableField(label = "total duration in days", maxFieldLabel = "maximum days protection", minFieldLabel = "minimum days protection")
+	private String durationDays;
+	
+	@HighlightWhen
+	@FormField(label = "Total pay for this job", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = "10_000_000", maxValue = "500_000_000")
+	@FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
+	private Integer pay;
 }

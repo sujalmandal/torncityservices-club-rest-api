@@ -15,15 +15,16 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @EqualsAndHashCode(callSuper = false)
 @GenerateTemplate(JobDetailTemplateValue.ITEMS_RUNNER)
 public class ItemsRunnerJobDetails implements JobDetails {
-
-    @FormField(label = "Type of items to run", type = FormFieldTypeValue.SELECT, options = { "Temporaries", "Plushies",
-	    "Flowers", "High value items", "Weapons" }, defaultValue = "Plushies")
-    @FilterableField(label = "Type of the item")
-    private String itemType;
-
-    @HighlightWhen
-    @FormField(label = "Total pay per trip", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, maxValue = "50_000_000")
-    @FilterableField(label = "total pay per trip", maxFieldLabel = "maximum pay per trip", minFieldLabel = "minimum pay per trip")
-    private Integer payPerTrip;
-
+	
+	@FormField(label = "Type of items to run", type = FormFieldTypeValue.SELECT, options = {
+			"Temporaries", "Plushies", "Flowers", "High value items",
+			"Weapons"}, defaultValue = "Plushies")
+	@FilterableField(label = "Type of the item")
+	private String itemType;
+	
+	@HighlightWhen
+	@FormField(label = "Total pay per trip", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "500_000", maxValue = "50_000_000")
+	@FilterableField(label = "total pay per trip", maxFieldLabel = "maximum pay per trip", minFieldLabel = "minimum pay per trip")
+	private Integer payPerTrip;
+	
 }

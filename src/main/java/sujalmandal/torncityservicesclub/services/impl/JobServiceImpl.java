@@ -21,6 +21,7 @@ import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
+import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
@@ -55,13 +56,21 @@ public class JobServiceImpl implements JobService {
 	try {
 	    Criteria filterCriteria = MongoUtil.getCriteriaForJobFilterRequest(filterRequest);
 	    Query filterQuery = new Query(filterCriteria);
+	    long totalResults = mongoTemplate.count(filterQuery, Job.class);
 	    MongoUtil.paginateQuery(filterQuery, filterRequest.getPageNumber(), filterRequest.getPageSize());
 	    log.info("query : " + filterQuery);
 	    JobFilterResponseDTO response = new JobFilterResponseDTO();
-	    response.setJobs(mongoTemplate.find(filterQuery, Job.class).stream().map(Job::toJobResponseDTO)
-		    .collect(Collectors.toList()));
+	    List<JobResponseDTO> jobDTOs = mongoTemplate.find(filterQuery, Job.class).stream()
+		    .map(Job::toJobResponseDTO).collect(Collectors.toList());
+	    log.info("found {} results", totalResults);
+	    response.setJobs(jobDTOs);
 	    response.setPageNumber(filterRequest.getPageNumber());
-	    response.setPageSize(filterRequest.getPageSize());
+	    if (jobDTOs.size() < response.getPageSize()) {
+		response.setPageSize(jobDTOs.size());
+	    } else {
+		response.setPageSize(filterRequest.getPageSize());
+	    }
+	    response.setTotalSize(totalResults);
 	    return response;
 	} catch (Exception e) {
 	    throw new ServiceException(e);

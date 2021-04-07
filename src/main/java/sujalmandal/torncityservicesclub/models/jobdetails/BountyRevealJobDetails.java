@@ -16,12 +16,12 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @EqualsAndHashCode(callSuper = false)
 @GenerateTemplate(JobDetailTemplateValue.BOUNTY_REVEAL)
 public class BountyRevealJobDetails implements JobDetails {
-
-    @FormField(label = "Player whose bounty has to be revealed", serviceType = ServiceTypeValue.REQUEST)
-    private String playerId;
-
-    @HighlightWhen
-    @FormField(label = "Cost of a bounty reveal", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, maxValue = "100_000_000")
-    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
-    private Integer pay;
+	
+	@FormField(label = "Player whose bounty has to be revealed", serviceType = ServiceTypeValue.REQUEST)
+	private String playerId;
+	
+	@HighlightWhen
+	@FormField(label = "Cost of a bounty reveal", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = "1_000_000", maxValue = "100_000_000")
+	@FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
+	private Integer pay;
 }

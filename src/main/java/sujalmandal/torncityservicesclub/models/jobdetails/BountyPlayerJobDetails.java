@@ -16,23 +16,23 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @EqualsAndHashCode(callSuper = false)
 @GenerateTemplate(JobDetailTemplateValue.BOUNTY_PLAYER)
 public class BountyPlayerJobDetails implements JobDetails {
-
-    @FormField(label = "Torn id of the player on which the bounty has to be placed", serviceType = ServiceTypeValue.REQUEST)
-    private String targetPlayerId;
-
-    @FormField(label = "Message while posting the bounty", serviceType = ServiceTypeValue.REQUEST)
-    private String bountyMessage;
-
-    @FormField(label = "Number of bounties to place", type = FormFieldTypeValue.NUMBER)
-    @FilterableField(label = "total bounties", maxFieldLabel = "maximum bounties", minFieldLabel = "minimum bounties")
-    private Integer totalTimes;
-
-    @FormField(label = "Anonymous bounties?", serviceType = ServiceTypeValue.REQUEST, type = FormFieldTypeValue.CHECKBOX, defaultValue = "false")
-    @FilterableField(label = "Anonymous or not")
-    private Boolean isAnon = Boolean.FALSE;
-
-    @HighlightWhen
-    @FormField(label = "How much money per bounty", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER)
-    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay per bounty", minFieldLabel = "minimum pay per bounty")
-    private Integer amountPerBounty;
+	
+	@FormField(label = "Torn id of the player on which the bounty has to be placed", serviceType = ServiceTypeValue.REQUEST)
+	private String targetPlayerId;
+	
+	@FormField(label = "Message while posting the bounty", serviceType = ServiceTypeValue.REQUEST)
+	private String bountyMessage;
+	
+	@FormField(label = "Number of bounties to place", type = FormFieldTypeValue.NUMBER, minValue = "1", maxValue = "50")
+	@FilterableField(label = "total bounties", maxFieldLabel = "maximum bounties", minFieldLabel = "minimum bounties")
+	private Integer totalTimes;
+	
+	@FormField(label = "Anonymous bounties?", serviceType = ServiceTypeValue.REQUEST, type = FormFieldTypeValue.CHECKBOX, defaultValue = "false")
+	@FilterableField(label = "Anonymous or not")
+	private Boolean isAnon = Boolean.FALSE;
+	
+	@HighlightWhen
+	@FormField(label = "How much money per bounty", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = "50_000", maxValue = "5_000_000")
+	@FilterableField(label = "total pay", maxFieldLabel = "maximum pay per bounty", minFieldLabel = "minimum pay per bounty")
+	private Integer amountPerBounty;
 }
