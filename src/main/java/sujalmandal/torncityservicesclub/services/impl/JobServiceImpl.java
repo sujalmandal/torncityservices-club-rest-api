@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -23,6 +27,7 @@ import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
@@ -57,25 +62,25 @@ public class JobServiceImpl implements JobService {
 	    Criteria filterCriteria = MongoUtil.getCriteriaForJobFilterRequest(filterRequest);
 	    Query filterQuery = new Query(filterCriteria);
 	    long totalResults = mongoTemplate.count(filterQuery, Job.class);
-	    MongoUtil.paginateQuery(filterQuery, filterRequest.getPageNumber(), filterRequest.getPageSize());
+	    Pageable pageable = PageRequest.of(filterRequest.getPageNumber() - 1, filterRequest.getPageSize(),
+		    Sort.by(Order.desc(JobFilterCriteriaField.POSTED_DATE.toString())));
+	    filterQuery.with(pageable);
 	    log.info("query : " + filterQuery);
+	    List<Job> results = mongoTemplate.find(filterQuery, Job.class);
 	    JobFilterResponseDTO response = new JobFilterResponseDTO();
-	    List<JobResponseDTO> jobDTOs = mongoTemplate.find(filterQuery, Job.class).stream()
-		    .map(Job::toJobResponseDTO).collect(Collectors.toList());
+	    List<JobResponseDTO> jobDTOs = results.stream().map(Job::toJobResponseDTO).collect(Collectors.toList());
 	    log.info("found {} results", totalResults);
 	    response.setJobs(jobDTOs);
-	    response.setPageNumber(filterRequest.getPageNumber());
-
-	    if (totalResults < filterRequest.getPageSize()) {
-		response.setPageSize(jobDTOs.size());
-	    } else {
-		response.setPageSize(filterRequest.getPageSize());
-	    }
 	    response.setTotalSize(totalResults);
-	    if (totalResults > 0) {
-		long totalPages = Math.round(totalResults / response.getPageSize() == 0 ? 1
-			: Math.round(totalResults / response.getPageSize()));
-		response.setTotalPages(totalPages);
+	    response.setPageNumber(filterRequest.getPageNumber());
+	    if (totalResults == 0) {
+		response.setTotalPages(0);
+		response.setPageSize(0);
+	    } else {
+		long fullyFilledPages = totalResults / filterRequest.getPageSize();
+		long partiallyFilledPages = (totalResults % filterRequest.getPageSize() == 0) ? 0 : 1;
+		response.setPageSize(jobDTOs.size());
+		response.setTotalPages(fullyFilledPages + partiallyFilledPages);
 	    }
 	    return response;
 	} catch (Exception e) {

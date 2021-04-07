@@ -3,11 +3,11 @@ package sujalmandal.torncityservicesclub.utils;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.JOB_DETAILS;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MAX_PREFIX;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
+import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.FILTER_TEMPLATE_NAME;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.IS_DELETED;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.POSTED_DATE;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.SERVICE_TYPE;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.STATUS;
-import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.FILTER_TEMPLATE_NAME;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -96,11 +95,6 @@ public class MongoUtil {
 
     private static String getJobDetailField(String groupName) {
 	return JOB_DETAILS.toString() + "." + groupName;
-    }
-
-    public static void paginateQuery(Query query, int pageNumber, int pageSize) {
-	query.skip(pageNumber - 1 * pageSize);
-	query.limit(pageSize);
     }
 
 }
