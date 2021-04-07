@@ -41,11 +41,11 @@ public class MongoUtil {
 	if (StringUtils.isNotEmpty(filter.getFilterTemplateName())) {
 	    criteriaList.add(Criteria.where(FILTER_TEMPLATE_NAME.toString()).is(filter.getFilterTemplateName()));
 	}
-	if (filter.getServiceType() == null || filter.getServiceType() != ServiceTypeValue.ALL) {
-	    criteriaList.add(Criteria.where(SERVICE_TYPE.toString()).is(filter.getServiceType()));
-	} else {
+	if (filter.getServiceType() == null || filter.getServiceType() == ServiceTypeValue.ALL) {
 	    criteriaList
 		    .add(Criteria.where(SERVICE_TYPE.toString()).in(ServiceTypeValue.OFFER, ServiceTypeValue.REQUEST));
+	} else {
+	    criteriaList.add(Criteria.where(SERVICE_TYPE.toString()).is(filter.getServiceType()));
 	}
 
 	// date filter
