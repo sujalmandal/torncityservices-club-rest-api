@@ -9,7 +9,7 @@ public class JobFilterResponseDTO {
 
     List<JobResponseDTO> jobs;
     private long totalSize = 0;
-    private int pageSize = 25;
-    private int pageNumber = 0;
-
+    private long pageSize = 0;
+    private long pageNumber = 0;
+    private long totalPages = 0;
 }

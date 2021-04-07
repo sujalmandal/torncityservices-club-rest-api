@@ -65,12 +65,16 @@ public class JobServiceImpl implements JobService {
 	    log.info("found {} results", totalResults);
 	    response.setJobs(jobDTOs);
 	    response.setPageNumber(filterRequest.getPageNumber());
-	    if (jobDTOs.size() < response.getPageSize()) {
+
+	    if (totalResults < filterRequest.getPageSize()) {
 		response.setPageSize(jobDTOs.size());
 	    } else {
 		response.setPageSize(filterRequest.getPageSize());
 	    }
 	    response.setTotalSize(totalResults);
+	    long totalPages = Math.round(
+		    totalResults / response.getPageSize() == 0 ? 1 : Math.round(totalResults / response.getPageSize()));
+	    response.setTotalPages(totalPages);
 	    return response;
 	} catch (Exception e) {
 	    throw new ServiceException(e);

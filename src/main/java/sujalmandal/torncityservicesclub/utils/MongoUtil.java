@@ -99,7 +99,7 @@ public class MongoUtil {
     }
 
     public static void paginateQuery(Query query, int pageNumber, int pageSize) {
-	query.skip(pageNumber * pageSize);
+	query.skip(pageNumber - 1 * pageSize);
 	query.limit(pageSize);
     }
 

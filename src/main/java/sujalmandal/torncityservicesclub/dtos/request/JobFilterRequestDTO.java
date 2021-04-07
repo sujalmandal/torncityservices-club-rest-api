@@ -15,13 +15,13 @@ import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 public class JobFilterRequestDTO extends RequestDTO {
-	
-	private ServiceTypeValue serviceType;
-	private Integer postedXDaysAgo = 3;
-	private List<FilterFieldDTO> filterFields;
-	private String filterTemplateName;
-	private JobStatus jobStatus = JobStatus.AVAILABLE;
-	private int pageSize = 25;
-	private int pageNumber = 0;
-	
+
+    private ServiceTypeValue serviceType;
+    private Integer postedXDaysAgo = 3;
+    private List<FilterFieldDTO> filterFields;
+    private String filterTemplateName;
+    private JobStatus jobStatus = JobStatus.AVAILABLE;
+    private int pageSize = 12;
+    private int pageNumber = 1;
+
 }
