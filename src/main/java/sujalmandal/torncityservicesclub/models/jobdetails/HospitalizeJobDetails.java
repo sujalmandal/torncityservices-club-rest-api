@@ -29,5 +29,5 @@ public class HospitalizeJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Pay per hospitalization for this job", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "100_000", maxValue = "5_000_000")
 	@FilterableField(label = "total pay per hospitalization", maxFieldLabel = "maximum pay per hospitalization", minFieldLabel = "minimum pay per hospitalization")
-	private Integer pay;
+	private Long pay;
 }

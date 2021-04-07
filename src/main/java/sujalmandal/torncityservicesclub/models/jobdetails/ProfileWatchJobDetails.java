@@ -25,5 +25,5 @@ public class ProfileWatchJobDetails implements JobDetails {
 	
 	@FormField(label = "Total pay for this job", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "1_000_000", maxValue = "100_000_000")
 	@FilterableField(label = "total pay for this job", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
-	private Integer pay;
+	private Long pay;
 }

@@ -23,5 +23,5 @@ public class TrainJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Money per train", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "1", maxValue = "750_000")
 	@FilterableField(label = "total pay per train", maxFieldLabel = "maximum pay per train", minFieldLabel = "minimum pay per train")
-	private Integer amountPerTrain;
+	private Long amountPerTrain;
 }

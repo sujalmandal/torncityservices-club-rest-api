@@ -27,6 +27,6 @@ public class StatSpyJobDetails implements JobDetails {
 	
 	@FormField(label = "Total spies to sell", type = FormFieldTypeValue.NUMBER, serviceType = ServiceTypeValue.OFFER, minValue = "1", maxValue = "50")
 	@FilterableField(label = "total spies", maxFieldLabel = "maximum no. of spies", minFieldLabel = "minimum no. of spies")
-	private Integer totalSpy;
+	private Long totalSpy;
 	
 }

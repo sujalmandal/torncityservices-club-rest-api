@@ -23,5 +23,5 @@ public class BountyRevealJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Cost of a bounty reveal", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = "1_000_000", maxValue = "100_000_000")
 	@FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
-	private Integer pay;
+	private Long pay;
 }

@@ -99,7 +99,9 @@ public class JobServiceImpl implements JobService {
 	newJob.setListedByPlayerId(poster.get().getInternalId());
 	newJob.setListedByPlayerName(poster.get().getTornUserName());
 	newJob.setPostedDate(LocalDateTime.now());
-	newJob.setJobDetails(JobDetails.fromMap(request.getTemplateName(), request.getJobDetails()));
+	JobDetails generatedJobDetail = JobDetails.fromMap(request.getTemplateName(), request.getJobDetails());
+	newJob.setFilterTemplateName(generatedJobDetail.getJobDetailFilterTemplateName());
+	newJob.setJobDetails(generatedJobDetail);
 	return jobRepo.save(newJob);
 
     }

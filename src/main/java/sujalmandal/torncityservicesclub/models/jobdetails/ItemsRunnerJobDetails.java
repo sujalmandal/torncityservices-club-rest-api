@@ -25,6 +25,6 @@ public class ItemsRunnerJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Total pay per trip", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "500_000", maxValue = "50_000_000")
 	@FilterableField(label = "total pay per trip", maxFieldLabel = "maximum pay per trip", minFieldLabel = "minimum pay per trip")
-	private Integer payPerTrip;
+	private Long payPerTrip;
 	
 }

@@ -23,6 +23,6 @@ public class DirtyBombJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Pay for this job (better be good)", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "100_000_000", maxValue = "5_000_000_000")
 	@FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
-	private Integer pay;
+	private Long pay;
 	
 }

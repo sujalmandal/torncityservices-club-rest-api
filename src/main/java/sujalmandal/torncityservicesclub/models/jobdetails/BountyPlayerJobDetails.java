@@ -34,5 +34,5 @@ public class BountyPlayerJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "How much money per bounty", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = "50_000", maxValue = "5_000_000")
 	@FilterableField(label = "total pay", maxFieldLabel = "maximum pay per bounty", minFieldLabel = "minimum pay per bounty")
-	private Integer amountPerBounty;
+	private Long amountPerBounty;
 }

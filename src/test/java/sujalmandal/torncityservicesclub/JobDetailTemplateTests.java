@@ -15,42 +15,44 @@ import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
 
 @Slf4j
 public class JobDetailTemplateTests {
-    private HospitalizeJobDetails details;
-
-    @BeforeEach
-    public void setupTest() {
-	details = new HospitalizeJobDetails();
-	details.setPay(250_000);
-	details.setTargetPlayerId("678232");
-	details.setTotalHospitalizations(20);
-    }
-
-    @Test
-    public void testGetTemplateNameFromJobDetailImpl() {
-	log.info(details.getJobDetailType());
-	Assert.isTrue(details.getJobDetailType().equals(JobDetailTemplateValue.HOSPITALIZE.getFormTemplateName()));
-    }
-
-    @Test
-    public void testJobDetailToMap() {
-	JobDetails superClassRef = details;
-	superClassRef.toMap().forEach((k, v) -> {
-	    log.info(k + "=" + v);
-	});
-	Assert.isTrue(!CollectionUtils.isEmpty(superClassRef.toMap()));
-    }
-
-    @Test
-    public void testJobDetailFromMap() {
-	TemplateGeneratorUtil.loadJobDetailImplClasses();
-	HashMap<String, Object> detailsAsMap = new HashMap<>();
-	detailsAsMap.put("pay", 250_000);
-	detailsAsMap.put("targetPlayerId", "678232");
-	detailsAsMap.put("totalHospitalizations", 20);
-	HospitalizeJobDetails generatedHospJobDetails = (HospitalizeJobDetails) JobDetails
-		.fromMap(JobDetailTemplateValue.HOSPITALIZE.getFormTemplateName(), detailsAsMap);
-	log.info(generatedHospJobDetails.toString());
-	Assert.isTrue(generatedHospJobDetails != null);
-	Assert.isTrue(generatedHospJobDetails.equals(details));
-    }
+	private HospitalizeJobDetails details;
+	
+	@BeforeEach
+	public void setupTest() {
+		details = new HospitalizeJobDetails();
+		details.setPay(250_000L);
+		details.setTargetPlayerId("678232");
+		details.setTotalHospitalizations(20);
+	}
+	
+	@Test
+	public void testGetTemplateNameFromJobDetailImpl() {
+		log.info(details.getJobDetailFormTemplateName());
+		Assert.isTrue(details.getJobDetailFormTemplateName().equals(
+				JobDetailTemplateValue.HOSPITALIZE.getFormTemplateName()));
+	}
+	
+	@Test
+	public void testJobDetailToMap() {
+		JobDetails superClassRef = details;
+		superClassRef.toMap().forEach((k, v) -> {
+			log.info(k + "=" + v);
+		});
+		Assert.isTrue(!CollectionUtils.isEmpty(superClassRef.toMap()));
+	}
+	
+	@Test
+	public void testJobDetailFromMap() {
+		TemplateGeneratorUtil.loadJobDetailImplClasses();
+		HashMap<String, Object> detailsAsMap = new HashMap<>();
+		detailsAsMap.put("pay", 250_000);
+		detailsAsMap.put("targetPlayerId", "678232");
+		detailsAsMap.put("totalHospitalizations", 20);
+		HospitalizeJobDetails generatedHospJobDetails = (HospitalizeJobDetails) JobDetails
+				.fromMap(JobDetailTemplateValue.HOSPITALIZE
+						.getFormTemplateName(), detailsAsMap);
+		log.info(generatedHospJobDetails.toString());
+		Assert.isTrue(generatedHospJobDetails != null);
+		Assert.isTrue(generatedHospJobDetails.equals(details));
+	}
 }

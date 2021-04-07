@@ -7,6 +7,7 @@ import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.IS_D
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.POSTED_DATE;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.SERVICE_TYPE;
 import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.STATUS;
+import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.FILTER_TEMPLATE_NAME;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.CollectionUtils;
@@ -36,6 +38,9 @@ public class MongoUtil {
 	criteriaList.add(Criteria.where(STATUS.toString()).is(JobStatus.AVAILABLE));
 	criteriaList.add(Criteria.where(IS_DELETED.toString()).is(Boolean.FALSE));
 
+	if (StringUtils.isNotEmpty(filter.getFilterTemplateName())) {
+	    criteriaList.add(Criteria.where(FILTER_TEMPLATE_NAME.toString()).is(filter.getFilterTemplateName()));
+	}
 	if (filter.getServiceType() == null || filter.getServiceType() != ServiceTypeValue.ALL) {
 	    criteriaList.add(Criteria.where(SERVICE_TYPE.toString()).is(filter.getServiceType()));
 	} else {
@@ -80,7 +85,8 @@ public class MongoUtil {
 		default:
 		    criteriaList.add(new Criteria(getJobDetailField(groupName))
 			    .in(Collections.singletonList(fields.get(0).getValue())));
-		    // throw new ServiceException(String.format("Invalid type {%s} of filter field
+		    // throw new ServiceException(String.format("Invalid
+		    // type {%s} of filter field
 		    // passed!", type), 400);
 		}
 	    });

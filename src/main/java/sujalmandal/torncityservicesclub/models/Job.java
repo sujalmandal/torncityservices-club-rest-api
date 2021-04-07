@@ -31,6 +31,7 @@ public class Job {
     private LocalDateTime acceptedDate;
     private LocalDateTime finishedDate;
     private String templateName;
+    private String filterTemplateName;
     private JobDetails jobDetails;
     private ServiceTypeValue serviceType;
 

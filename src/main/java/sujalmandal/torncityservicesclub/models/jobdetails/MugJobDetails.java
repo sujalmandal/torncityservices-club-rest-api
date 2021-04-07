@@ -25,6 +25,6 @@ public class MugJobDetails implements JobDetails {
 	
 	@FormField(label = "Pay per mug", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "0", maxValue = "5_000_000")
 	@FilterableField(label = "pay per mug", maxFieldLabel = "maximum pay per mug", minFieldLabel = "minimum pay per mug")
-	private Integer pay;
+	private Long pay;
 	
 }

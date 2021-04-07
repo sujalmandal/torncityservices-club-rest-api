@@ -31,5 +31,5 @@ public class AttackFactionJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Total pay for this job", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "10_000_000", maxValue = "500_000_000")
 	@FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
-	private Integer pay;
+	private Long pay;
 }

@@ -26,6 +26,6 @@ public class RentJobDetails implements JobDetails {
 	
 	@FormField(label = "Total rent", serviceType = ServiceTypeValue.OFFER, type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "1", maxValue = "100_000_000")
 	@FilterableField(label = "total rent", maxFieldLabel = "maximum rent", minFieldLabel = "minimum rent")
-	private Integer rent;
+	private Long rent;
 	
 }

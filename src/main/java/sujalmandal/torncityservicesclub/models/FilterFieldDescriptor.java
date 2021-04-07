@@ -9,19 +9,19 @@ import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Data
 public class FilterFieldDescriptor {
-
-    private ServiceTypeValue serviceType;
-    private FormFieldTypeValue fieldType;
-    private FieldFormatterValue format;
-    private String fieldName;
-    private String fieldLabel;
-    private Integer maxValue;
-    private Integer minValue;
-    private String groupName;
-    private String defaultValue;
-    private List<String> options;
-
-    public FilterFieldDescriptor() {
-    }
-
+	
+	private ServiceTypeValue serviceType;
+	private FormFieldTypeValue fieldType;
+	private FieldFormatterValue format;
+	private String fieldName;
+	private String fieldLabel;
+	private Long maxValue;
+	private Long minValue;
+	private String groupName;
+	private String defaultValue;
+	private List<String> options;
+	
+	public FilterFieldDescriptor() {
+	}
+	
 }

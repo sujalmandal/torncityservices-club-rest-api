@@ -45,7 +45,7 @@ public class EmployeeJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Daily pay", type = FormFieldTypeValue.NUMBER, formatter = FieldFormatterValue.CURRENCY, minValue = "0", maxValue = "5_000_000")
 	@FilterableField(label = "daily salary", maxFieldLabel = "maximum daily salary", minFieldLabel = "minimum daily salary")
-	private Integer pay;
+	private Long pay;
 	
 	@FormField(label = "End", type = FormFieldTypeValue.NUMBER, minValue = "100", maxValue = "500_000")
 	@FilterableField(label = "End", maxFieldLabel = "maximum end", minFieldLabel = "minimum end")

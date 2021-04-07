@@ -26,7 +26,11 @@ public interface JobDetails {
 	return PojoUtils.getObjectMapper().convertValue(this, HashMap.class);
     }
 
-    default public String getJobDetailType() {
+    default public String getJobDetailFormTemplateName() {
 	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormTemplateName();
+    }
+
+    default public String getJobDetailFilterTemplateName() {
+	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
     }
 }

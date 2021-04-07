@@ -9,17 +9,17 @@ import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Data
 public class FormFieldDescriptor {
-    private String id;
-    private FormFieldTypeValue type;
-    private String label;
-    private String name;
-    private ServiceTypeValue serviceType;
-    private Boolean isHighlighted;
-    private String serviceTypeToHighlightOn;
-    private String infoText;
-    private FieldFormatterValue format;
-    private Integer minValue;
-    private Integer maxValue;
-    private String defaultValue;
-    private List<String> options;
+	private String id;
+	private FormFieldTypeValue type;
+	private String label;
+	private String name;
+	private ServiceTypeValue serviceType;
+	private Boolean isHighlighted;
+	private String serviceTypeToHighlightOn;
+	private String infoText;
+	private FieldFormatterValue format;
+	private Long minValue;
+	private Long maxValue;
+	private String defaultValue;
+	private List<String> options;
 }

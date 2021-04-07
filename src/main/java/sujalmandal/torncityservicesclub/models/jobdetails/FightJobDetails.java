@@ -27,5 +27,5 @@ public class FightJobDetails implements JobDetails {
 	@HighlightWhen
 	@FormField(label = "Pay for per attack this job", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = "100_000", maxValue = "5_000_000")
 	@FilterableField(label = "total pay per attack", maxFieldLabel = "maximum pay per attack", minFieldLabel = "minimum pay per attack")
-	private Integer pay;
+	private Long pay;
 }
