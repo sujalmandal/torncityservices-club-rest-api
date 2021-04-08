@@ -23,6 +23,8 @@ public enum JobDetailTemplateValue {
 
     DEFEND_FACTION("DEFEND_FACTION", "Defend a faction", "DEFEND_FACTION_FILTER", "faction defend"),
 
+    REVIVE_FACTION("REVIVE_FACTION", "Faction revive contract", "REVIVE_FACTION_FILTER", "faction revive contract"),
+
     BOUNTY_PLAYER("BOUNTY_PLAYER", "Bounty a player", "BOUNTY_PLAYER_FILTER", "bounty"),
 
     BOUNTY_REVEAL("BOUNTY_REVEAL", "Reveal bounty", "BOUNTY_REVEAL_FILTER", "bounty reveal"),
