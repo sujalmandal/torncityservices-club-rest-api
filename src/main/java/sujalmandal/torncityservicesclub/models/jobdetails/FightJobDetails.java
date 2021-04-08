@@ -16,16 +16,16 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @EqualsAndHashCode(callSuper = false)
 @GenerateTemplate(JobDetailTemplateValue.ATTACK)
 public class FightJobDetails implements JobDetails {
-	
-	@FormField(label = "Torn id of the player who has to be attacked", serviceType = ServiceTypeValue.REQUEST)
-	private String targetPlayerId;
-	
-	@FormField(label = "Total attacks", type = FormFieldTypeValue.NUMBER, minValue = "1", maxValue = "200")
-	@FilterableField(label = "total attacks", maxFieldLabel = "maximum no. of attacks", minFieldLabel = "minimum no. of attacks")
-	private Integer totalAttacks;
-	
-	@HighlightWhen
-	@FormField(label = "Pay for per attack this job", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = "100_000", maxValue = "5_000_000")
-	@FilterableField(label = "total pay per attack", maxFieldLabel = "maximum pay per attack", minFieldLabel = "minimum pay per attack")
-	private Long pay;
+
+    @FormField(label = "Torn id of the player who has to be attacked", serviceType = ServiceTypeValue.REQUEST)
+    private String targetPlayerId;
+
+    @FormField(label = "Total attacks", type = FormFieldTypeValue.NUMBER, minValue = 1, maxValue = 200)
+    @FilterableField(label = "total attacks", maxFieldLabel = "maximum no. of attacks", minFieldLabel = "minimum no. of attacks")
+    private Integer totalAttacks;
+
+    @HighlightWhen
+    @FormField(label = "Pay for per attack this job", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = 100_000, maxValue = 5_000_000)
+    @FilterableField(label = "total pay per attack", maxFieldLabel = "maximum pay per attack", minFieldLabel = "minimum pay per attack")
+    private Long pay;
 }

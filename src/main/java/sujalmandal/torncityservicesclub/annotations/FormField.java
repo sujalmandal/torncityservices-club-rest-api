@@ -14,6 +14,8 @@ import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 public @interface FormField {
     public String label() default "";
 
+    public boolean optional() default true;
+
     public ServiceTypeValue serviceType() default ServiceTypeValue.ALL;
 
     public FieldFormatterValue formatter() default FieldFormatterValue.TEXT;
@@ -26,8 +28,8 @@ public @interface FormField {
     public String[] options() default "";
 
     // only applicable to 'NUMBER' type
-    public String minValue() default "0";
+    public long minValue() default 0;
 
     // only applicable to 'NUMBER' type
-    public String maxValue() default "10";
+    public long maxValue() default 10;
 }

@@ -1,6 +1,8 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -19,13 +21,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
 import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
+import sujalmandal.torncityservicesclub.dtos.commons.ValidationMessage;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
+import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
@@ -98,22 +103,27 @@ public class JobServiceImpl implements JobService {
 	    throw new ServiceException(
 		    String.format("Request has invalid ServiceType {%s}", request.getServiceType().toString()), 400);
 	}
+	JobDetails jobDetailImplInstance = JobDetails.fromMap(request.getTemplateName(), request.getJobDetails());
 	Job newJob = PojoUtils.map(request, new Job());
-	PlayerDTO listedByPlayer = playerService.authenticateAndReturnPlayer(request.getApiKey());
-	Optional<Player> poster = playerRepo.findById(listedByPlayer.getInternalId());
-	if (!poster.isPresent()) {
-	    throw new ServiceException("Player not found in the database!", 500);
+	List<ValidationMessage> errors = validateCreateRequest(jobDetailImplInstance);
+	if (errors.isEmpty()) {
+	    PlayerDTO listedByPlayer = playerService.authenticateAndReturnPlayer(request.getApiKey());
+	    Optional<Player> poster = playerRepo.findById(listedByPlayer.getInternalId());
+	    if (!poster.isPresent()) {
+		throw new ServiceException("Player not found in the database!", 500);
+	    }
+	    if (request.getServiceType() == null || request.getServiceType() == ServiceTypeValue.ALL) {
+		throw new ServiceException("Invalid service type selected.", 400);
+	    }
+	    newJob.setListedByPlayerId(poster.get().getInternalId());
+	    newJob.setListedByPlayerName(poster.get().getTornUserName());
+	    newJob.setPostedDate(LocalDateTime.now());
+	    newJob.setFilterTemplateName(jobDetailImplInstance.getJobDetailFilterTemplateName());
+	    newJob.setJobDetails(jobDetailImplInstance);
+	    return jobRepo.save(newJob);
+	} else {
+	    throw new ServiceException("There were some issues with your input. ", errors, 400);
 	}
-	if (request.getServiceType() == null || request.getServiceType() == ServiceTypeValue.ALL) {
-	    throw new ServiceException("Invalid service type selected.", 400);
-	}
-	newJob.setListedByPlayerId(poster.get().getInternalId());
-	newJob.setListedByPlayerName(poster.get().getTornUserName());
-	newJob.setPostedDate(LocalDateTime.now());
-	JobDetails generatedJobDetail = JobDetails.fromMap(request.getTemplateName(), request.getJobDetails());
-	newJob.setFilterTemplateName(generatedJobDetail.getJobDetailFilterTemplateName());
-	newJob.setJobDetails(generatedJobDetail);
-	return jobRepo.save(newJob);
 
     }
 
@@ -128,7 +138,7 @@ public class JobServiceImpl implements JobService {
 	    updatedJob.setStatus(JobStatus.ACCEPTED);
 	    return jobRepo.save(updatedJob);
 	} else {
-	    throw new ServiceException(500, String.format("job %d not found in the database!", jobId), null);
+	    throw new ServiceException(String.format("job %d not found in the database!", jobId), 500);
 	}
     }
 
@@ -139,13 +149,13 @@ public class JobServiceImpl implements JobService {
 	if (job.isPresent()) {
 	    Job updatedJob = job.get();
 	    if (updatedJob.getAcceptedByPlayerId() == null || updatedJob.getStatus() == JobStatus.AVAILABLE) {
-		throw new ServiceException(500, String.format("job %d has not been accepted yet!", jobId), null);
+		throw new ServiceException(String.format("job %d has not been accepted yet!", jobId), 500);
 	    }
 	    updatedJob.setFinishedDate(LocalDateTime.now());
 	    updatedJob.setStatus(JobStatus.FINISHED);
 	    return jobRepo.save(updatedJob);
 	} else {
-	    throw new ServiceException(500, String.format("job %d not found in the database!", jobId), null);
+	    throw new ServiceException(String.format("job %d not found in the database!", jobId), 500);
 	}
     }
 
@@ -158,7 +168,7 @@ public class JobServiceImpl implements JobService {
 	    updatedJob.setIsDeleted(Boolean.TRUE);
 	    return jobRepo.save(updatedJob);
 	} else {
-	    throw new ServiceException(500, String.format("job %d not found in the database!", jobId), null);
+	    throw new ServiceException(String.format("job %d not found in the database!", jobId), 500);
 	}
     }
 
@@ -196,6 +206,85 @@ public class JobServiceImpl implements JobService {
 	} else {
 	    throw new ServiceException("Job detail template name  cannot be empty!", 400);
 	}
+    }
+
+    private List<ValidationMessage> validateCreateRequest(JobDetails jobDetailImplInstance) {
+	List<ValidationMessage> errorMessages = new ArrayList<ValidationMessage>();
+	JobDetails.getFieldDetails(jobDetailImplInstance.getJobDetailFormTemplateName())
+		.forEach((fieldName, formField) -> {
+		    try {
+			Field currentField = jobDetailImplInstance.getClass().getDeclaredField(fieldName);
+			currentField.setAccessible(true);
+
+			String javaType = currentField.getType().getName();
+			FormFieldTypeValue fieldType = formField.type();
+			Object value = currentField.get(jobDetailImplInstance);
+
+			log.info("validating '{}' of type '{}' with value '{}'", fieldName, javaType, value);
+
+			validateEmptyFields(errorMessages, fieldName, formField, value);
+
+			if (fieldType == FormFieldTypeValue.NUMBER) {
+			    if (javaType.contains(Long.class.getSimpleName())) {
+				Long valueAsLong = (Long) value;
+				if (valueAsLong != null) {
+				    long minValue = formField.minValue();
+				    long maxValue = formField.maxValue();
+				    validateMinMaxValues(errorMessages, fieldName, valueAsLong, minValue, maxValue);
+				}
+			    }
+			    if (javaType.contains(Integer.class.getSimpleName())) {
+				Integer valueAsInt = (Integer) value;
+				if (valueAsInt != null) {
+				    long minValue = formField.minValue();
+				    long maxValue = formField.maxValue();
+				    validateMinMaxValues(errorMessages, fieldName, valueAsInt, minValue, maxValue);
+				}
+			    }
+			}
+			if (fieldType == FormFieldTypeValue.SELECT) {
+			    List<String> allowableValues = Arrays.asList(formField.options());
+			    validateOptions(errorMessages, fieldName, value, allowableValues);
+			}
+
+		    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+			    | IllegalAccessException e) {
+			throw new ServiceException(e.getMessage(), 500);
+		    }
+		});
+	return errorMessages;
+    }
+
+    private void validateOptions(List<ValidationMessage> errorMessages, String fieldName, Object value,
+	    List<String> allowableValues) {
+	if (!allowableValues.contains(value)) {
+	    errorMessages.add(new ValidationMessage(fieldName,
+		    String.format("'%s' is not a valid option for this field", value)));
+	}
+    }
+
+    private void validateEmptyFields(List<ValidationMessage> errorMessages, String fieldName, FormField formField,
+	    Object value) {
+	if (!formField.optional() && value == null) {
+	    errorMessages.add(new ValidationMessage(fieldName, "field cannot be empty"));
+	}
+    }
+
+    private void validateMinMaxValues(List<ValidationMessage> errorMessages, String fieldName, Integer valueAsLong,
+	    long minValue, long maxValue) {
+	if (valueAsLong < minValue) {
+	    errorMessages.add(new ValidationMessage(fieldName,
+		    String.format("field has a value smaller than minimum allowed value %s", minValue)));
+	}
+	if (valueAsLong > maxValue) {
+	    errorMessages.add(new ValidationMessage(fieldName,
+		    String.format("field has a value larger than maximum allowed value of %s", maxValue)));
+	}
+    }
+
+    private void validateMinMaxValues(List<ValidationMessage> errorMessages, String fieldName, Long valueAsLong,
+	    long minValue, long maxValue) {
+	validateMinMaxValues(errorMessages, fieldName, valueAsLong.intValue(), minValue, maxValue);
     }
 
 }
