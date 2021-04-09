@@ -18,12 +18,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
-import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
 import sujalmandal.torncityservicesclub.dtos.commons.ValidationMessage;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
@@ -34,17 +35,18 @@ import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
+import sujalmandal.torncityservicesclub.enums.MongoCollections;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetails;
+import sujalmandal.torncityservicesclub.models.MongoSequence;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.repositories.JobRepository;
-import sujalmandal.torncityservicesclub.repositories.PlayerRepository;
+import sujalmandal.torncityservicesclub.repositories.MongoSequenceRepo;
 import sujalmandal.torncityservicesclub.services.JobService;
-import sujalmandal.torncityservicesclub.services.PlayerService;
 import sujalmandal.torncityservicesclub.utils.MongoUtil;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
@@ -53,13 +55,11 @@ import sujalmandal.torncityservicesclub.utils.PojoUtils;
 public class JobServiceImpl implements JobService {
 
     @Autowired
-    private PlayerRepository playerRepo;
-    @Autowired
     private JobRepository jobRepo;
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private MongoSequenceRepo mongoSeqRepo;
     @Autowired
-    private PlayerService playerService;
+    private MongoTemplate mongoTemplate;
 
     @Override
     public JobFilterResponseDTO getJobsByFilter(JobFilterRequestDTO filterRequest) {
@@ -107,24 +107,39 @@ public class JobServiceImpl implements JobService {
 	Job newJob = PojoUtils.map(request, new Job());
 	List<ValidationMessage> errors = validateCreateRequest(jobDetailImplInstance);
 	if (errors.isEmpty()) {
-	    PlayerDTO listedByPlayer = playerService.authenticateAndReturnPlayer(request.getApiKey());
-	    Optional<Player> poster = playerRepo.findById(listedByPlayer.getInternalId());
-	    if (!poster.isPresent()) {
-		throw new ServiceException("Player not found in the database!", 500);
+	    Player poster = request.getPlayer();
+	    if (poster == null) {
+		throw new ServiceException("Player not found in the security context!", 500);
 	    }
 	    if (request.getServiceType() == null || request.getServiceType() == ServiceTypeValue.ALL) {
 		throw new ServiceException("Invalid service type selected.", 400);
 	    }
-	    newJob.setListedByPlayerId(poster.get().getInternalId());
-	    newJob.setListedByPlayerName(poster.get().getTornUserName());
+	    newJob.setListedByPlayerId(poster.getInternalId());
+	    newJob.setListedByPlayerName(poster.getTornUserName());
 	    newJob.setPostedDate(LocalDateTime.now());
 	    newJob.setFilterTemplateName(jobDetailImplInstance.getJobDetailFilterTemplateName());
 	    newJob.setJobDetails(jobDetailImplInstance);
-	    return jobRepo.save(newJob);
+	    return saveJobWithSeqId(newJob);
 	} else {
 	    throw new ServiceException("There were some issues with your input. ", errors, 400);
 	}
+    }
 
+    /*
+     * use serializable isolation level to prevent multiple threads from writing the
+     * same sequence id
+     */
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    private Job saveJobWithSeqId(Job job) {
+	Optional<MongoSequence> collectionSequence = mongoSeqRepo.findById(MongoCollections.JOB.toString());
+	if (collectionSequence.isPresent()) {
+	    MongoSequence seq = collectionSequence.get();
+	    seq.setSequence(seq.getSequence() + 1);
+	    mongoSeqRepo.save(seq);
+	    job.setSeqId(seq.getSequence());
+	    return jobRepo.save(job);
+	}
+	throw new ServiceException("Sequence not initialised for job collection!", 500);
     }
 
     @Override
@@ -133,7 +148,7 @@ public class JobServiceImpl implements JobService {
 	Optional<Job> job = jobRepo.findById(jobId);
 	if (job.isPresent()) {
 	    Job updatedJob = job.get();
-	    updatedJob.setAcceptedByPlayerId(updateJobRequestDTO.getAcceptedByPlayerId());
+	    // updatedJob.setAcceptedByPlayerId(updateJobRequestDTO.getPlayer().getTornUserId());
 	    updatedJob.setAcceptedDate(LocalDateTime.now());
 	    updatedJob.setStatus(JobStatus.ACCEPTED);
 	    return jobRepo.save(updatedJob);
@@ -205,6 +220,18 @@ public class JobServiceImpl implements JobService {
 	    return templates.get(0);
 	} else {
 	    throw new ServiceException("Job detail template name  cannot be empty!", 400);
+	}
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void initSequenceIdsIfNotPresent() {
+	MongoSequence collectionSequence = mongoTemplate.findById(MongoCollections.MONGO_SEQUENCE.toString(),
+		MongoSequence.class);
+	if (collectionSequence == null) {
+	    mongoTemplate.save(new MongoSequence(MongoCollections.JOB.toString(), 0L));
+	    log.info("initialized mongo sequence id for {} collection", MongoCollections.JOB.toString());
+	} else {
+	    log.info("mongo sequence already initialized.");
 	}
     }
 

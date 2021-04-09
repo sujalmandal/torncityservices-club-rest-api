@@ -1,6 +1,7 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,12 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDTO registerPlayer(String APIKey) {
 	try {
-	    Player fetchedFromTorn = tornService.getPlayer(APIKey);
-	    if (fetchedFromTorn != null && fetchedFromTorn.getTornUserId() != null) {
+	    Optional<Player> fetchedFromTorn = tornService.getPlayer(APIKey);
+	    if (fetchedFromTorn.isPresent()) {
 		log.info("player data successfully fetched from torn {}", fetchedFromTorn);
-		fetchedFromTorn.setRegisteredAt(LocalDateTime.now());
-		fetchedFromTorn.setFingerprint(FingerprintUtil.getFingerprintForAPIKey(APIKey));
-		Player registeredPlayer = playerRepo.save(fetchedFromTorn);
+		fetchedFromTorn.get().setRegisteredAt(LocalDateTime.now());
+		fetchedFromTorn.get().setFingerprint(FingerprintUtil.getFingerprintForAPIKey(APIKey));
+		Player registeredPlayer = playerRepo.save(fetchedFromTorn.get());
 		Subscription subscription = new Subscription();
 		subscription.setPlayerId(registeredPlayer.getInternalId());
 		subRepo.save(subscription);
@@ -61,16 +62,16 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerDTO authenticateAndReturnPlayer(String APIKey) {
-	Player fetchedFromTorn = tornService.getPlayer(APIKey);
-	if (fetchedFromTorn != null && fetchedFromTorn.getTornUserId() != null) {
-	    Player fetchedPlayerDb = this.getPlayerByPlayerTornId(fetchedFromTorn.getTornUserId());
+	Optional<Player> fetchedFromTorn = tornService.getPlayer(APIKey);
+	if (fetchedFromTorn.isPresent()) {
+	    Player fetchedPlayerDb = this.getPlayerByPlayerTornId(fetchedFromTorn.get().getTornUserId());
 	    if (fetchedPlayerDb != null && fetchedPlayerDb.getInternalId() != null) {
 		PlayerDTO playerDTO = new PlayerDTO();
 		PojoUtils.map(fetchedPlayerDb, playerDTO);
 		return playerDTO;
 	    } else {
 		throw new UnRegisteredPlayerException(
-			String.format("User %s is not registered!", fetchedFromTorn.getTornUserName()), 404);
+			String.format("User %s is not registered!", fetchedFromTorn.get().getTornUserName()), 404);
 	    }
 	} else {
 	    throw new InvalidAPIKeyException(String.format("The API KEY [%s] is invalid!", APIKey));
@@ -80,14 +81,13 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDTO authenticateAndReturnPlayerByFingerprint(String fingerprint) {
 
-	Player fetchedPlayerDb = playerRepo.findByFingerprint(fingerprint);
-	if (fetchedPlayerDb != null && fetchedPlayerDb.getInternalId() != null) {
+	Optional<Player> fetchedPlayerDb = playerRepo.findByFingerprint(fingerprint);
+	if (fetchedPlayerDb.isPresent()) {
 	    PlayerDTO playerDTO = new PlayerDTO();
-	    PojoUtils.map(fetchedPlayerDb, playerDTO);
+	    PojoUtils.map(fetchedPlayerDb.get(), playerDTO);
 	    return playerDTO;
 	} else {
-	    throw new UnRegisteredPlayerException(
-		    String.format("User %s is not registered!", fetchedPlayerDb.getTornUserName()), 404);
+	    throw new UnRegisteredPlayerException("User %s is not registered!", 404);
 	}
 
     }

@@ -3,6 +3,7 @@ package sujalmandal.torncityservicesclub.utils;
 import org.modelmapper.ModelMapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -15,6 +16,7 @@ public class PojoUtils {
 	objectMapper = new ObjectMapper();
 	objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+	objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     private static ModelMapper getModelMapper() {

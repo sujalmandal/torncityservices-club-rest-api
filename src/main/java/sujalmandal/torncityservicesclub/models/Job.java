@@ -19,6 +19,7 @@ import sujalmandal.torncityservicesclub.utils.PojoUtils;
 public class Job {
     @Id
     private String id;
+    private Long seqId;
     private JobStatus status = JobStatus.AVAILABLE;
     private Boolean isDeleted = Boolean.FALSE;
 

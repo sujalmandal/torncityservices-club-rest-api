@@ -1,6 +1,7 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -30,47 +31,45 @@ public class TornAPIServiceImpl implements TornAPIService {
     private WebClient webClient;
 
     @Override
-    public Player getPlayer(String APIKey) {
-        Player player = null;
-        initWebClient();
+    public Optional<Player> getPlayer(String APIKey) {
+	initWebClient();
 
-        TornPlayer tornPlayerInfo = webClient.get().uri(String.format(tornPlayerInfoEndPoint, APIKey))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).retrieve()
-                .bodyToMono(TornPlayer.class).block();
+	TornPlayer tornPlayerInfo = webClient.get().uri(String.format(tornPlayerInfoEndPoint, APIKey))
+		.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).retrieve()
+		.bodyToMono(TornPlayer.class).block();
 
-        if (tornPlayerInfo.getPlayerId()!=null) {
-            player = new Player(tornPlayerInfo);
-        }
-        return player;
+	if (tornPlayerInfo.getPlayerId() != null) {
+	    return Optional.of(new Player(tornPlayerInfo));
+	}
+	return Optional.empty();
     }
 
     @Override
     public PlayerEventsDTO getEvents(String APIKey) {
-        PlayerEventsDTO playerEventsDTO = new PlayerEventsDTO();
-        initWebClient();
+	PlayerEventsDTO playerEventsDTO = new PlayerEventsDTO();
+	initWebClient();
 
-        HashMap<?, ?> response = webClient.get().uri(String.format(tornPlayerEventsEndPoint, APIKey))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).retrieve().bodyToMono(HashMap.class)
-                .block();
+	HashMap<?, ?> response = webClient.get().uri(String.format(tornPlayerEventsEndPoint, APIKey))
+		.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).retrieve().bodyToMono(HashMap.class)
+		.block();
 
-        if (response != null) {
-            HashMap<?, ?> events = (HashMap<?, ?>) response.get("events");
-            events.forEach((k, v) -> {
-                TornPlayerEvent event = new TornPlayerEvent((HashMap<?, ?>) v);
-                event.setId((String) k);
-                playerEventsDTO.getEvents().add(event);
-            });
-        }
-        else{
-            throw new InvalidAPIKeyException(String.format("The API KEY [%s] is invalid!", APIKey));
-        }
-        return playerEventsDTO;
+	if (response != null) {
+	    HashMap<?, ?> events = (HashMap<?, ?>) response.get("events");
+	    events.forEach((k, v) -> {
+		TornPlayerEvent event = new TornPlayerEvent((HashMap<?, ?>) v);
+		event.setId((String) k);
+		playerEventsDTO.getEvents().add(event);
+	    });
+	} else {
+	    throw new InvalidAPIKeyException(String.format("The API KEY [%s] is invalid!", APIKey));
+	}
+	return playerEventsDTO;
     }
 
     private void initWebClient() {
-        if (this.webClient == null) {
-            this.webClient = WebClient.create(tornAPIBaseUrl);
-        }
+	if (this.webClient == null) {
+	    this.webClient = WebClient.create(tornAPIBaseUrl);
+	}
     }
 
 }

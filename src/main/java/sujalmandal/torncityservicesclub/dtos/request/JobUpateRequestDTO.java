@@ -11,5 +11,4 @@ import lombok.ToString;
 @ToString
 public class JobUpateRequestDTO extends RequestDTO {
     private String id;
-    private String acceptedByPlayerId;
 }

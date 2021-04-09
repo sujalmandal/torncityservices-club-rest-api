@@ -20,10 +20,7 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @RequestMapping(method = RequestMethod.POST, path = "/register/{APIKey}")
-    public ResponseEntity<?> registerPlayer(@PathVariable("APIKey") String APIKey) {
-	return ResponseEntity.ok().body(playerService.registerPlayer(APIKey));
-    }
+    /** public APIs **/
 
     @RequestMapping(method = RequestMethod.POST, path = "/auth/{APIKey}")
     public ResponseEntity<?> authenticateAndReturnPlayer(@PathVariable("APIKey") String APIKey) {
@@ -36,4 +33,25 @@ public class PlayerController {
 	}
 	return ResponseEntity.ok().body(player);
     }
+
+    public ResponseEntity<?> getJobsAcceptedByPlayer() {
+	return null;
+    }
+
+    public ResponseEntity<?> getJobsFinishedByPlayer() {
+	return null;
+    }
+
+    public ResponseEntity<?> getJobsPostedByPlayer() {
+	return null;
+    }
+
+    public ResponseEntity<?> getJobsPostedByPlayerAndAcceptedByOthers() {
+	return null;
+    }
+
+    public ResponseEntity<?> getJobsPostedByPlayerAndFinishedByOthers() {
+	return null;
+    }
+
 }

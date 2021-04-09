@@ -2,19 +2,21 @@ package sujalmandal.torncityservicesclub.dtos.request;
 
 import java.util.HashMap;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString
 public class CreateJobRequestDTO extends RequestDTO {
     private ServiceTypeValue serviceType;
     private String templateName;
     private HashMap<String, Object> jobDetails;
+
+    @Override
+    public String toString() {
+	return "CreateJobRequestDTO [serviceType=" + serviceType + ", templateName=" + templateName + ", jobDetails="
+		+ jobDetails + ", apiKey" + getApiKey() + ", fingerprint=" + fingerprint + "]";
+    }
 
 }

@@ -11,5 +11,5 @@ public class PlayerDTO {
     private String tornUserName;
     private LocalDateTime registeredAt;
     private String activeSubscriptionType;
-    private String fingerPrint;
+    private String fingerprint;
 }

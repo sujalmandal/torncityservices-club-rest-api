@@ -3,8 +3,8 @@ package sujalmandal.torncityservicesclub.repositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import sujalmandal.torncityservicesclub.models.Job;
+import sujalmandal.torncityservicesclub.models.MongoSequence;
 
 @Repository
-public interface JobRepository extends CrudRepository<Job, String> {
+public interface MongoSequenceRepo extends CrudRepository<MongoSequence, String> {
 }
