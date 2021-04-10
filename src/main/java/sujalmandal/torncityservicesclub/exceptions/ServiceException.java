@@ -1,14 +1,12 @@
 package sujalmandal.torncityservicesclub.exceptions;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import sujalmandal.torncityservicesclub.dtos.commons.ValidationMessage;
 
 @Setter
 @Getter
@@ -20,14 +18,14 @@ public class ServiceException extends RuntimeException {
 
     private int statusCode;
     private String message;
-    private List<ValidationMessage> validationErrors;
+    private Map<String, String> validationErrors;
 
     public ServiceException(String message, int statusCode) {
 	this.message = message;
 	this.statusCode = statusCode;
     }
 
-    public ServiceException(String message, List<ValidationMessage> validationErrors, int statusCode) {
+    public ServiceException(String message, Map<String, String> validationErrors, int statusCode) {
 	this.message = message;
 	this.validationErrors = validationErrors;
 	this.statusCode = statusCode;

@@ -1,10 +1,9 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,15 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
-import sujalmandal.torncityservicesclub.dtos.commons.ValidationMessage;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
@@ -47,6 +43,7 @@ import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.repositories.JobRepository;
 import sujalmandal.torncityservicesclub.repositories.MongoSequenceRepo;
 import sujalmandal.torncityservicesclub.services.JobService;
+import sujalmandal.torncityservicesclub.services.ValidationService;
 import sujalmandal.torncityservicesclub.utils.MongoUtil;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
@@ -60,6 +57,8 @@ public class JobServiceImpl implements JobService {
     private MongoSequenceRepo mongoSeqRepo;
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private ValidationService validationService;
 
     @Override
     public JobFilterResponseDTO getJobsByFilter(JobFilterRequestDTO filterRequest) {
@@ -105,7 +104,7 @@ public class JobServiceImpl implements JobService {
 	}
 	JobDetails jobDetailImplInstance = JobDetails.fromMap(request.getTemplateName(), request.getJobDetails());
 	Job newJob = PojoUtils.map(request, new Job());
-	List<ValidationMessage> errors = validateCreateRequest(jobDetailImplInstance);
+	Map<String, String> errors = validationService.validateCreateRequest(jobDetailImplInstance);
 	if (errors.isEmpty()) {
 	    Player poster = request.getPlayer();
 	    if (poster == null) {
@@ -233,88 +232,6 @@ public class JobServiceImpl implements JobService {
 	} else {
 	    log.info("mongo sequence already initialized.");
 	}
-    }
-
-    private List<ValidationMessage> validateCreateRequest(JobDetails jobDetailImplInstance) {
-	if (jobDetailImplInstance == null) {
-	    throw new ServiceException("Please select a type of job and fill in the details to create a post!", 400);
-	}
-	List<ValidationMessage> errorMessages = new ArrayList<ValidationMessage>();
-	JobDetails.getFieldDetails(jobDetailImplInstance.getJobDetailFormTemplateName())
-		.forEach((fieldName, formField) -> {
-		    try {
-			Field currentField = jobDetailImplInstance.getClass().getDeclaredField(fieldName);
-			currentField.setAccessible(true);
-
-			String javaType = currentField.getType().getName();
-			FormFieldTypeValue fieldType = formField.type();
-			Object value = currentField.get(jobDetailImplInstance);
-
-			log.info("validating '{}' of type '{}' with value '{}'", fieldName, javaType, value);
-
-			validateEmptyFields(errorMessages, fieldName, formField, value);
-
-			if (fieldType == FormFieldTypeValue.NUMBER) {
-			    if (javaType.contains(Long.class.getSimpleName())) {
-				Long valueAsLong = (Long) value;
-				if (valueAsLong != null) {
-				    long minValue = formField.minValue();
-				    long maxValue = formField.maxValue();
-				    validateMinMaxValues(errorMessages, fieldName, valueAsLong, minValue, maxValue);
-				}
-			    }
-			    if (javaType.contains(Integer.class.getSimpleName())) {
-				Integer valueAsInt = (Integer) value;
-				if (valueAsInt != null) {
-				    long minValue = formField.minValue();
-				    long maxValue = formField.maxValue();
-				    validateMinMaxValues(errorMessages, fieldName, valueAsInt, minValue, maxValue);
-				}
-			    }
-			}
-			if (fieldType == FormFieldTypeValue.SELECT) {
-			    List<String> allowableValues = Arrays.asList(formField.options());
-			    validateOptions(errorMessages, fieldName, value, allowableValues);
-			}
-
-		    } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
-			    | IllegalAccessException e) {
-			throw new ServiceException(e.getMessage(), 500);
-		    }
-		});
-	return errorMessages;
-    }
-
-    private void validateOptions(List<ValidationMessage> errorMessages, String fieldName, Object value,
-	    List<String> allowableValues) {
-	if (!allowableValues.contains(value)) {
-	    errorMessages.add(new ValidationMessage(fieldName,
-		    String.format("'%s' is not a valid option for this field", value)));
-	}
-    }
-
-    private void validateEmptyFields(List<ValidationMessage> errorMessages, String fieldName, FormField formField,
-	    Object value) {
-	if (!formField.optional() && value == null) {
-	    errorMessages.add(new ValidationMessage(fieldName, "field cannot be empty"));
-	}
-    }
-
-    private void validateMinMaxValues(List<ValidationMessage> errorMessages, String fieldName, Integer valueAsLong,
-	    long minValue, long maxValue) {
-	if (valueAsLong < minValue) {
-	    errorMessages.add(new ValidationMessage(fieldName,
-		    String.format("field has a value smaller than minimum allowed value %s", minValue)));
-	}
-	if (valueAsLong > maxValue) {
-	    errorMessages.add(new ValidationMessage(fieldName,
-		    String.format("field has a value larger than maximum allowed value of %s", maxValue)));
-	}
-    }
-
-    private void validateMinMaxValues(List<ValidationMessage> errorMessages, String fieldName, Long valueAsLong,
-	    long minValue, long maxValue) {
-	validateMinMaxValues(errorMessages, fieldName, valueAsLong.intValue(), minValue, maxValue);
     }
 
 }
