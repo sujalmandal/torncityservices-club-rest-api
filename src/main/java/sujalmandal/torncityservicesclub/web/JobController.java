@@ -43,6 +43,7 @@ public class JobController implements AuthenticatedController {
 	return ResponseEntity.ok().body(jobService.cancelJob(request));
     }
 
+    /** public API **/
     @RequestMapping(method = RequestMethod.POST, path = "/search")
     public ResponseEntity<?> search(@RequestBody JobFilterRequestDTO request) {
 	this.injectPlayerInRequest(request);

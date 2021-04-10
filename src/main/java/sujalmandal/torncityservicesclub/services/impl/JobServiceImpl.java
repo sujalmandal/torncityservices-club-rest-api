@@ -236,6 +236,9 @@ public class JobServiceImpl implements JobService {
     }
 
     private List<ValidationMessage> validateCreateRequest(JobDetails jobDetailImplInstance) {
+	if (jobDetailImplInstance == null) {
+	    throw new ServiceException("Please select a type of job and fill in the details to create a post!", 400);
+	}
 	List<ValidationMessage> errorMessages = new ArrayList<ValidationMessage>();
 	JobDetails.getFieldDetails(jobDetailImplInstance.getJobDetailFormTemplateName())
 		.forEach((fieldName, formField) -> {

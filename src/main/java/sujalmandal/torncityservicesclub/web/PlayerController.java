@@ -20,7 +20,7 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    /** public APIs **/
+    /** public API **/
 
     @RequestMapping(method = RequestMethod.POST, path = "/auth/{APIKey}")
     public ResponseEntity<?> authenticateAndReturnPlayer(@PathVariable("APIKey") String APIKey) {

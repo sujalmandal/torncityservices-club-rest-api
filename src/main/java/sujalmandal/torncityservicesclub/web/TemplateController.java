@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import sujalmandal.torncityservicesclub.services.JobService;
 
+/** public APIs **/
+
 @RestController
 @RequestMapping("/public")
 public class TemplateController {
