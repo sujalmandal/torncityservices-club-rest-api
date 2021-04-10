@@ -104,7 +104,8 @@ public class JobServiceImpl implements JobService {
 	}
 	JobDetails jobDetailImplInstance = JobDetails.fromMap(request.getTemplateName(), request.getJobDetails());
 	Job newJob = PojoUtils.map(request, new Job());
-	Map<String, String> errors = validationService.validateCreateRequest(jobDetailImplInstance);
+	Map<String, String> errors = validationService.validateCreateRequest(jobDetailImplInstance,
+		request.getServiceType());
 	if (errors.isEmpty()) {
 	    Player poster = request.getPlayer();
 	    if (poster == null) {

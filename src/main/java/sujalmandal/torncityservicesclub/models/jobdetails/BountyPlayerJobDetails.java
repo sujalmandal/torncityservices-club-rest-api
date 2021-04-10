@@ -17,10 +17,10 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @GenerateTemplate(JobDetailTemplateValue.BOUNTY_PLAYER)
 public class BountyPlayerJobDetails implements JobDetails {
 
-    @FormField(label = "Torn id of the player on which the bounty has to be placed", serviceType = ServiceTypeValue.REQUEST)
+    @FormField(label = "Torn id of the player on which the bounty has to be placed", serviceType = ServiceTypeValue.REQUEST, optional = true)
     private String targetPlayerId;
 
-    @FormField(label = "Message while posting the bounty", serviceType = ServiceTypeValue.REQUEST)
+    @FormField(label = "Message while posting the bounty", serviceType = ServiceTypeValue.REQUEST, optional = true)
     private String bountyMessage;
 
     @FormField(label = "Number of bounties to place", type = FormFieldTypeValue.NUMBER, minValue = 1, maxValue = 50)

@@ -44,10 +44,18 @@ public class TemplateGeneratorUtil {
 	    String formTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFormTemplateLabel();
 	    String filterTemplateName = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
 	    String filterTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateLabel();
+
+	    String formRequestTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFormRequestTypeLabel();
+	    String formOfferTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFormOfferTypeLabel();
+
 	    formDescriptor.setFormTemplateName(formTemplateName);
 	    formDescriptor.setFormTemplateLabel(formTemplateLabel);
 	    formDescriptor.setFilterTemplateName(filterTemplateName);
 	    formDescriptor.setFilterTemplateLabel(filterTemplateLabel);
+
+	    formDescriptor.setFormRequestTypeLabel(formRequestTypeLabel);
+	    formDescriptor.setFormOfferTypeLabel(formOfferTypeLabel);
+
 	    for (Field field : clazz.getDeclaredFields()) {
 		FormFieldDescriptor fieldDescriptor = new FormFieldDescriptor();
 		if (field.isAnnotationPresent(FormField.class)) {
@@ -89,6 +97,13 @@ public class TemplateGeneratorUtil {
 	    String filterTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateLabel();
 	    filterTemplate.setFilterTemplateName(filterTemplateName);
 	    filterTemplate.setFilterTemplateLabel(filterTemplateLabel);
+
+	    String filterRequestTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value()
+		    .getFilterRequestTypeLabel();
+	    String filterOfferTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterOfferTypeLabel();
+	    filterTemplate.setFilterRequestTypeLabel(filterRequestTypeLabel);
+	    filterTemplate.setFilterOfferTypeLabel(filterOfferTypeLabel);
+
 	    for (Field field : clazz.getDeclaredFields()) {
 
 		boolean isFilterable = field.isAnnotationPresent(FilterableField.class);

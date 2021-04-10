@@ -14,7 +14,7 @@ import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 public @interface FormField {
     public String label() default "";
 
-    public boolean optional() default true;
+    public boolean optional() default false;
 
     public ServiceTypeValue serviceType() default ServiceTypeValue.ALL;
 

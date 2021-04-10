@@ -22,6 +22,8 @@ public class JobDetailFilterTemplate {
     private String filterTemplateName;
     private String filterTemplateLabel;
     List<FilterFieldDescriptor> filterElements = new ArrayList<>();
+    private String filterRequestTypeLabel;
+    private String filterOfferTypeLabel;
 
     @Override
     public int hashCode() {

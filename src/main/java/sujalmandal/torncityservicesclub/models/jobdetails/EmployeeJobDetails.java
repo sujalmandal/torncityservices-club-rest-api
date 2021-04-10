@@ -6,6 +6,7 @@ import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
 import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
+import sujalmandal.torncityservicesclub.enums.AppConstants;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
@@ -21,14 +22,14 @@ public class EmployeeJobDetails implements JobDetails {
      * 
      * filter response with JMESPath 'companies.[*][0][*].name'
      */
-    @FormField(label = "Company type", type = FormFieldTypeValue.SELECT, options = { "All", "Hair Salon", "Law Firm",
-	    "Flower Shop", "Car Dealership", "Clothing Store", "Gun Shop", "Game Shop", "Candle Shop", "Toy Shop",
-	    "Adult Novelties", "Cyber Cafe", "Grocery Store", "Theater", "Sweet Shop", "Cruise Line",
-	    "Television Network", "Zoo", "Firework Stand", "Property Broker", "Furniture Store", "Gas Station",
-	    "Music Store", "Nightclub", "Pub", "Gents Strip Club", "Restaurant", "Oil Rig", "Fitness Center",
-	    "Mechanic Shop", "Amusement Park", "Lingerie Store", "Meat Warehouse", "Farm", "Software Corporation",
-	    "Ladies Strip Club", "Private Security Firm", "Mining Corporation", "Detective Agency",
-	    "Logistics Management" }, defaultValue = "Candle Shop")
+    @FormField(label = "Company type", type = FormFieldTypeValue.SELECT, options = { AppConstants.SELECT_DUMMY_OPTION,
+	    "All", "Hair Salon", "Law Firm", "Flower Shop", "Car Dealership", "Clothing Store", "Gun Shop", "Game Shop",
+	    "Candle Shop", "Toy Shop", "Adult Novelties", "Cyber Cafe", "Grocery Store", "Theater", "Sweet Shop",
+	    "Cruise Line", "Television Network", "Zoo", "Firework Stand", "Property Broker", "Furniture Store",
+	    "Gas Station", "Music Store", "Nightclub", "Pub", "Gents Strip Club", "Restaurant", "Oil Rig",
+	    "Fitness Center", "Mechanic Shop", "Amusement Park", "Lingerie Store", "Meat Warehouse", "Farm",
+	    "Software Corporation", "Ladies Strip Club", "Private Security Firm", "Mining Corporation",
+	    "Detective Agency", "Logistics Management" })
     @FilterableField(label = "company type")
     private String companyType;
 

@@ -23,6 +23,9 @@ public class JobDetailFormTemplate {
     private String formTemplateLabel;
     private String filterTemplateName;
     private String filterTemplateLabel;
+    private String formRequestTypeLabel;
+    private String formOfferTypeLabel;
+
     private List<FormFieldDescriptor> elements = new ArrayList<FormFieldDescriptor>();
 
     public String toJson() throws JsonProcessingException {
