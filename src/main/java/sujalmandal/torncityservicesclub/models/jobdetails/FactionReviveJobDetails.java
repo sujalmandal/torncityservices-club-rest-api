@@ -2,7 +2,6 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import sujalmandal.torncityservicesclub.annotations.FilterableField;
 import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
@@ -17,43 +16,58 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 @EqualsAndHashCode(
 	callSuper = false
 )
-@ToString
 @GenerateTemplate(
-    JobDetailTemplateValue.HOSPITALIZE
+    JobDetailTemplateValue.REVIVE_FACTION
 )
-public class HospitalizeJobDetails implements JobDetails {
+public class FactionReviveJobDetails implements JobDetails {
 
     @FormField(
-	    label = "Torn id of the player who has to be attacked",
-	    serviceType = ServiceTypeValue.REQUEST
+	    label = "Faction to revive",
+	    serviceType = ServiceTypeValue.REQUEST,
+	    optional = true
     )
-    private String targetPlayerId;
+    private String factionName;
 
     @FormField(
-	    label = "Total number of times to hospitalize a target",
+	    label = "Total revives",
 	    type = FormFieldTypeValue.NUMBER,
 	    minValue = 1,
-	    maxValue = 50
+	    maxValue = 5,
+	    optional = true
     )
     @FilterableField(
-	    label = "total hospitalizations",
-	    maxFieldLabel = "maximum no. of hospitalizations",
-	    minFieldLabel = "minimum no. of hospitalizations"
+	    label = "Total revives",
+	    maxFieldLabel = "max revives",
+	    minFieldLabel = "min revives"
     )
-    private Integer totalHospitalizations;
+    private Integer totalRevives;
 
     @FormField(
-	    label = "Pay per hospitalization for this job",
+	    label = "Duration over which revives need to be done",
 	    type = FormFieldTypeValue.NUMBER,
+	    minValue = 1,
+	    maxValue = 5,
+	    optional = true
+    )
+    @FilterableField(
+	    label = "duration over which revives need to be done",
+	    maxFieldLabel = "max days",
+	    minFieldLabel = "min days"
+    )
+    private Integer durationDays;
+
+    @FormField(
+	    label = "Pay per revive",
 	    formatter = FieldFormatterValue.CURRENCY,
-	    minValue = 100_000,
-	    maxValue = 5_000_000,
+	    type = FormFieldTypeValue.NUMBER,
+	    minValue = 250_000,
+	    maxValue = 3_000_000,
 	    payFieldType = PayFieldType.PER_ACTION
     )
     @FilterableField(
-	    label = "total pay per hospitalization",
-	    maxFieldLabel = "max pay per hospitalization",
-	    minFieldLabel = "min pay per hospitalization"
+	    label = "Pay per revive",
+	    maxFieldLabel = "max pay",
+	    minFieldLabel = "min pay"
     )
     private Long pay;
 }

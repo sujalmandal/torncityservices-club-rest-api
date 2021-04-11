@@ -21,6 +21,7 @@ import sujalmandal.torncityservicesclub.annotations.FormField;
 import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.FilterFieldDescriptor;
@@ -40,13 +41,15 @@ public class TemplateGeneratorUtil {
 	Set<JobDetailFormTemplate> formDescriptors = new HashSet<>();
 	for (Class<?> clazz : jobDetailImplClasses) {
 	    JobDetailFormTemplate formDescriptor = new JobDetailFormTemplate();
-	    String formTemplateName = clazz.getAnnotation(GenerateTemplate.class).value().getFormTemplateName();
-	    String formTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFormTemplateLabel();
-	    String filterTemplateName = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateLabel();
+	    JobDetailTemplateValue template = clazz.getAnnotation(GenerateTemplate.class).value();
 
-	    String formRequestTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFormRequestTypeLabel();
-	    String formOfferTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFormOfferTypeLabel();
+	    String formTemplateName = template.getFormTemplateName();
+	    String formTemplateLabel = template.getFormTemplateLabel();
+	    String filterTemplateName = template.getFilterTemplateName();
+	    String filterTemplateLabel = template.getFilterTemplateLabel();
+
+	    String formRequestTypeLabel = template.getFormRequestTypeLabel();
+	    String formOfferTypeLabel = template.getFormOfferTypeLabel();
 
 	    formDescriptor.setFormTemplateName(formTemplateName);
 	    formDescriptor.setFormTemplateLabel(formTemplateLabel);

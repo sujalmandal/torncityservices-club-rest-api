@@ -6,6 +6,8 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 public class JobResponseDTO {
+
+    private Long seqId;
     private String listedByPlayerId;
     private String listedByPlayerName;
     private String acceptedByPlayerId;
@@ -15,6 +17,9 @@ public class JobResponseDTO {
     private String acceptedDate;
     private String finishedDate;
     private String templateName;
+    private String templateLabel;
     private JobDetails jobDetails;
     private ServiceTypeValue serviceType;
+    private Long payPerAction;
+    private Long totalPay;
 }

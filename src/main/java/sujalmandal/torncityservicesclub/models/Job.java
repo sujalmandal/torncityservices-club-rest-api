@@ -32,9 +32,12 @@ public class Job {
     private LocalDateTime acceptedDate;
     private LocalDateTime finishedDate;
     private String templateName;
+    private String templateLabel;
     private String filterTemplateName;
     private JobDetails jobDetails;
     private ServiceTypeValue serviceType;
+    private Long payPerAction;
+    private Long totalPay;
 
     public JobResponseDTO toJobResponseDTO() {
 	JobResponseDTO responseDTO = new JobResponseDTO();

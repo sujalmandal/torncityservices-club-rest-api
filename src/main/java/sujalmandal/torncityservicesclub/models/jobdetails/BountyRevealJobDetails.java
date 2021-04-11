@@ -9,19 +9,38 @@ import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.enums.PayFieldType;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@GenerateTemplate(JobDetailTemplateValue.BOUNTY_REVEAL)
+@EqualsAndHashCode(
+	callSuper = false
+)
+@GenerateTemplate(
+    JobDetailTemplateValue.BOUNTY_REVEAL
+)
 public class BountyRevealJobDetails implements JobDetails {
 
-    @FormField(label = "Player whose bounty has to be revealed", serviceType = ServiceTypeValue.REQUEST)
+    @FormField(
+	    label = "Player whose bounty has to be revealed",
+	    serviceType = ServiceTypeValue.REQUEST
+    )
     private String playerId;
 
     @HighlightWhen
-    @FormField(label = "Cost of a bounty reveal", formatter = FieldFormatterValue.CURRENCY, type = FormFieldTypeValue.NUMBER, minValue = 1_000_000, maxValue = 100_000_000)
-    @FilterableField(label = "total pay", maxFieldLabel = "maximum pay", minFieldLabel = "minimum pay")
+    @FormField(
+	    label = "Cost of a bounty reveal",
+	    formatter = FieldFormatterValue.CURRENCY,
+	    type = FormFieldTypeValue.NUMBER,
+	    minValue = 1_000_000,
+	    maxValue = 100_000_000,
+	    payFieldType = PayFieldType.PER_ACTION
+    )
+    @FilterableField(
+	    label = "cost per reveal",
+	    maxFieldLabel = "maximum pay",
+	    minFieldLabel = "minimum pay"
+    )
     private Long pay;
 }

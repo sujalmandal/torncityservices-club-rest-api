@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
 import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.PayFieldType;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -23,6 +24,8 @@ public @interface FormField {
     public FormFieldTypeValue type() default FormFieldTypeValue.TEXT;
 
     public String defaultValue() default "";
+
+    public PayFieldType payFieldType() default PayFieldType.NONE;
 
     // only applicable to 'SELECT' type
     public String[] options() default "";

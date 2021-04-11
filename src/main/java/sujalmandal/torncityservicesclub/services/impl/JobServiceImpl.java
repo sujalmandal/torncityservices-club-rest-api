@@ -1,5 +1,6 @@
 package sujalmandal.torncityservicesclub.services.impl;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,7 @@ import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
 import sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.MongoCollections;
+import sujalmandal.torncityservicesclub.enums.PayFieldType;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
@@ -103,7 +105,7 @@ public class JobServiceImpl implements JobService {
 		    String.format("Request has invalid ServiceType {%s}", request.getServiceType().toString()), 400);
 	}
 	JobDetails jobDetailImplInstance = JobDetails.fromMap(request.getTemplateName(), request.getJobDetails());
-	Job newJob = PojoUtils.map(request, new Job());
+	Job job = PojoUtils.map(request, new Job());
 	Map<String, String> errors = validationService.validateCreateRequest(jobDetailImplInstance,
 		request.getServiceType());
 	if (errors.isEmpty()) {
@@ -114,15 +116,39 @@ public class JobServiceImpl implements JobService {
 	    if (request.getServiceType() == null || request.getServiceType() == ServiceTypeValue.ALL) {
 		throw new ServiceException("Invalid service type selected.", 400);
 	    }
-	    newJob.setListedByPlayerId(poster.getInternalId());
-	    newJob.setListedByPlayerName(poster.getTornUserName());
-	    newJob.setPostedDate(LocalDateTime.now());
-	    newJob.setFilterTemplateName(jobDetailImplInstance.getJobDetailFilterTemplateName());
-	    newJob.setJobDetails(jobDetailImplInstance);
-	    return saveJobWithSeqId(newJob);
+	    if (job.getServiceType() == ServiceTypeValue.OFFER) {
+		job.setTemplateLabel(jobDetailImplInstance.getJobDetailFormTemplateLabelForOffer());
+	    }
+	    if (job.getServiceType() == ServiceTypeValue.REQUEST) {
+		job.setTemplateLabel(jobDetailImplInstance.getJobDetailFormTemplateLabelForRequest());
+	    }
+	    job.setListedByPlayerId(poster.getInternalId());
+	    job.setListedByPlayerName(poster.getTornUserName());
+	    job.setPostedDate(LocalDateTime.now());
+	    job.setFilterTemplateName(jobDetailImplInstance.getJobDetailFilterTemplateName());
+	    job.setJobDetails(jobDetailImplInstance);
+	    copyPayDetails(job, jobDetailImplInstance);
+	    return saveJobWithSeqId(job);
 	} else {
 	    throw new ServiceException("There were some issues with your input. ", errors, 400);
 	}
+    }
+
+    private void copyPayDetails(Job job, JobDetails jobDetailInstance) {
+	JobDetails.getFieldDetails(jobDetailInstance.getJobDetailFormTemplateName()).forEach((fieldName, formField) -> {
+	    try {
+		Field currentField = jobDetailInstance.getClass().getDeclaredField(fieldName);
+		currentField.setAccessible(true);
+		if (formField.payFieldType() == PayFieldType.TOTAL) {
+		    job.setTotalPay((Long) currentField.get(jobDetailInstance));
+		}
+		if (formField.payFieldType() == PayFieldType.PER_ACTION) {
+		    job.setPayPerAction((Long) currentField.get(jobDetailInstance));
+		}
+	    } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+		throw new ServiceException(e.getMessage(), 500);
+	    }
+	});
     }
 
     /*

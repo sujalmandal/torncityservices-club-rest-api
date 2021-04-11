@@ -46,6 +46,18 @@ public interface JobDetails {
 	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormTemplateName();
     }
 
+    default public String getJobDetailFormTemplateLabel() {
+	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormTemplateLabel();
+    }
+
+    default public String getJobDetailFormTemplateLabelForRequest() {
+	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormRequestTypeLabel();
+    }
+
+    default public String getJobDetailFormTemplateLabelForOffer() {
+	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormOfferTypeLabel();
+    }
+
     default public String getJobDetailFilterTemplateName() {
 	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
     }
