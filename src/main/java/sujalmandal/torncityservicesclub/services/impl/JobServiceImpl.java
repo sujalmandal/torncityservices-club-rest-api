@@ -27,10 +27,13 @@ import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
+import sujalmandal.torncityservicesclub.dtos.response.JobDetailFieldResponseDTO;
+import sujalmandal.torncityservicesclub.dtos.response.JobDetailResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
+import sujalmandal.torncityservicesclub.enums.AppConstants;
 import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField;
+import sujalmandal.torncityservicesclub.enums.JobFieldNames;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.MongoCollections;
 import sujalmandal.torncityservicesclub.enums.PayFieldType;
@@ -65,32 +68,79 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobFilterResponseDTO getJobsByFilter(JobFilterRequestDTO filterRequest) {
 	try {
-	    Criteria filterCriteria = MongoUtil.getCriteriaForJobFilterRequest(filterRequest);
+	    Criteria filterCriteria = MongoUtil.getFilterCriteria(filterRequest);
 	    Query filterQuery = new Query(filterCriteria);
+	    if (!filterRequest.isFetchDetails()) {
+		filterQuery.fields().exclude(JobFieldNames.JOB_DETAILS.toString());
+	    }
 	    long totalResults = mongoTemplate.count(filterQuery, Job.class);
 	    Pageable pageable = PageRequest.of(filterRequest.getPageNumber() - 1, filterRequest.getPageSize(),
-		    Sort.by(Order.desc(JobFilterCriteriaField.POSTED_DATE.toString())));
+		    Sort.by(Order.desc(JobFieldNames.POSTED_DATE.toString())));
 	    filterQuery.with(pageable);
 	    log.info("query : " + filterQuery);
 	    List<Job> results = mongoTemplate.find(filterQuery, Job.class);
 	    JobFilterResponseDTO response = new JobFilterResponseDTO();
 	    List<JobResponseDTO> jobDTOs = results.stream().map(Job::toJobResponseDTO).collect(Collectors.toList());
 	    log.info("found {} results", totalResults);
-	    response.setJobs(jobDTOs);
-	    response.setTotalSize(totalResults);
-	    response.setPageNumber(filterRequest.getPageNumber());
-	    if (totalResults == 0) {
-		response.setTotalPages(0);
-		response.setPageSize(0);
-	    } else {
-		long fullyFilledPages = totalResults / filterRequest.getPageSize();
-		long partiallyFilledPages = (totalResults % filterRequest.getPageSize() == 0) ? 0 : 1;
-		response.setPageSize(jobDTOs.size());
-		response.setTotalPages(fullyFilledPages + partiallyFilledPages);
+
+	    if (filterRequest.isFetchDetails()) {
+		extractJobDetails(results, jobDTOs);
 	    }
+
+	    response.setJobs(jobDTOs);
+	    setPaginationDetails(filterRequest, totalResults, response, jobDTOs);
 	    return response;
 	} catch (Exception e) {
 	    throw new ServiceException(e);
+	}
+    }
+
+    private void extractJobDetails(List<Job> results, List<JobResponseDTO> jobDTOs) {
+	for (int i = 0; i < results.size(); i++) {
+	    Job job = results.get(i);
+	    String playerName = job.getListedByPlayerName();
+	    JobDetails jdInstance = job.getJobDetails();
+	    JobDetailResponseDTO jobDetailResponseDTO = new JobDetailResponseDTO();
+	    JobDetails.getFieldDetails(jdInstance.getJobDetailFormTemplateName()).forEach((fieldName, formField) -> {
+		try {
+		    JobDetailFieldResponseDTO field = new JobDetailFieldResponseDTO();
+		    Field currentField = jdInstance.getClass().getDeclaredField(fieldName);
+		    currentField.setAccessible(true);
+		    field.setValue(currentField.get(jdInstance));
+		    field.setFormat(formField.formatter().toString());
+		    field.setLabel(formField.label());
+		    field.setType(formField.type().toString());
+		    if (StringUtils.isNotEmpty(formField.labelOffer())) {
+			field.setLabelOffer(
+				formField.labelOffer().replaceAll(AppConstants.PLAYER_PLACEHOLDER, playerName));
+		    }
+		    if (StringUtils.isNotEmpty(formField.labelRequest())) {
+			field.setLabelRequest(
+				formField.labelRequest().replaceAll(AppConstants.PLAYER_PLACEHOLDER, playerName));
+		    }
+		    jobDetailResponseDTO.getFields().add(field);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException
+			| IllegalAccessException e) {
+		    log.error(e.getMessage(), e);
+		    throw new ServiceException("Unable to parse job details!", 500);
+		}
+	    });
+	    jobDTOs.get(i).setDetails(jobDetailResponseDTO);
+	}
+    }
+
+    private void setPaginationDetails(JobFilterRequestDTO filterRequest, long totalResults,
+	    JobFilterResponseDTO response, List<JobResponseDTO> jobDTOs) {
+	response.setTotalSize(totalResults);
+	response.setPageNumber(filterRequest.getPageNumber());
+	if (totalResults == 0) {
+	    response.setTotalPages(0);
+	    response.setPageSize(0);
+	} else {
+	    long fullyFilledPages = totalResults / filterRequest.getPageSize();
+	    long partiallyFilledPages = (totalResults % filterRequest.getPageSize() == 0) ? 0 : 1;
+	    response.setPageSize(jobDTOs.size());
+	    response.setTotalPages(fullyFilledPages + partiallyFilledPages);
 	}
     }
 
@@ -155,7 +205,9 @@ public class JobServiceImpl implements JobService {
      * use serializable isolation level to prevent multiple threads from writing the
      * same sequence id
      */
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(
+	    isolation = Isolation.SERIALIZABLE
+    )
     private Job saveJobWithSeqId(Job job) {
 	Optional<MongoSequence> collectionSequence = mongoSeqRepo.findById(MongoCollections.JOB.toString());
 	if (collectionSequence.isPresent()) {
@@ -249,10 +301,11 @@ public class JobServiceImpl implements JobService {
 	}
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(
+	    isolation = Isolation.SERIALIZABLE
+    )
     public void initSequenceIdsIfNotPresent() {
-	MongoSequence collectionSequence = mongoTemplate.findById(MongoCollections.MONGO_SEQUENCE.toString(),
-		MongoSequence.class);
+	MongoSequence collectionSequence = mongoTemplate.findById(MongoCollections.JOB.toString(), MongoSequence.class);
 	if (collectionSequence == null) {
 	    mongoTemplate.save(new MongoSequence(MongoCollections.JOB.toString(), 0L));
 	    log.info("initialized mongo sequence id for {} collection", MongoCollections.JOB.toString());

@@ -12,11 +12,13 @@ public class CreateJobRequestDTO extends RequestDTO {
     private ServiceTypeValue serviceType;
     private String templateName;
     private HashMap<String, Object> jobDetails;
+    private String customJobTitle;
 
     @Override
     public String toString() {
 	return "CreateJobRequestDTO [serviceType=" + serviceType + ", templateName=" + templateName + ", jobDetails="
-		+ jobDetails + ", apiKey" + getApiKey() + ", fingerprint=" + fingerprint + "]";
+		+ jobDetails + ", customJobTitle=" + customJobTitle + ", apiKey=" + apiKey + ", fingerprint="
+		+ fingerprint + ", player=" + player + "]";
     }
 
 }

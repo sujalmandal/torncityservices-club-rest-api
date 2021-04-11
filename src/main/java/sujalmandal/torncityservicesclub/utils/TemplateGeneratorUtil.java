@@ -79,6 +79,8 @@ public class TemplateGeneratorUtil {
 	ServiceTypeValue serviceType = formField.serviceType();
 	fieldDescriptor.setId(UUID.randomUUID().toString());
 	fieldDescriptor.setLabel(formField.label());
+	fieldDescriptor.setLabelRequest(formField.labelRequest());
+	fieldDescriptor.setLabelOffer(formField.labelOffer());
 	fieldDescriptor.setType(formField.type());
 	fieldDescriptor.setServiceType(serviceType);
 	fieldDescriptor.setName(field.getName());

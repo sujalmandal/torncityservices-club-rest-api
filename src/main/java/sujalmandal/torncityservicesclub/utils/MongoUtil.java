@@ -3,11 +3,11 @@ package sujalmandal.torncityservicesclub.utils;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.JOB_DETAILS;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MAX_PREFIX;
 import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
-import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.FILTER_TEMPLATE_NAME;
-import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.IS_DELETED;
-import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.POSTED_DATE;
-import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.SERVICE_TYPE;
-import static sujalmandal.torncityservicesclub.enums.JobFilterCriteriaField.STATUS;
+import static sujalmandal.torncityservicesclub.enums.JobFieldNames.FILTER_TEMPLATE_NAME;
+import static sujalmandal.torncityservicesclub.enums.JobFieldNames.IS_DELETED;
+import static sujalmandal.torncityservicesclub.enums.JobFieldNames.POSTED_DATE;
+import static sujalmandal.torncityservicesclub.enums.JobFieldNames.SERVICE_TYPE;
+import static sujalmandal.torncityservicesclub.enums.JobFieldNames.STATUS;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,27 +25,17 @@ import lombok.extern.slf4j.Slf4j;
 import sujalmandal.torncityservicesclub.dtos.commons.FilterFieldDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
+import sujalmandal.torncityservicesclub.enums.JobFieldNames;
 import sujalmandal.torncityservicesclub.enums.JobStatus;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Slf4j
 public class MongoUtil {
 
-    public static Criteria getCriteriaForJobFilterRequest(JobFilterRequestDTO filter) {
+    private static Criteria getCriteriaForJobFilterRequest(JobFilterRequestDTO filter) {
 	List<Criteria> criteriaList = new ArrayList<>();
 	// default filters
-	criteriaList.add(Criteria.where(STATUS.toString()).is(JobStatus.AVAILABLE));
-	criteriaList.add(Criteria.where(IS_DELETED.toString()).is(Boolean.FALSE));
-
-	if (StringUtils.isNotEmpty(filter.getFilterTemplateName())) {
-	    criteriaList.add(Criteria.where(FILTER_TEMPLATE_NAME.toString()).is(filter.getFilterTemplateName()));
-	}
-	if (filter.getServiceType() == null || filter.getServiceType() == ServiceTypeValue.ALL) {
-	    criteriaList
-		    .add(Criteria.where(SERVICE_TYPE.toString()).in(ServiceTypeValue.OFFER, ServiceTypeValue.REQUEST));
-	} else {
-	    criteriaList.add(Criteria.where(SERVICE_TYPE.toString()).is(filter.getServiceType()));
-	}
+	defaultFilters(filter, criteriaList);
 
 	// date filter
 	criteriaList.add(
@@ -91,6 +81,34 @@ public class MongoUtil {
 	    });
 	}
 	return new Criteria().andOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
+    }
+
+    public static Criteria getFilterCriteria(JobFilterRequestDTO filterRequest) {
+	Criteria filterCriteria;
+	if (CollectionUtils.isEmpty(filterRequest.getJobIds())) {
+	    filterCriteria = MongoUtil.getCriteriaForJobFilterRequest(filterRequest);
+	} else {
+	    List<Criteria> criteriaList = new ArrayList<>();
+	    MongoUtil.defaultFilters(filterRequest, criteriaList);
+	    criteriaList.add(Criteria.where(JobFieldNames.ID.toString()).in(filterRequest.getJobIds()));
+	    filterCriteria = new Criteria().andOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
+	}
+	return filterCriteria;
+    }
+
+    public static void defaultFilters(JobFilterRequestDTO filter, List<Criteria> criteriaList) {
+	criteriaList.add(Criteria.where(STATUS.toString()).is(JobStatus.AVAILABLE));
+	criteriaList.add(Criteria.where(IS_DELETED.toString()).is(Boolean.FALSE));
+
+	if (StringUtils.isNotEmpty(filter.getFilterTemplateName())) {
+	    criteriaList.add(Criteria.where(FILTER_TEMPLATE_NAME.toString()).is(filter.getFilterTemplateName()));
+	}
+	if (filter.getServiceType() == null || filter.getServiceType() == ServiceTypeValue.ALL) {
+	    criteriaList
+		    .add(Criteria.where(SERVICE_TYPE.toString()).in(ServiceTypeValue.OFFER, ServiceTypeValue.REQUEST));
+	} else {
+	    criteriaList.add(Criteria.where(SERVICE_TYPE.toString()).is(filter.getServiceType()));
+	}
     }
 
     private static String getJobDetailField(String groupName) {

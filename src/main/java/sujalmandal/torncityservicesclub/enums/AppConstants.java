@@ -13,5 +13,6 @@ public final class AppConstants {
     public final static String FINGERPRINT_HEADER = "fingerprint";
     public final static String API_KEY_HEADER = "apiKey";
     public final static String SELECT_DUMMY_OPTION = "--select--";
+    public final static String PLAYER_PLACEHOLDER = "%s";
 
 }

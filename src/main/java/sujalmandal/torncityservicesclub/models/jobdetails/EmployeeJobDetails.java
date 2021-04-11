@@ -37,7 +37,9 @@ public class EmployeeJobDetails implements JobDetails {
 		    "Music Store", "Nightclub", "Pub", "Gents Strip Club", "Restaurant", "Oil Rig", "Fitness Center",
 		    "Mechanic Shop", "Amusement Park", "Lingerie Store", "Meat Warehouse", "Farm",
 		    "Software Corporation", "Ladies Strip Club", "Private Security Firm", "Mining Corporation",
-		    "Detective Agency", "Logistics Management" }
+		    "Detective Agency", "Logistics Management" },
+	    labelRequest = "Company type %s wants to work in",
+	    labelOffer = "Company type in which work is offered"
     )
     @FilterableField(
 	    label = "company type"
@@ -49,7 +51,9 @@ public class EmployeeJobDetails implements JobDetails {
 	    label = "Company star/level",
 	    type = FormFieldTypeValue.NUMBER,
 	    minValue = 1,
-	    maxValue = 10
+	    maxValue = 10,
+	    labelRequest = "Company level %s wants to work in",
+	    labelOffer = "Company level in which work is offered"
     )
     @FilterableField(
 	    label = "company star/level",
@@ -62,7 +66,9 @@ public class EmployeeJobDetails implements JobDetails {
 	    label = "End",
 	    type = FormFieldTypeValue.NUMBER,
 	    minValue = 100,
-	    maxValue = 500_000
+	    maxValue = 500_000,
+	    labelRequest = "Endurance stat of %s",
+	    labelOffer = "Minimum endurance required for this vacancy"
     )
     @FilterableField(
 	    label = "End",
@@ -75,7 +81,9 @@ public class EmployeeJobDetails implements JobDetails {
 	    label = "Man",
 	    type = FormFieldTypeValue.NUMBER,
 	    minValue = 100,
-	    maxValue = 500_000
+	    maxValue = 500_000,
+	    labelRequest = "Manual stat of %s",
+	    labelOffer = "Minimum manual required for this vacancy"
     )
     @FilterableField(
 	    label = "Man",
@@ -88,7 +96,9 @@ public class EmployeeJobDetails implements JobDetails {
 	    label = "Int",
 	    type = FormFieldTypeValue.NUMBER,
 	    minValue = 100,
-	    maxValue = 500_000
+	    maxValue = 500_000,
+	    labelRequest = "Intelligence stat of %s",
+	    labelOffer = "Minimum intelligence required for this vacancy"
     )
     @FilterableField(
 	    label = "Int",
@@ -103,7 +113,9 @@ public class EmployeeJobDetails implements JobDetails {
 	    formatter = FieldFormatterValue.CURRENCY,
 	    minValue = 0,
 	    maxValue = 5_000_000,
-	    payFieldType = PayFieldType.PER_ACTION
+	    payFieldType = PayFieldType.PER_ACTION,
+	    labelRequest = "Minimum salary %s wants",
+	    labelOffer = "Maximum salary %s offered for this vacancy"
     )
     @FilterableField(
 	    label = "daily salary",

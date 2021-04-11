@@ -2,7 +2,6 @@ package sujalmandal.torncityservicesclub.dtos.response;
 
 import lombok.Data;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
-import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 public class JobResponseDTO {
@@ -18,7 +17,9 @@ public class JobResponseDTO {
     private String finishedDate;
     private String templateName;
     private String templateLabel;
-    private JobDetails jobDetails;
+
+    private JobDetailResponseDTO details;
+
     private ServiceTypeValue serviceType;
     private Long payPerAction;
     private Long totalPay;

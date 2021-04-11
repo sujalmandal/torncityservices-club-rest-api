@@ -10,10 +10,18 @@ import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
 import sujalmandal.torncityservicesclub.enums.PayFieldType;
 import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface FormField {
+@Retention(
+    RetentionPolicy.RUNTIME
+)
+@Target(
+    ElementType.FIELD
+)
+public @interface FormField{
     public String label() default "";
+
+    public String labelRequest() default "";
+
+    public String labelOffer() default "";
 
     public boolean optional() default false;
 

@@ -12,4 +12,5 @@ public class JobFilterResponseDTO {
     private long pageSize = 0;
     private long pageNumber = 0;
     private long totalPages = 0;
+
 }
