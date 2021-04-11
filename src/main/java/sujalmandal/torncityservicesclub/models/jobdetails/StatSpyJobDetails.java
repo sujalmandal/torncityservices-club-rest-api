@@ -39,7 +39,7 @@ public class StatSpyJobDetails implements JobDetails {
 	    maxFieldLabel = "max no. of spies",
 	    minFieldLabel = "min no. of spies"
     )
-    private Long totalSpy;
+    private Integer totalSpy;
 
     @FormField(
 	    label = "Pay per spy",
@@ -54,5 +54,5 @@ public class StatSpyJobDetails implements JobDetails {
 	    maxFieldLabel = "max pay per spy",
 	    minFieldLabel = "min pay per spy"
     )
-    private String pay;
+    private Long pay;
 }
