@@ -2,8 +2,8 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
@@ -21,7 +21,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class BountyPlayerJobDetails implements JobDetails {
 
     @TemplateField(
-	    label = "Torn id of the player on which the bounty has to be placed",
+	    labelCommon = "Torn id of the player on which the bounty has to be placed",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    optional = true,
 	    isSearchable = false
@@ -29,7 +29,7 @@ public class BountyPlayerJobDetails implements JobDetails {
     private String targetPlayerId;
 
     @TemplateField(
-	    label = "Message while posting the bounty",
+	    labelCommon = "Message while posting the bounty",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    optional = true,
 	    isSearchable = false
@@ -37,7 +37,7 @@ public class BountyPlayerJobDetails implements JobDetails {
     private String bountyMessage;
 
     @TemplateField(
-	    label = "Number of bounties to place",
+	    labelCommon = "Number of bounties to place",
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 50,
@@ -47,7 +47,7 @@ public class BountyPlayerJobDetails implements JobDetails {
     private Integer totalTimes;
 
     @TemplateField(
-	    label = "Anonymous bounties?",
+	    labelCommon = "Anonymous bounties?",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    type = FieldTypeValue.CHECKBOX,
 	    defaultValue = "false"
@@ -55,9 +55,10 @@ public class BountyPlayerJobDetails implements JobDetails {
     private Boolean isAnon = Boolean.FALSE;
 
     @TemplateField(
-	    label = "How much money per bounty",
+	    labelCommon = "How much money per bounty",
 	    payFieldType = PayFieldTypeValue.PER_ACTION,
 	    formatter = FieldFormatValue.CURRENCY,
+	    payOnServiceType = ServiceTypeValue.REQUEST,
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 50_000,
 	    maxValue = 5_000_000,

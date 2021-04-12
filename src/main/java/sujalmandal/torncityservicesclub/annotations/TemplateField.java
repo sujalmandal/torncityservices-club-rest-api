@@ -17,11 +17,16 @@ import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
     ElementType.FIELD
 )
 public @interface TemplateField{
-    public String label() default "";
+
+    public String labelCommon() default "";
 
     public String labelRequest() default "";
 
     public String labelOffer() default "";
+
+    public String viewLabelRequest() default "";
+
+    public String viewLabelOffer() default "";
 
     public boolean optional() default false;
 
@@ -34,6 +39,8 @@ public @interface TemplateField{
     public String defaultValue() default "";
 
     public PayFieldTypeValue payFieldType() default PayFieldTypeValue.NONE;
+
+    public ServiceTypeValue payOnServiceType() default ServiceTypeValue.NONE;
 
     // only applicable to 'SELECT' type
     public String[] options() default "";

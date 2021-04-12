@@ -14,6 +14,8 @@ public class FormFieldDescriptor {
     private String label;
     private String labelRequest;
     private String labelOffer;
+    private String viewLabelRequest;
+    private String viewLabelOffer;
     private String name;
     private ServiceTypeValue serviceType;
     private Boolean isHighlighted;

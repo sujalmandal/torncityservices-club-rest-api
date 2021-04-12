@@ -21,6 +21,7 @@ public class JobResponseDTO {
     private JobDetailResponseDTO details;
 
     private ServiceTypeValue serviceType;
+    private ServiceTypeValue payOnServiceType;
     private Long payPerAction;
     private Long totalPay;
 }

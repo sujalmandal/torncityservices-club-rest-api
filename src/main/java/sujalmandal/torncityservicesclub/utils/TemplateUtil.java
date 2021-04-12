@@ -77,7 +77,9 @@ public class TemplateUtil {
 	TemplateField formField = field.getAnnotation(TemplateField.class);
 	ServiceTypeValue serviceType = formField.serviceType();
 	fieldDescriptor.setId(UUID.randomUUID().toString());
-	fieldDescriptor.setLabel(formField.label());
+	fieldDescriptor.setLabel(formField.labelCommon());
+	fieldDescriptor.setViewLabelRequest(formField.viewLabelRequest());
+	fieldDescriptor.setViewLabelOffer(formField.viewLabelOffer());
 	fieldDescriptor.setLabelRequest(formField.labelRequest());
 	fieldDescriptor.setLabelOffer(formField.labelOffer());
 	fieldDescriptor.setType(formField.type());
@@ -115,7 +117,7 @@ public class TemplateUtil {
 
 			FieldTypeValue fieldType = templateField.type();
 			String fieldName = field.getName();
-			String fieldLabel = templateField.label();
+			String fieldLabel = templateField.labelCommon();
 			String defaultValue = templateField.defaultValue();
 			ServiceTypeValue serviceType = templateField.serviceType();
 			FieldFormatValue format = templateField.formatter();
@@ -125,8 +127,8 @@ public class TemplateUtil {
 			    long maxValue = templateField.maxValue();
 			    long minValue = templateField.minValue();
 			    extractNumberFilterFields(filterTemplate, fieldType, templateField.maxFieldLabel(),
-				    templateField.minFieldLabel(), fieldName, serviceType, format, defaultValue, maxValue,
-				    minValue, templateField.labelOffer(), templateField.labelRequest());
+				    templateField.minFieldLabel(), fieldName, serviceType, format, defaultValue,
+				    maxValue, minValue, templateField.labelOffer(), templateField.labelRequest());
 			    break;
 			case CHECKBOX:
 			    extractCheckboxFilterField(filterTemplate, fieldType, fieldName, serviceType, fieldLabel,

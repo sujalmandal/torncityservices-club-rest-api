@@ -23,8 +23,10 @@ public class FormTemplate {
     private String id;
     private String formTemplateName;
     private String formTemplateLabel;
+
     private String filterTemplateName;
     private String filterTemplateLabel;
+
     private String formRequestTypeLabel;
     private String formOfferTypeLabel;
 

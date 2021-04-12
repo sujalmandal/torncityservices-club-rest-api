@@ -39,9 +39,9 @@ import sujalmandal.torncityservicesclub.dtos.response.JobDetailResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
-import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.FilterTemplate;
 import sujalmandal.torncityservicesclub.models.FormTemplate;
+import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.MongoSequence;
 import sujalmandal.torncityservicesclub.models.Player;
@@ -108,15 +108,15 @@ public class JobServiceImpl implements JobService {
 		    currentField.setAccessible(true);
 		    field.setValue(currentField.get(jdInstance));
 		    field.setFormat(formField.formatter().toString());
-		    field.setLabel(formField.label());
+		    field.setLabel(formField.labelCommon());
 		    field.setType(formField.type().toString());
-		    if (StringUtils.isNotEmpty(formField.labelOffer())) {
+		    if (StringUtils.isNotEmpty(formField.viewLabelOffer())) {
 			field.setLabelOffer(
-				formField.labelOffer().replaceAll(AppConstants.PLAYER_PLACEHOLDER, playerName));
+				formField.viewLabelOffer().replaceAll(AppConstants.PLAYER_PLACEHOLDER, playerName));
 		    }
-		    if (StringUtils.isNotEmpty(formField.labelRequest())) {
+		    if (StringUtils.isNotEmpty(formField.viewLabelRequest())) {
 			field.setLabelRequest(
-				formField.labelRequest().replaceAll(AppConstants.PLAYER_PLACEHOLDER, playerName));
+				formField.viewLabelRequest().replaceAll(AppConstants.PLAYER_PLACEHOLDER, playerName));
 		    }
 		    jobDetailResponseDTO.getFields().add(field);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException
@@ -185,20 +185,23 @@ public class JobServiceImpl implements JobService {
     }
 
     private void copyPayDetails(Job job, JobDetails jobDetailInstance) {
-	JobDetails.getFieldDetails(jobDetailInstance.getJobDetailFormTemplateName()).forEach((fieldName, formField) -> {
-	    try {
-		Field currentField = jobDetailInstance.getClass().getDeclaredField(fieldName);
-		currentField.setAccessible(true);
-		if (formField.payFieldType() == PayFieldTypeValue.TOTAL) {
-		    job.setTotalPay((Long) currentField.get(jobDetailInstance));
-		}
-		if (formField.payFieldType() == PayFieldTypeValue.PER_ACTION) {
-		    job.setPayPerAction((Long) currentField.get(jobDetailInstance));
-		}
-	    } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-		throw new ServiceException(e.getMessage(), 500);
-	    }
-	});
+	JobDetails.getFieldDetails(jobDetailInstance.getJobDetailFormTemplateName())
+		.forEach((fieldName, templateField) -> {
+		    try {
+			Field currentField = jobDetailInstance.getClass().getDeclaredField(fieldName);
+			currentField.setAccessible(true);
+			if (templateField.payFieldType() == PayFieldTypeValue.TOTAL) {
+			    job.setTotalPay((Long) currentField.get(jobDetailInstance));
+			    job.setPayOnServiceType(templateField.payOnServiceType());
+			}
+			if (templateField.payFieldType() == PayFieldTypeValue.PER_ACTION) {
+			    job.setPayPerAction((Long) currentField.get(jobDetailInstance));
+			    job.setPayOnServiceType(templateField.payOnServiceType());
+			}
+		    } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+			throw new ServiceException(e.getMessage(), 500);
+		    }
+		});
     }
 
     /*
@@ -289,8 +292,8 @@ public class JobServiceImpl implements JobService {
     @Override
     public FilterTemplate getJobDetailFilterTemplateForTemplateName(String templateName) {
 	if (StringUtils.isNotEmpty(templateName)) {
-	    List<FilterTemplate> templates = mongoTemplate.find(
-		    new Query(Criteria.where("filterTemplateName").is(templateName)), FilterTemplate.class);
+	    List<FilterTemplate> templates = mongoTemplate
+		    .find(new Query(Criteria.where("filterTemplateName").is(templateName)), FilterTemplate.class);
 	    if (CollectionUtils.isEmpty(templates)) {
 		throw new ServiceException(
 			String.format("No template found for the passed template name : {%s} !", templateName), 400);

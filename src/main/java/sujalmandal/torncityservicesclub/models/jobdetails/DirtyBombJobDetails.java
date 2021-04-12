@@ -2,8 +2,8 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
@@ -21,16 +21,17 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class DirtyBombJobDetails implements JobDetails {
 
     @TemplateField(
-	    label = "Faction to attack",
+	    labelCommon = "Faction to attack",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    isSearchable = false
     )
     private String factionName;
 
     @TemplateField(
-	    label = "Pay for this job (better be good)",
+	    labelCommon = "Pay for this job (better be good)",
 	    type = FieldTypeValue.NUMBER,
 	    formatter = FieldFormatValue.CURRENCY,
+	    payOnServiceType = ServiceTypeValue.REQUEST,
 	    minValue = 100_000_000,
 	    maxValue = 5_000_000_000L,
 	    payFieldType = PayFieldTypeValue.TOTAL,

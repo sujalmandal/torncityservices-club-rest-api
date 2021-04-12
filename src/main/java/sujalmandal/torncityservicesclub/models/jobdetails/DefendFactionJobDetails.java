@@ -2,8 +2,8 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
@@ -21,14 +21,14 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class DefendFactionJobDetails implements JobDetails {
 
     @TemplateField(
-	    label = "Faction to defend",
+	    labelCommon = "Faction to defend",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    isSearchable = false
     )
     private String factionName;
 
     @TemplateField(
-	    label = "Total duration for which attackers on this factions have to be hit",
+	    labelCommon = "Total duration for which attackers on this factions have to be hit",
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 5,
@@ -38,9 +38,10 @@ public class DefendFactionJobDetails implements JobDetails {
     private String durationDays;
 
     @TemplateField(
-	    label = "Total pay for this job",
+	    labelCommon = "Total pay for this job",
 	    formatter = FieldFormatValue.CURRENCY,
 	    type = FieldTypeValue.NUMBER,
+	    payOnServiceType = ServiceTypeValue.REQUEST,
 	    minValue = 10_000_000,
 	    maxValue = 500_000_000,
 	    payFieldType = PayFieldTypeValue.TOTAL,

@@ -2,8 +2,8 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
@@ -21,7 +21,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class ProfileWatchJobDetails implements JobDetails {
 
     @TemplateField(
-	    label = "Torn id of the player who has to be attacked",
+	    labelCommon = "Torn id of the player who has to be attacked",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    optional = true,
 	    isSearchable = false
@@ -29,7 +29,7 @@ public class ProfileWatchJobDetails implements JobDetails {
     private String targetPlayerId;
 
     @TemplateField(
-	    label = "Total watch hours",
+	    labelCommon = "Total watch hours",
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 24,
@@ -39,9 +39,10 @@ public class ProfileWatchJobDetails implements JobDetails {
     private Integer durationHours;
 
     @TemplateField(
-	    label = "Total pay for this job",
+	    labelCommon = "Total pay for this job",
 	    type = FieldTypeValue.NUMBER,
 	    formatter = FieldFormatValue.CURRENCY,
+	    payOnServiceType = ServiceTypeValue.REQUEST,
 	    minValue = 1_000_000,
 	    maxValue = 100_000_000,
 	    payFieldType = PayFieldTypeValue.TOTAL,

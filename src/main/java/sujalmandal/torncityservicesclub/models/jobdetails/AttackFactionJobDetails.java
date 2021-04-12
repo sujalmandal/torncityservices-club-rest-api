@@ -2,8 +2,8 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
@@ -21,7 +21,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class AttackFactionJobDetails implements JobDetails {
 
     @TemplateField(
-	    label = "Faction to attack",
+	    labelCommon = "Faction to attack",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    optional = true,
 	    isSearchable = false
@@ -29,7 +29,7 @@ public class AttackFactionJobDetails implements JobDetails {
     private String factionName;
 
     @TemplateField(
-	    label = "Total attacks on faction members",
+	    labelCommon = "Total attacks on faction members",
 	    formatter = FieldFormatValue.NUMBER,
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
@@ -41,7 +41,7 @@ public class AttackFactionJobDetails implements JobDetails {
     private String totalAttacks;
 
     @TemplateField(
-	    label = "Total duration in days over which the attack has to take place",
+	    labelCommon = "Total duration in days over which the attack has to take place",
 	    formatter = FieldFormatValue.NUMBER,
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
@@ -52,8 +52,9 @@ public class AttackFactionJobDetails implements JobDetails {
     private String duration;
 
     @TemplateField(
-	    label = "Total pay for this job",
+	    labelCommon = "Total pay for this job",
 	    payFieldType = PayFieldTypeValue.TOTAL,
+	    payOnServiceType = ServiceTypeValue.REQUEST,
 	    type = FieldTypeValue.NUMBER,
 	    formatter = FieldFormatValue.CURRENCY,
 	    minValue = 10_000_000,

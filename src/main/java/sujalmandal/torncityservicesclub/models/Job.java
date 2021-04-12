@@ -14,7 +14,9 @@ import sujalmandal.torncityservicesclub.utils.AppUtils;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Data
-@Document(collection = "Job")
+@Document(
+	collection = "Job"
+)
 @NoArgsConstructor
 public class Job {
     @Id
@@ -38,6 +40,7 @@ public class Job {
     private ServiceTypeValue serviceType;
     private Long payPerAction;
     private Long totalPay;
+    private ServiceTypeValue payOnServiceType;
 
     public JobResponseDTO toJobResponseDTO() {
 	JobResponseDTO responseDTO = new JobResponseDTO();

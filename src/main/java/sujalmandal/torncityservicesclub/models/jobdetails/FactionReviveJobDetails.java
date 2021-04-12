@@ -2,8 +2,8 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
@@ -21,7 +21,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class FactionReviveJobDetails implements JobDetails {
 
     @TemplateField(
-	    label = "Faction to revive",
+	    labelCommon = "Faction to revive",
 	    serviceType = ServiceTypeValue.REQUEST,
 	    optional = true,
 	    isSearchable = false
@@ -29,7 +29,7 @@ public class FactionReviveJobDetails implements JobDetails {
     private String factionName;
 
     @TemplateField(
-	    label = "Total revives",
+	    labelCommon = "Total revives",
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 5,
@@ -40,7 +40,7 @@ public class FactionReviveJobDetails implements JobDetails {
     private Integer totalRevives;
 
     @TemplateField(
-	    label = "Duration over which revives need to be done",
+	    labelCommon = "Duration over which revives need to be done",
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 5,
@@ -51,12 +51,13 @@ public class FactionReviveJobDetails implements JobDetails {
     private Integer durationDays;
 
     @TemplateField(
-	    label = "Pay per revive",
+	    labelCommon = "Pay per revive",
 	    formatter = FieldFormatValue.CURRENCY,
 	    type = FieldTypeValue.NUMBER,
 	    minValue = 250_000,
 	    maxValue = 3_000_000,
 	    payFieldType = PayFieldTypeValue.PER_ACTION,
+	    payOnServiceType = ServiceTypeValue.REQUEST,
 	    maxFieldLabel = "max pay",
 	    minFieldLabel = "min pay"
     )

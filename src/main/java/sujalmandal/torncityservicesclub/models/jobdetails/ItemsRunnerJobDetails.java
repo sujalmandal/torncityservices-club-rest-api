@@ -2,12 +2,13 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
 import sujalmandal.torncityservicesclub.constants.AppConstants;
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
@@ -21,7 +22,7 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 public class ItemsRunnerJobDetails implements JobDetails {
 
     @TemplateField(
-	    label = "Type of items to run",
+	    labelCommon = "Type of items to run",
 	    type = FieldTypeValue.SELECT,
 	    options = { AppConstants.SELECT_DUMMY_OPTION, "All", "Temporaries", "Plushies", "Flowers",
 		    "High value items", "Weapons" }
@@ -29,12 +30,13 @@ public class ItemsRunnerJobDetails implements JobDetails {
     private String itemType;
 
     @TemplateField(
-	    label = "Total pay per trip",
+	    labelCommon = "Total pay per trip",
 	    type = FieldTypeValue.NUMBER,
 	    formatter = FieldFormatValue.CURRENCY,
 	    minValue = 500_000,
 	    maxValue = 50_000_000,
 	    payFieldType = PayFieldTypeValue.PER_ACTION,
+	    payOnServiceType = ServiceTypeValue.REQUEST,
 	    maxFieldLabel = "max pay per trip",
 	    minFieldLabel = "min pay per trip"
     )
