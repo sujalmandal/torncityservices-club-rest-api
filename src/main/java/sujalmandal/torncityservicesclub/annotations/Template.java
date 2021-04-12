@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface GenerateTemplate {
-    public JobDetailTemplateValue value();
+public @interface Template {
+    public TemplateValue value();
 }

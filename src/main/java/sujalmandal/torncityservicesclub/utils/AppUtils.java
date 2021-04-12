@@ -1,8 +1,8 @@
 package sujalmandal.torncityservicesclub.utils;
 
-import static sujalmandal.torncityservicesclub.enums.AppConstants.DD_MM_YYYY_DATE_FORMAT;
-import static sujalmandal.torncityservicesclub.enums.AppConstants.MONEY_EVENT_PATTERN;
-import static sujalmandal.torncityservicesclub.enums.AppConstants.TORN_CASH_PAYMENT_REDIRECT_URL_STUB;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.DD_MM_YYYY_DATE_FORMAT;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.MONEY_EVENT_PATTERN;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.TORN_CASH_PAYMENT_REDIRECT_URL_STUB;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,8 +10,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sujalmandal.torncityservicesclub.enums.PaymentStatus;
-import sujalmandal.torncityservicesclub.enums.SubscriptionType;
+import sujalmandal.torncityservicesclub.constants.PaymentStatus;
+import sujalmandal.torncityservicesclub.constants.SubscriptionType;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.torn.models.PlayerEventsDTO;

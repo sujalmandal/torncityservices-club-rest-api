@@ -2,7 +2,7 @@ package sujalmandal.torncityservicesclub.services;
 
 import java.util.Map;
 
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 public interface ValidationService {

@@ -1,4 +1,4 @@
-package sujalmandal.torncityservicesclub.enums;
+package sujalmandal.torncityservicesclub.constants;
 
 public enum JobFieldNames {
     IS_DELETED(

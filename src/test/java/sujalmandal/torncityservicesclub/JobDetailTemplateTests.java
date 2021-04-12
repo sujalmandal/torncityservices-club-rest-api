@@ -8,10 +8,10 @@ import org.modelmapper.internal.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.jobdetails.HospitalizeJobDetails;
-import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
+import sujalmandal.torncityservicesclub.utils.TemplateUtil;
 
 @Slf4j
 public class JobDetailTemplateTests {
@@ -29,7 +29,7 @@ public class JobDetailTemplateTests {
 	public void testGetTemplateNameFromJobDetailImpl() {
 		log.info(details.getJobDetailFormTemplateName());
 		Assert.isTrue(details.getJobDetailFormTemplateName().equals(
-				JobDetailTemplateValue.HOSPITALIZE.getFormTemplateName()));
+				TemplateValue.HOSPITALIZE.getFormTemplateName()));
 	}
 	
 	@Test
@@ -43,13 +43,13 @@ public class JobDetailTemplateTests {
 	
 	@Test
 	public void testJobDetailFromMap() {
-		TemplateGeneratorUtil.loadJobDetailImplClasses();
+		TemplateUtil.loadTemplatizedClasses();
 		HashMap<String, Object> detailsAsMap = new HashMap<>();
 		detailsAsMap.put("pay", 250_000);
 		detailsAsMap.put("targetPlayerId", "678232");
 		detailsAsMap.put("totalHospitalizations", 20);
 		HospitalizeJobDetails generatedHospJobDetails = (HospitalizeJobDetails) JobDetails
-				.fromMap(JobDetailTemplateValue.HOSPITALIZE
+				.fromMap(TemplateValue.HOSPITALIZE
 						.getFormTemplateName(), detailsAsMap);
 		log.info(generatedHospJobDetails.toString());
 		Assert.isTrue(generatedHospJobDetails != null);

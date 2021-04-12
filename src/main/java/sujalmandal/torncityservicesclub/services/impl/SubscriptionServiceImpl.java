@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import sujalmandal.torncityservicesclub.constants.SubscriptionType;
 import sujalmandal.torncityservicesclub.dtos.commons.SubscriptionPaymentDetailsDTO;
 import sujalmandal.torncityservicesclub.dtos.request.SubscriptionRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.SubscriptionVerificationRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.SubscriptionVerificationResponseDTO;
-import sujalmandal.torncityservicesclub.enums.SubscriptionType;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.models.Player;

@@ -8,8 +8,8 @@ import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobUpateRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.models.Job;
-import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
-import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
+import sujalmandal.torncityservicesclub.models.FilterTemplate;
+import sujalmandal.torncityservicesclub.models.FormTemplate;
 
 public interface JobService {
 
@@ -23,9 +23,9 @@ public interface JobService {
 
     public Job cancelJob(JobUpateRequestDTO updateJobRequestDTO);
 
-    public JobDetailFormTemplate getJobDetailFormTemplateForTemplateName(String jobDetailFormTemplateName);
+    public FormTemplate getJobDetailFormTemplateForTemplateName(String jobDetailFormTemplateName);
 
-    public JobDetailFilterTemplate getJobDetailFilterTemplateForTemplateName(String templateName);
+    public FilterTemplate getJobDetailFilterTemplateForTemplateName(String templateName);
 
     public List<JobDetailTemplateDTO> getJobDetailTemplateInformation();
 

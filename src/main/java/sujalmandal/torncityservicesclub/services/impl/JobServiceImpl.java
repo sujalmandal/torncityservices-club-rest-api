@@ -23,6 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import sujalmandal.torncityservicesclub.constants.AppConstants;
+import sujalmandal.torncityservicesclub.constants.JobFieldNames;
+import sujalmandal.torncityservicesclub.constants.JobStatus;
+import sujalmandal.torncityservicesclub.constants.MongoCollections;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.dtos.commons.JobDetailTemplateDTO;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
@@ -31,17 +38,10 @@ import sujalmandal.torncityservicesclub.dtos.response.JobDetailFieldResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobDetailResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobFilterResponseDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
-import sujalmandal.torncityservicesclub.enums.AppConstants;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.JobFieldNames;
-import sujalmandal.torncityservicesclub.enums.JobStatus;
-import sujalmandal.torncityservicesclub.enums.MongoCollections;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Job;
-import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
-import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
+import sujalmandal.torncityservicesclub.models.FilterTemplate;
+import sujalmandal.torncityservicesclub.models.FormTemplate;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.models.MongoSequence;
 import sujalmandal.torncityservicesclub.models.Player;
@@ -189,10 +189,10 @@ public class JobServiceImpl implements JobService {
 	    try {
 		Field currentField = jobDetailInstance.getClass().getDeclaredField(fieldName);
 		currentField.setAccessible(true);
-		if (formField.payFieldType() == PayFieldType.TOTAL) {
+		if (formField.payFieldType() == PayFieldTypeValue.TOTAL) {
 		    job.setTotalPay((Long) currentField.get(jobDetailInstance));
 		}
-		if (formField.payFieldType() == PayFieldType.PER_ACTION) {
+		if (formField.payFieldType() == PayFieldTypeValue.PER_ACTION) {
 		    job.setPayPerAction((Long) currentField.get(jobDetailInstance));
 		}
 	    } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
@@ -266,10 +266,10 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobDetailFormTemplate getJobDetailFormTemplateForTemplateName(String templateName) {
+    public FormTemplate getJobDetailFormTemplateForTemplateName(String templateName) {
 	if (StringUtils.isNotEmpty(templateName)) {
-	    List<JobDetailFormTemplate> templates = mongoTemplate
-		    .find(new Query(Criteria.where("formTemplateName").is(templateName)), JobDetailFormTemplate.class);
+	    List<FormTemplate> templates = mongoTemplate
+		    .find(new Query(Criteria.where("formTemplateName").is(templateName)), FormTemplate.class);
 	    if (CollectionUtils.isEmpty(templates)) {
 		throw new ServiceException(
 			String.format("No template found for the passed template name : {%s} !", templateName), 400);
@@ -282,15 +282,15 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobDetailTemplateDTO> getJobDetailTemplateInformation() {
-	return Arrays.asList(JobDetailTemplateValue.values()).stream().map(JobDetailTemplateDTO::new)
+	return Arrays.asList(TemplateValue.values()).stream().map(JobDetailTemplateDTO::new)
 		.collect(Collectors.toList());
     }
 
     @Override
-    public JobDetailFilterTemplate getJobDetailFilterTemplateForTemplateName(String templateName) {
+    public FilterTemplate getJobDetailFilterTemplateForTemplateName(String templateName) {
 	if (StringUtils.isNotEmpty(templateName)) {
-	    List<JobDetailFilterTemplate> templates = mongoTemplate.find(
-		    new Query(Criteria.where("filterTemplateName").is(templateName)), JobDetailFilterTemplate.class);
+	    List<FilterTemplate> templates = mongoTemplate.find(
+		    new Query(Criteria.where("filterTemplateName").is(templateName)), FilterTemplate.class);
 	    if (CollectionUtils.isEmpty(templates)) {
 		throw new ServiceException(
 			String.format("No template found for the passed template name : {%s} !", templateName), 400);

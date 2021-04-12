@@ -9,10 +9,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.enums.AppConstants;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.constants.AppConstants;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 import sujalmandal.torncityservicesclub.services.ValidationService;
@@ -43,12 +43,12 @@ public class ValidationServiceImpl implements ValidationService {
 			currentField.setAccessible(true);
 
 			String javaType = currentField.getType().getName();
-			FormFieldTypeValue fieldType = formField.type();
+			FieldTypeValue fieldType = formField.type();
 			Object value = currentField.get(jobDetailImplInstance);
 
 			log.info("validating '{}' of type '{}' with value '{}'", fieldName, javaType, value);
 
-			if (fieldType == FormFieldTypeValue.NUMBER) {
+			if (fieldType == FieldTypeValue.NUMBER) {
 			    validateEmptyFields(errorMessages, fieldName, formField, value, serviceTypeValue);
 			    if (javaType.contains(Long.class.getSimpleName())) {
 				Long valueAsLong = (Long) value;
@@ -66,7 +66,7 @@ public class ValidationServiceImpl implements ValidationService {
 				    validateMinMaxValues(errorMessages, fieldName, valueAsInt, minValue, maxValue);
 				}
 			    }
-			} else if (fieldType == FormFieldTypeValue.SELECT) {
+			} else if (fieldType == FieldTypeValue.SELECT) {
 			    List<String> allowableValues = Arrays.asList(formField.options());
 			    validateOptions(errorMessages, fieldName, value, allowableValues);
 			}
@@ -94,7 +94,7 @@ public class ValidationServiceImpl implements ValidationService {
 	}
     }
 
-    private void validateEmptyFields(Map<String, String> errorMessages, String fieldName, FormField formField,
+    private void validateEmptyFields(Map<String, String> errorMessages, String fieldName, TemplateField formField,
 	    Object value, ServiceTypeValue jobServiceType) {
 	if ((!formField.optional() && value == null && formField.serviceType() == jobServiceType)
 		|| (formField.serviceType() == ServiceTypeValue.ALL && !formField.optional() && value == null)) {

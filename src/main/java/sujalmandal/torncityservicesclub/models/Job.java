@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sujalmandal.torncityservicesclub.constants.JobStatus;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
-import sujalmandal.torncityservicesclub.enums.JobStatus;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.utils.AppUtils;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
 

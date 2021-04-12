@@ -8,9 +8,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import sujalmandal.torncityservicesclub.constants.JobStatus;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.dtos.commons.FilterFieldDTO;
-import sujalmandal.torncityservicesclub.enums.JobStatus;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Getter
 @Setter

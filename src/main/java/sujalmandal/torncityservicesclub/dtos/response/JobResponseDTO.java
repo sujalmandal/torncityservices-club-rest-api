@@ -1,7 +1,7 @@
 package sujalmandal.torncityservicesclub.dtos.response;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 
 @Data
 public class JobResponseDTO {

@@ -2,70 +2,61 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.REVIVE_FACTION
+@Template(
+    TemplateValue.REVIVE_FACTION
 )
 public class FactionReviveJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "Faction to revive",
 	    serviceType = ServiceTypeValue.REQUEST,
-	    optional = true
+	    optional = true,
+	    isSearchable = false
     )
     private String factionName;
 
-    @FormField(
+    @TemplateField(
 	    label = "Total revives",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 5,
-	    optional = true
-    )
-    @FilterableField(
-	    label = "Total revives",
+	    optional = true,
 	    maxFieldLabel = "max revives",
 	    minFieldLabel = "min revives"
     )
     private Integer totalRevives;
 
-    @FormField(
+    @TemplateField(
 	    label = "Duration over which revives need to be done",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 5,
-	    optional = true
-    )
-    @FilterableField(
-	    label = "duration over which revives need to be done",
+	    optional = true,
 	    maxFieldLabel = "max days",
 	    minFieldLabel = "min days"
     )
     private Integer durationDays;
 
-    @FormField(
+    @TemplateField(
 	    label = "Pay per revive",
-	    formatter = FieldFormatterValue.CURRENCY,
-	    type = FormFieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 250_000,
 	    maxValue = 3_000_000,
-	    payFieldType = PayFieldType.PER_ACTION
-    )
-    @FilterableField(
-	    label = "Pay per revive",
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
 	    maxFieldLabel = "max pay",
 	    minFieldLabel = "min pay"
     )

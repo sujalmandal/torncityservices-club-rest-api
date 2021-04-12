@@ -1,13 +1,13 @@
 package sujalmandal.torncityservicesclub.utils;
 
-import static sujalmandal.torncityservicesclub.enums.AppConstants.JOB_DETAILS;
-import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MAX_PREFIX;
-import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
-import static sujalmandal.torncityservicesclub.enums.JobFieldNames.FILTER_TEMPLATE_NAME;
-import static sujalmandal.torncityservicesclub.enums.JobFieldNames.IS_DELETED;
-import static sujalmandal.torncityservicesclub.enums.JobFieldNames.POSTED_DATE;
-import static sujalmandal.torncityservicesclub.enums.JobFieldNames.SERVICE_TYPE;
-import static sujalmandal.torncityservicesclub.enums.JobFieldNames.STATUS;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.JOB_DETAILS;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.NUMBER_TYPE_FIELD_MAX_PREFIX;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
+import static sujalmandal.torncityservicesclub.constants.JobFieldNames.FILTER_TEMPLATE_NAME;
+import static sujalmandal.torncityservicesclub.constants.JobFieldNames.IS_DELETED;
+import static sujalmandal.torncityservicesclub.constants.JobFieldNames.POSTED_DATE;
+import static sujalmandal.torncityservicesclub.constants.JobFieldNames.SERVICE_TYPE;
+import static sujalmandal.torncityservicesclub.constants.JobFieldNames.STATUS;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.JobFieldNames;
+import sujalmandal.torncityservicesclub.constants.JobStatus;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.dtos.commons.FilterFieldDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobFieldNames;
-import sujalmandal.torncityservicesclub.enums.JobStatus;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 
 @Slf4j
 public class MongoUtil {
@@ -46,7 +46,7 @@ public class MongoUtil {
 	    Map<String, List<FilterFieldDTO>> groupedFilterFields = filter.getFilterFields().stream()
 		    .collect(Collectors.groupingBy(FilterFieldDTO::getGroupName));
 	    groupedFilterFields.forEach((groupName, fields) -> {
-		FormFieldTypeValue type = FormFieldTypeValue.valueOf(fields.get(0).getType());
+		FieldTypeValue type = FieldTypeValue.valueOf(fields.get(0).getType());
 		switch (type) {
 		case NUMBER:
 		    Optional<FilterFieldDTO> minField = fields.stream().filter(field -> {

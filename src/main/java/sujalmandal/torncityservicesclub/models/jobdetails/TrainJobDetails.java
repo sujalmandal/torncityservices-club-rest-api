@@ -2,50 +2,43 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.TRAINS
+@Template(
+    TemplateValue.TRAINS
 )
 public class TrainJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "How many trains in total",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 50,
 	    maxValue = 500,
-	    defaultValue = "50"
-    )
-    @FilterableField(
-	    label = "Total trains",
-	    maxFieldLabel = "maximum no. of trains",
-	    minFieldLabel = "minimum no. of trains"
+	    defaultValue = "50",
+	    maxFieldLabel = "max. no. of trains",
+	    minFieldLabel = "min. no. of trains"
     )
     private Integer totalTrains;
 
-    @FormField(
+    @TemplateField(
 	    label = "Money per train",
-	    type = FormFieldTypeValue.NUMBER,
-	    formatter = FieldFormatterValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
 	    minValue = 1,
 	    maxValue = 750_000,
-	    payFieldType = PayFieldType.PER_ACTION
-    )
-    @FilterableField(
-	    label = "total pay per train",
-	    maxFieldLabel = "maximum pay per train",
-	    minFieldLabel = "minimum pay per train"
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
+	    maxFieldLabel = "max. pay per train",
+	    minFieldLabel = "min. pay per train"
     )
     private Long amountPerTrain;
 }

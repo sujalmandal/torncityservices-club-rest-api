@@ -15,8 +15,10 @@ import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Getter
 @Setter
-@Document(collection = "JobDetailFormTemplate")
-public class JobDetailFormTemplate {
+@Document(
+	collection = "FormTemplate"
+)
+public class FormTemplate {
     @Id
     private String id;
     private String formTemplateName;
@@ -29,7 +31,7 @@ public class JobDetailFormTemplate {
     private List<FormFieldDescriptor> elements = new ArrayList<FormFieldDescriptor>();
 
     public String toJson() throws JsonProcessingException {
-	JobDetailFormTemplate copyOfThis = new JobDetailFormTemplate();
+	FormTemplate copyOfThis = new FormTemplate();
 	PojoUtils.map(this, copyOfThis);
 	copyOfThis.id = null;
 	return PojoUtils.getObjectMapper().writeValueAsString(copyOfThis);
@@ -43,7 +45,7 @@ public class JobDetailFormTemplate {
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	JobDetailFormTemplate other = (JobDetailFormTemplate) obj;
+	FormTemplate other = (FormTemplate) obj;
 	if (formTemplateName == null) {
 	    if (other.formTemplateName != null)
 		return false;

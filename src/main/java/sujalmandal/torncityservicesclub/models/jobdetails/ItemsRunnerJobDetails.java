@@ -2,46 +2,39 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.AppConstants;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.AppConstants;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.ITEMS_RUNNER
+@Template(
+    TemplateValue.ITEMS_RUNNER
 )
 public class ItemsRunnerJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "Type of items to run",
-	    type = FormFieldTypeValue.SELECT,
+	    type = FieldTypeValue.SELECT,
 	    options = { AppConstants.SELECT_DUMMY_OPTION, "All", "Temporaries", "Plushies", "Flowers",
 		    "High value items", "Weapons" }
     )
-    @FilterableField(
-	    label = "Type of the item"
-    )
     private String itemType;
 
-    @FormField(
+    @TemplateField(
 	    label = "Total pay per trip",
-	    type = FormFieldTypeValue.NUMBER,
-	    formatter = FieldFormatterValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
 	    minValue = 500_000,
 	    maxValue = 50_000_000,
-	    payFieldType = PayFieldType.PER_ACTION
-    )
-    @FilterableField(
-	    label = "total pay per trip",
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
 	    maxFieldLabel = "max pay per trip",
 	    minFieldLabel = "min pay per trip"
     )

@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
-import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
+import sujalmandal.torncityservicesclub.utils.TemplateUtil;
 
 public interface JobDetails {
 
@@ -22,17 +22,17 @@ public interface JobDetails {
     }
 
     private static Optional<Class<?>> getImplementation(String jobDetailFormTemplateName) {
-	Optional<Class<?>> clazz = TemplateGeneratorUtil.getJobDetailImplClasses().stream().filter(implClass -> {
-	    return implClass.getAnnotation(GenerateTemplate.class).value().getFormTemplateName()
+	Optional<Class<?>> clazz = TemplateUtil.getJobDetailImplClasses().stream().filter(implClass -> {
+	    return implClass.getAnnotation(Template.class).value().getFormTemplateName()
 		    .equals(jobDetailFormTemplateName);
 	}).findFirst();
 	return clazz;
     }
 
-    public static Map<String, FormField> getFieldDetails(String jobDetailFormTemplateName) {
-	Map<String, FormField> formFields = new HashMap<String, FormField>();
+    public static Map<String, TemplateField> getFieldDetails(String jobDetailFormTemplateName) {
+	Map<String, TemplateField> formFields = new HashMap<String, TemplateField>();
 	for (Field f : getImplementation(jobDetailFormTemplateName).get().getDeclaredFields()) {
-	    formFields.put(f.getName(), f.getAnnotation(FormField.class));
+	    formFields.put(f.getName(), f.getAnnotation(TemplateField.class));
 	}
 	return formFields;
     }
@@ -43,22 +43,22 @@ public interface JobDetails {
     }
 
     default public String getJobDetailFormTemplateName() {
-	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormTemplateName();
+	return this.getClass().getAnnotation(Template.class).value().getFormTemplateName();
     }
 
     default public String getJobDetailFormTemplateLabel() {
-	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormTemplateLabel();
+	return this.getClass().getAnnotation(Template.class).value().getFormTemplateLabel();
     }
 
     default public String getJobDetailFormTemplateLabelForRequest() {
-	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormRequestTypeLabel();
+	return this.getClass().getAnnotation(Template.class).value().getFormRequestTypeLabel();
     }
 
     default public String getJobDetailFormTemplateLabelForOffer() {
-	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFormOfferTypeLabel();
+	return this.getClass().getAnnotation(Template.class).value().getFormOfferTypeLabel();
     }
 
     default public String getJobDetailFilterTemplateName() {
-	return this.getClass().getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
+	return this.getClass().getAnnotation(Template.class).value().getFilterTemplateName();
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sujalmandal.torncityservicesclub.enums.SubscriptionType;
+import sujalmandal.torncityservicesclub.constants.SubscriptionType;
 import sujalmandal.torncityservicesclub.torn.models.TornPlayer;
 
 @Data

@@ -16,10 +16,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
-import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
+import sujalmandal.torncityservicesclub.models.FilterTemplate;
+import sujalmandal.torncityservicesclub.models.FormTemplate;
 import sujalmandal.torncityservicesclub.services.JobService;
-import sujalmandal.torncityservicesclub.utils.TemplateGeneratorUtil;
+import sujalmandal.torncityservicesclub.utils.TemplateUtil;
 
 @Component
 @Slf4j
@@ -59,20 +59,20 @@ public class AppConfigurer implements WebMvcConfigurer {
     }
 
     private void updateJobDetailFormTemplates() throws JsonProcessingException {
-	mongoTemplate.dropCollection(JobDetailFormTemplate.class);
+	mongoTemplate.dropCollection(FormTemplate.class);
 	log.info("Creating job detail form templates..");
-	Set<JobDetailFormTemplate> generatedFormTemplates = TemplateGeneratorUtil.generateJobDetailFormTemplates();
-	for (JobDetailFormTemplate template : generatedFormTemplates) {
+	Set<FormTemplate> generatedFormTemplates = TemplateUtil.generateFormTemplate();
+	for (FormTemplate template : generatedFormTemplates) {
 	    mongoTemplate.save(template);
 	}
     }
 
     private void updateJobDetailFilterTemplates() throws JsonProcessingException {
-	mongoTemplate.dropCollection(JobDetailFilterTemplate.class);
+	mongoTemplate.dropCollection(FilterTemplate.class);
 	log.info("Creating job detail filter templates..");
-	Set<JobDetailFilterTemplate> generatedFilterTemplates = TemplateGeneratorUtil
-		.generateJobDetailFilterTemplates();
-	for (JobDetailFilterTemplate template : generatedFilterTemplates) {
+	Set<FilterTemplate> generatedFilterTemplates = TemplateUtil
+		.generateFilterTemplate();
+	for (FilterTemplate template : generatedFilterTemplates) {
 	    log.info("Saving {} filter template!", template.getFilterTemplateName());
 	    mongoTemplate.save(template);
 	}

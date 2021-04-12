@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.enums.AppConstants;
+import sujalmandal.torncityservicesclub.constants.AppConstants;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.repositories.PlayerRepository;
 import sujalmandal.torncityservicesclub.services.TornAPIService;

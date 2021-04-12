@@ -1,7 +1,7 @@
 package sujalmandal.torncityservicesclub.dtos.response;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.enums.PaymentStatus;
+import sujalmandal.torncityservicesclub.constants.PaymentStatus;
 
 @Data
 public class SubscriptionVerificationResponseDTO {

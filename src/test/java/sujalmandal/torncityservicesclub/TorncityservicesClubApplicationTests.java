@@ -17,11 +17,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.dtos.commons.PlayerDTO;
 import sujalmandal.torncityservicesclub.dtos.request.CreateJobRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.request.JobFilterRequestDTO;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.models.Player;

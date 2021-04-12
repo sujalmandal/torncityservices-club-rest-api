@@ -2,75 +2,65 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.BOUNTY_PLAYER
+@Template(
+    TemplateValue.BOUNTY_PLAYER
 )
 public class BountyPlayerJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "Torn id of the player on which the bounty has to be placed",
 	    serviceType = ServiceTypeValue.REQUEST,
-	    optional = true
+	    optional = true,
+	    isSearchable = false
     )
     private String targetPlayerId;
 
-    @FormField(
+    @TemplateField(
 	    label = "Message while posting the bounty",
 	    serviceType = ServiceTypeValue.REQUEST,
-	    optional = true
+	    optional = true,
+	    isSearchable = false
     )
     private String bountyMessage;
 
-    @FormField(
+    @TemplateField(
 	    label = "Number of bounties to place",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
-	    maxValue = 50
-    )
-    @FilterableField(
-	    label = "total bounties",
+	    maxValue = 50,
 	    maxFieldLabel = "maximum bounties",
 	    minFieldLabel = "minimum bounties"
     )
     private Integer totalTimes;
 
-    @FormField(
+    @TemplateField(
 	    label = "Anonymous bounties?",
 	    serviceType = ServiceTypeValue.REQUEST,
-	    type = FormFieldTypeValue.CHECKBOX,
+	    type = FieldTypeValue.CHECKBOX,
 	    defaultValue = "false"
-    )
-    @FilterableField(
-	    label = "Anonymous or not"
     )
     private Boolean isAnon = Boolean.FALSE;
 
-    @HighlightWhen
-    @FormField(
+    @TemplateField(
 	    label = "How much money per bounty",
-	    payFieldType = PayFieldType.PER_ACTION,
-	    formatter = FieldFormatterValue.CURRENCY,
-	    type = FormFieldTypeValue.NUMBER,
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
+	    formatter = FieldFormatValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 50_000,
-	    maxValue = 5_000_000
-    )
-    @FilterableField(
-	    label = " pay per bounty",
+	    maxValue = 5_000_000,
 	    maxFieldLabel = "maximum pay per bounty",
 	    minFieldLabel = "minimum pay per bounty"
     )

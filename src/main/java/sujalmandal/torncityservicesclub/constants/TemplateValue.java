@@ -1,9 +1,9 @@
-package sujalmandal.torncityservicesclub.enums;
+package sujalmandal.torncityservicesclub.constants;
 
 import lombok.Getter;
 
 @Getter
-public enum JobDetailTemplateValue {
+public enum TemplateValue {
 
     // REQUEST : I am looking for + formRequestTypeLabel
     // OFFER : I am offering to + formOfferTypeLabel
@@ -79,14 +79,17 @@ public enum JobDetailTemplateValue {
 
     private String formTemplateName;
     private String formTemplateLabel;
-    private String filterTemplateName;;
-    private String filterTemplateLabel;
+
     private String formRequestTypeLabel;
     private String formOfferTypeLabel;
+
+    private String filterTemplateName;;
+    private String filterTemplateLabel;
+
     private String filterRequestTypeLabel;
     private String filterOfferTypeLabel;
 
-    private JobDetailTemplateValue(String formTemplateName, String formTemplateLabel, String filterTemplateName,
+    private TemplateValue(String formTemplateName, String formTemplateLabel, String filterTemplateName,
 	    String filterTemplateLabel, String formRequestTypeLabel, String formOfferTypeLabel,
 	    String filterRequestTypeLabel, String filterOfferTypeLabel) {
 	this.formTemplateName = formTemplateName;

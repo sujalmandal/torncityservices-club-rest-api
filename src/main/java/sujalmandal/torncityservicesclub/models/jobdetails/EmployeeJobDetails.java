@@ -2,23 +2,21 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.annotations.HighlightWhen;
-import sujalmandal.torncityservicesclub.enums.AppConstants;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.AppConstants;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.EMPLOYEE
+@Template(
+    TemplateValue.EMPLOYEE
 )
 public class EmployeeJobDetails implements JobDetails {
 
@@ -27,9 +25,9 @@ public class EmployeeJobDetails implements JobDetails {
      * 
      * filter response with JMESPath 'companies.[*][0][*].name'
      */
-    @FormField(
+    @TemplateField(
 	    label = "Company type",
-	    type = FormFieldTypeValue.SELECT,
+	    type = FieldTypeValue.SELECT,
 	    options = { AppConstants.SELECT_DUMMY_OPTION, "All", "Hair Salon", "Law Firm", "Flower Shop",
 		    "Car Dealership", "Clothing Store", "Gun Shop", "Game Shop", "Candle Shop", "Toy Shop",
 		    "Adult Novelties", "Cyber Cafe", "Grocery Store", "Theater", "Sweet Shop", "Cruise Line",
@@ -41,84 +39,65 @@ public class EmployeeJobDetails implements JobDetails {
 	    labelRequest = "Company type %s wants to work in",
 	    labelOffer = "Company type in which work is offered"
     )
-    @FilterableField(
-	    label = "company type"
-    )
     private String companyType;
 
-    @HighlightWhen
-    @FormField(
+    @TemplateField(
 	    label = "Company star/level",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
 	    maxValue = 10,
 	    labelRequest = "Company level %s wants to work in",
-	    labelOffer = "Company level in which work is offered"
-    )
-    @FilterableField(
-	    label = "company star/level",
+	    labelOffer = "Company level in which work is offered",
 	    maxFieldLabel = "maximum star/level",
 	    minFieldLabel = "minimum star/level"
     )
     private Integer companyStar;
 
-    @FormField(
+    @TemplateField(
 	    label = "End",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 100,
 	    maxValue = 500_000,
 	    labelRequest = "Endurance stat of %s",
-	    labelOffer = "Minimum endurance required for this vacancy"
-    )
-    @FilterableField(
-	    label = "End",
+	    labelOffer = "Minimum endurance required for this vacancy",
 	    maxFieldLabel = "maximum end",
 	    minFieldLabel = "minimum end"
     )
     private Integer endurance;
 
-    @FormField(
+    @TemplateField(
 	    label = "Man",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 100,
 	    maxValue = 500_000,
 	    labelRequest = "Manual stat of %s",
-	    labelOffer = "Minimum manual required for this vacancy"
-    )
-    @FilterableField(
-	    label = "Man",
+	    labelOffer = "Minimum manual required for this vacancy",
 	    maxFieldLabel = "maximum man",
 	    minFieldLabel = "minimum man"
     )
     private Integer manual;
 
-    @FormField(
+    @TemplateField(
 	    label = "Int",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 100,
 	    maxValue = 500_000,
 	    labelRequest = "Intelligence stat of %s",
-	    labelOffer = "Minimum intelligence required for this vacancy"
-    )
-    @FilterableField(
-	    label = "Int",
+	    labelOffer = "Minimum intelligence required for this vacancy",
 	    maxFieldLabel = "maximum int",
 	    minFieldLabel = "minimum int"
     )
     private Integer intelligence;
 
-    @FormField(
+    @TemplateField(
 	    label = "Daily pay",
-	    type = FormFieldTypeValue.NUMBER,
-	    formatter = FieldFormatterValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
 	    minValue = 0,
 	    maxValue = 5_000_000,
-	    payFieldType = PayFieldType.PER_ACTION,
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
 	    labelRequest = "Minimum salary %s wants",
-	    labelOffer = "Maximum salary %s offered for this vacancy"
-    )
-    @FilterableField(
-	    label = "daily salary",
+	    labelOffer = "Maximum salary %s offered for this vacancy",
 	    maxFieldLabel = "maximum daily salary",
 	    minFieldLabel = "minimum daily salary"
     )

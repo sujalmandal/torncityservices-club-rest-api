@@ -2,55 +2,49 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.PROFILE_WATCH
+@Template(
+    TemplateValue.PROFILE_WATCH
 )
 public class ProfileWatchJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "Torn id of the player who has to be attacked",
 	    serviceType = ServiceTypeValue.REQUEST,
-	    optional = true
+	    optional = true,
+	    isSearchable = false
     )
     private String targetPlayerId;
 
-    @FormField(
+    @TemplateField(
 	    label = "Total watch hours",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
-	    maxValue = 24
-    )
-    @FilterableField(
-	    label = "total watch duration in hours",
+	    maxValue = 24,
 	    maxFieldLabel = "max no. of hours",
 	    minFieldLabel = "min no. of hours"
     )
     private Integer durationHours;
 
-    @FormField(
+    @TemplateField(
 	    label = "Total pay for this job",
-	    type = FormFieldTypeValue.NUMBER,
-	    formatter = FieldFormatterValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
 	    minValue = 1_000_000,
 	    maxValue = 100_000_000,
-	    payFieldType = PayFieldType.TOTAL
-    )
-    @FilterableField(
-	    label = "total pay for this job",
+	    payFieldType = PayFieldTypeValue.TOTAL,
 	    maxFieldLabel = "max pay",
 	    minFieldLabel = "min pay"
     )

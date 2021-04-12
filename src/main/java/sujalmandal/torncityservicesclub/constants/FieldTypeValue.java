@@ -1,11 +1,11 @@
-package sujalmandal.torncityservicesclub.enums;
+package sujalmandal.torncityservicesclub.constants;
 
-public enum FormFieldTypeValue {
+public enum FieldTypeValue {
     TEXT("text"), NUMBER("number"), CHECKBOX("checkbox"), SELECT("select");
 
     String value;
 
-    private FormFieldTypeValue(String value) {
+    private FieldTypeValue(String value) {
 	this.value = value;
     }
 

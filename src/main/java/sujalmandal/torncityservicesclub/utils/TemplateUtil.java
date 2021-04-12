@@ -1,8 +1,8 @@
 package sujalmandal.torncityservicesclub.utils;
 
-import static sujalmandal.torncityservicesclub.enums.AppConstants.JOB_DETAIL_IMPL_SEARCH_PACKAGE;
-import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MAX_PREFIX;
-import static sujalmandal.torncityservicesclub.enums.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.JOB_DETAIL_IMPL_SEARCH_PACKAGE;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.NUMBER_TYPE_FIELD_MAX_PREFIX;
+import static sujalmandal.torncityservicesclub.constants.AppConstants.NUMBER_TYPE_FIELD_MIN_PREFIX;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -16,32 +16,31 @@ import org.reflections.Reflections;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.FilterFieldDescriptor;
+import sujalmandal.torncityservicesclub.models.FilterTemplate;
 import sujalmandal.torncityservicesclub.models.FormFieldDescriptor;
-import sujalmandal.torncityservicesclub.models.JobDetailFilterTemplate;
-import sujalmandal.torncityservicesclub.models.JobDetailFormTemplate;
+import sujalmandal.torncityservicesclub.models.FormTemplate;
 
 @Slf4j
-public class TemplateGeneratorUtil {
+public class TemplateUtil {
 
     private static final Reflections reflections = new Reflections(JOB_DETAIL_IMPL_SEARCH_PACKAGE.toString());
 
-    private static Set<Class<?>> jobDetailImplClasses;
+    private static Set<Class<?>> templateableClasses;
 
-    public static Set<JobDetailFormTemplate> generateJobDetailFormTemplates() throws JsonProcessingException {
-	TemplateGeneratorUtil.loadJobDetailImplClasses();
-	Set<JobDetailFormTemplate> formDescriptors = new HashSet<>();
-	for (Class<?> clazz : jobDetailImplClasses) {
-	    JobDetailFormTemplate formDescriptor = new JobDetailFormTemplate();
-	    JobDetailTemplateValue template = clazz.getAnnotation(GenerateTemplate.class).value();
+    public static Set<FormTemplate> generateFormTemplate() throws JsonProcessingException {
+	TemplateUtil.loadTemplatizedClasses();
+	Set<FormTemplate> formDescriptors = new HashSet<>();
+	for (Class<?> clazz : templateableClasses) {
+	    FormTemplate formDescriptor = new FormTemplate();
+	    TemplateValue template = clazz.getAnnotation(Template.class).value();
 
 	    String formTemplateName = template.getFormTemplateName();
 	    String formTemplateLabel = template.getFormTemplateLabel();
@@ -61,7 +60,7 @@ public class TemplateGeneratorUtil {
 
 	    for (Field field : clazz.getDeclaredFields()) {
 		FormFieldDescriptor fieldDescriptor = new FormFieldDescriptor();
-		if (field.isAnnotationPresent(FormField.class)) {
+		if (field.isAnnotationPresent(TemplateField.class)) {
 		    extractFormFieldDescriptor(field, fieldDescriptor);
 		    formDescriptor.getElements().add(fieldDescriptor);
 		} else {
@@ -75,7 +74,7 @@ public class TemplateGeneratorUtil {
     }
 
     private static void extractFormFieldDescriptor(Field field, FormFieldDescriptor fieldDescriptor) {
-	FormField formField = field.getAnnotation(FormField.class);
+	TemplateField formField = field.getAnnotation(TemplateField.class);
 	ServiceTypeValue serviceType = formField.serviceType();
 	fieldDescriptor.setId(UUID.randomUUID().toString());
 	fieldDescriptor.setLabel(formField.label());
@@ -88,61 +87,59 @@ public class TemplateGeneratorUtil {
 	fieldDescriptor.setMinValue(formField.minValue());
 	fieldDescriptor.setDefaultValue(formField.defaultValue());
 	fieldDescriptor.setOptions(Arrays.asList(formField.options()));
-	if (fieldDescriptor.getType() == FormFieldTypeValue.NUMBER) {
+	if (fieldDescriptor.getType() == FieldTypeValue.NUMBER) {
 	    fieldDescriptor.setFormat(formField.formatter());
 	}
     }
 
-    public static Set<JobDetailFilterTemplate> generateJobDetailFilterTemplates() throws JsonProcessingException {
-	TemplateGeneratorUtil.loadJobDetailImplClasses();
-	Set<JobDetailFilterTemplate> filterTemplates = new HashSet<>();
-	for (Class<?> clazz : jobDetailImplClasses) {
-	    JobDetailFilterTemplate filterTemplate = new JobDetailFilterTemplate();
-	    String filterTemplateName = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateName();
-	    String filterTemplateLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterTemplateLabel();
+    public static Set<FilterTemplate> generateFilterTemplate() throws JsonProcessingException {
+	TemplateUtil.loadTemplatizedClasses();
+	Set<FilterTemplate> filterTemplates = new HashSet<>();
+	for (Class<?> clazz : templateableClasses) {
+	    FilterTemplate filterTemplate = new FilterTemplate();
+	    String filterTemplateName = clazz.getAnnotation(Template.class).value().getFilterTemplateName();
+	    String filterTemplateLabel = clazz.getAnnotation(Template.class).value().getFilterTemplateLabel();
 	    filterTemplate.setFilterTemplateName(filterTemplateName);
 	    filterTemplate.setFilterTemplateLabel(filterTemplateLabel);
 
-	    String filterRequestTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value()
-		    .getFilterRequestTypeLabel();
-	    String filterOfferTypeLabel = clazz.getAnnotation(GenerateTemplate.class).value().getFilterOfferTypeLabel();
+	    String filterRequestTypeLabel = clazz.getAnnotation(Template.class).value().getFilterRequestTypeLabel();
+	    String filterOfferTypeLabel = clazz.getAnnotation(Template.class).value().getFilterOfferTypeLabel();
 	    filterTemplate.setFilterRequestTypeLabel(filterRequestTypeLabel);
 	    filterTemplate.setFilterOfferTypeLabel(filterOfferTypeLabel);
 
 	    for (Field field : clazz.getDeclaredFields()) {
 
-		boolean isFilterable = field.isAnnotationPresent(FilterableField.class);
-		if (isFilterable) {
-		    if (field.isAnnotationPresent(FormField.class)) {
-			FormField formField = field.getAnnotation(FormField.class);
-			FilterableField filterableField = field.getAnnotation(FilterableField.class);
+		TemplateField templateField = field.getAnnotation(TemplateField.class);
+		if (templateField.isSearchable()) {
+		    if (field.isAnnotationPresent(TemplateField.class)) {
 
-			FormFieldTypeValue fieldType = formField.type();
+			FieldTypeValue fieldType = templateField.type();
 			String fieldName = field.getName();
-			String fieldLabel = filterableField.label();
-			String defaultValue = formField.defaultValue();
-			ServiceTypeValue serviceType = formField.serviceType();
-			FieldFormatterValue format = formField.formatter();
+			String fieldLabel = templateField.label();
+			String defaultValue = templateField.defaultValue();
+			ServiceTypeValue serviceType = templateField.serviceType();
+			FieldFormatValue format = templateField.formatter();
 
 			switch (fieldType) {
 			case NUMBER:
-			    long maxValue = formField.maxValue();
-			    long minValue = formField.minValue();
-			    extractNumberFilterFields(filterTemplate, fieldType, filterableField, fieldName,
-				    serviceType, format, defaultValue, maxValue, minValue);
+			    long maxValue = templateField.maxValue();
+			    long minValue = templateField.minValue();
+			    extractNumberFilterFields(filterTemplate, fieldType, templateField.maxFieldLabel(),
+				    templateField.minFieldLabel(), fieldName, serviceType, format, defaultValue, maxValue,
+				    minValue, templateField.labelOffer(), templateField.labelRequest());
 			    break;
 			case CHECKBOX:
 			    extractCheckboxFilterField(filterTemplate, fieldType, fieldName, serviceType, fieldLabel,
-				    defaultValue);
+				    defaultValue, templateField.labelOffer(), templateField.labelRequest());
 			    break;
 			case SELECT:
-			    String[] options = formField.options();
+			    String[] options = templateField.options();
 			    extractSelectFilterField(filterTemplate, fieldType, fieldName, serviceType, fieldLabel,
-				    defaultValue, options);
+				    defaultValue, options, templateField.labelOffer(), templateField.labelRequest());
 			    break;
 			default:
 			    extractTextFilterField(filterTemplate, fieldType, fieldName, serviceType, fieldLabel,
-				    defaultValue);
+				    defaultValue, templateField.labelOffer(), templateField.labelRequest());
 			}
 
 		    } else {
@@ -156,8 +153,9 @@ public class TemplateGeneratorUtil {
 	return filterTemplates;
     }
 
-    private static void extractSelectFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
-	    String fieldName, ServiceTypeValue serviceType, String fieldLabel, String defaultValue, String[] options) {
+    private static void extractSelectFilterField(FilterTemplate filterTemplate, FieldTypeValue type, String fieldName,
+	    ServiceTypeValue serviceType, String fieldLabel, String defaultValue, String[] options, String labelOffer,
+	    String labelRequest) {
 	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
 	fieldDescriptor.setGroupName(fieldName);
 	fieldDescriptor.setFieldName(fieldName);
@@ -166,11 +164,14 @@ public class TemplateGeneratorUtil {
 	fieldDescriptor.setOptions(Arrays.asList(options));
 	fieldDescriptor.setServiceType(serviceType);
 	fieldDescriptor.setFieldType(type);
+	fieldDescriptor.setLabelOffer(labelOffer);
+	fieldDescriptor.setLabelRequest(labelRequest);
 	filterTemplate.getFilterElements().add(fieldDescriptor);
     }
 
-    private static void extractCheckboxFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
-	    String fieldName, ServiceTypeValue serviceType, String fieldLabel, String defaultValue) {
+    private static void extractCheckboxFilterField(FilterTemplate filterTemplate, FieldTypeValue type, String fieldName,
+	    ServiceTypeValue serviceType, String fieldLabel, String defaultValue, String labelOffer,
+	    String labelRequest) {
 	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
 	fieldDescriptor.setGroupName(fieldName);
 	fieldDescriptor.setFieldName(fieldName);
@@ -178,11 +179,14 @@ public class TemplateGeneratorUtil {
 	fieldDescriptor.setDefaultValue(defaultValue);
 	fieldDescriptor.setServiceType(serviceType);
 	fieldDescriptor.setFieldType(type);
+	fieldDescriptor.setLabelOffer(labelOffer);
+	fieldDescriptor.setLabelRequest(labelRequest);
 	filterTemplate.getFilterElements().add(fieldDescriptor);
     }
 
-    private static void extractTextFilterField(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
-	    String fieldName, ServiceTypeValue serviceType, String fieldLabel, String defaultValue) {
+    private static void extractTextFilterField(FilterTemplate filterTemplate, FieldTypeValue type, String fieldName,
+	    ServiceTypeValue serviceType, String fieldLabel, String defaultValue, String labelOffer,
+	    String labelRequest) {
 	FilterFieldDescriptor fieldDescriptor = new FilterFieldDescriptor();
 	fieldDescriptor.setGroupName(fieldName);
 	fieldDescriptor.setFieldName(fieldName);
@@ -190,19 +194,21 @@ public class TemplateGeneratorUtil {
 	fieldDescriptor.setFieldLabel(fieldLabel);
 	fieldDescriptor.setServiceType(serviceType);
 	fieldDescriptor.setFieldType(type);
+	fieldDescriptor.setLabelOffer(labelOffer);
+	fieldDescriptor.setLabelRequest(labelRequest);
 	filterTemplate.getFilterElements().add(fieldDescriptor);
     }
 
-    private static void extractNumberFilterFields(JobDetailFilterTemplate filterTemplate, FormFieldTypeValue type,
-	    FilterableField filterableField, String fieldName, ServiceTypeValue serviceType, FieldFormatterValue format,
-	    String defaultValue, long maxValue, long minValue) {
+    private static void extractNumberFilterFields(FilterTemplate filterTemplate, FieldTypeValue type,
+	    String maxFieldLabel, String minFieldLabel, String fieldName, ServiceTypeValue serviceType,
+	    FieldFormatValue format, String defaultValue, long maxValue, long minValue, String labelOffer,
+	    String labelRequest) {
+
 	String maxFieldName = NUMBER_TYPE_FIELD_MAX_PREFIX.toString() + fieldName.substring(0, 1).toUpperCase()
 		+ fieldName.substring(1, fieldName.length());
-	String maxFieldLabel = filterableField.maxFieldLabel();
 
 	String minFieldName = NUMBER_TYPE_FIELD_MIN_PREFIX.toString() + fieldName.substring(0, 1).toUpperCase()
 		+ fieldName.substring(1, fieldName.length());
-	String minFieldLabel = filterableField.minFieldLabel();
 
 	FilterFieldDescriptor minFieldDescriptor = new FilterFieldDescriptor();
 	minFieldDescriptor.setMaxValue(maxValue);
@@ -214,6 +220,8 @@ public class TemplateGeneratorUtil {
 	minFieldDescriptor.setServiceType(serviceType);
 	minFieldDescriptor.setDefaultValue(defaultValue);
 	minFieldDescriptor.setFieldType(type);
+	minFieldDescriptor.setLabelOffer(labelOffer);
+	minFieldDescriptor.setLabelRequest(labelRequest);
 
 	FilterFieldDescriptor maxFieldDescriptor = new FilterFieldDescriptor();
 	maxFieldDescriptor.setMaxValue(maxValue);
@@ -225,20 +233,22 @@ public class TemplateGeneratorUtil {
 	maxFieldDescriptor.setServiceType(serviceType);
 	maxFieldDescriptor.setDefaultValue(defaultValue);
 	maxFieldDescriptor.setFieldType(type);
+	maxFieldDescriptor.setLabelOffer(labelOffer);
+	maxFieldDescriptor.setLabelRequest(labelRequest);
 
 	filterTemplate.getFilterElements().add(minFieldDescriptor);
 	filterTemplate.getFilterElements().add(maxFieldDescriptor);
     }
 
     public static Set<Class<?>> getJobDetailImplClasses() {
-	return jobDetailImplClasses;
+	return templateableClasses;
     }
 
-    public static <V, K> void loadJobDetailImplClasses() {
-	if (jobDetailImplClasses == null) {
-	    log.info("loading JobDetail implementation classes..");
-	    TemplateGeneratorUtil.jobDetailImplClasses = Collections
-		    .unmodifiableSet(reflections.getTypesAnnotatedWith(GenerateTemplate.class));
+    public static <V, K> void loadTemplatizedClasses() {
+	if (templateableClasses == null) {
+	    log.info("loading classed marked with @Templateable...");
+	    TemplateUtil.templateableClasses = Collections
+		    .unmodifiableSet(reflections.getTypesAnnotatedWith(Template.class));
 	}
     }
 

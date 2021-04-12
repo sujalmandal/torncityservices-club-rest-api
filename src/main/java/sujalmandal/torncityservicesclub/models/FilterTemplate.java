@@ -14,8 +14,10 @@ import sujalmandal.torncityservicesclub.utils.PojoUtils;
 
 @Getter
 @Setter
-@Document(collection = "JobDetailFilterTemplate")
-public class JobDetailFilterTemplate {
+@Document(
+	collection = "FilterTemplate"
+)
+public class FilterTemplate {
 
     @Id
     private String id;
@@ -41,7 +43,7 @@ public class JobDetailFilterTemplate {
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	JobDetailFilterTemplate other = (JobDetailFilterTemplate) obj;
+	FilterTemplate other = (FilterTemplate) obj;
 	if (filterTemplateName == null) {
 	    if (other.filterTemplateName != null)
 		return false;
@@ -51,7 +53,7 @@ public class JobDetailFilterTemplate {
     }
 
     public Object toJson() throws JsonProcessingException {
-	JobDetailFilterTemplate copyOfThis = new JobDetailFilterTemplate();
+	FilterTemplate copyOfThis = new FilterTemplate();
 	PojoUtils.map(this, copyOfThis);
 	copyOfThis.id = null;
 	return PojoUtils.getObjectMapper().writeValueAsString(copyOfThis);

@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import sujalmandal.torncityservicesclub.enums.SubscriptionType;
+import sujalmandal.torncityservicesclub.constants.SubscriptionType;
 
 @Getter
 @Setter

@@ -2,55 +2,49 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.STAT_SPY
+@Template(
+    TemplateValue.STAT_SPY
 )
 public class StatSpyJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "Torn id of the player to spy on",
-	    serviceType = ServiceTypeValue.REQUEST
+	    serviceType = ServiceTypeValue.REQUEST,
+	    isSearchable = false
     )
     private String targetPlayerId;
 
-    @FormField(
+    @TemplateField(
 	    label = "Total spies to sell",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    serviceType = ServiceTypeValue.OFFER,
 	    minValue = 1,
-	    maxValue = 50
-    )
-    @FilterableField(
-	    label = "total spies",
+	    maxValue = 50,
 	    maxFieldLabel = "max no. of spies",
 	    minFieldLabel = "min no. of spies"
     )
     private Integer totalSpy;
 
-    @FormField(
+    @TemplateField(
 	    label = "Pay per spy",
-	    formatter = FieldFormatterValue.CURRENCY,
-	    type = FormFieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 750_000,
 	    maxValue = 5_000_000,
-	    payFieldType = PayFieldType.PER_ACTION
-    )
-    @FilterableField(
-	    label = "total pay per spy",
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
 	    maxFieldLabel = "max pay per spy",
 	    minFieldLabel = "min pay per spy"
     )

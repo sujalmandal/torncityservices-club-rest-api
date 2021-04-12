@@ -2,54 +2,48 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
 @EqualsAndHashCode(
 	callSuper = false
 )
-@GenerateTemplate(
-    JobDetailTemplateValue.ATTACK
+@Template(
+    TemplateValue.ATTACK
 )
 public class FightJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "Torn id of the player who has to be attacked",
-	    serviceType = ServiceTypeValue.REQUEST
+	    serviceType = ServiceTypeValue.REQUEST,
+	    isSearchable = false
     )
     private String targetPlayerId;
 
-    @FormField(
+    @TemplateField(
 	    label = "Total attacks",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
-	    maxValue = 200
-    )
-    @FilterableField(
-	    label = "total attacks",
+	    maxValue = 200,
 	    maxFieldLabel = "maximum no. of attacks",
 	    minFieldLabel = "minimum no. of attacks"
     )
     private Integer totalAttacks;
 
-    @FormField(
+    @TemplateField(
 	    label = "Pay for per attack this job",
-	    formatter = FieldFormatterValue.CURRENCY,
-	    type = FormFieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 100_000,
 	    maxValue = 5_000_000,
-	    payFieldType = PayFieldType.PER_ACTION
-    )
-    @FilterableField(
-	    label = "total pay per attack",
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
 	    maxFieldLabel = "maximum pay per attack",
 	    minFieldLabel = "minimum pay per attack"
     )

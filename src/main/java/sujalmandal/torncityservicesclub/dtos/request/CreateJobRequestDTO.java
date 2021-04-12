@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import lombok.Getter;
 import lombok.Setter;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 
 @Getter
 @Setter

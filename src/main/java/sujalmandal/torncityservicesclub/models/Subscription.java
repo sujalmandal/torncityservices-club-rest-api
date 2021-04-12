@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.enums.SubscriptionType;
+import sujalmandal.torncityservicesclub.constants.SubscriptionType;
 
 @Data
 @Document(collection = "Subscription")

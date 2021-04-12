@@ -3,14 +3,13 @@ package sujalmandal.torncityservicesclub.models.jobdetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import sujalmandal.torncityservicesclub.annotations.FilterableField;
-import sujalmandal.torncityservicesclub.annotations.FormField;
-import sujalmandal.torncityservicesclub.annotations.GenerateTemplate;
-import sujalmandal.torncityservicesclub.enums.FieldFormatterValue;
-import sujalmandal.torncityservicesclub.enums.FormFieldTypeValue;
-import sujalmandal.torncityservicesclub.enums.JobDetailTemplateValue;
-import sujalmandal.torncityservicesclub.enums.PayFieldType;
-import sujalmandal.torncityservicesclub.enums.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.annotations.TemplateField;
+import sujalmandal.torncityservicesclub.annotations.Template;
+import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
+import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
+import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.constants.TemplateValue;
 import sujalmandal.torncityservicesclub.models.JobDetails;
 
 @Data
@@ -18,42 +17,38 @@ import sujalmandal.torncityservicesclub.models.JobDetails;
 	callSuper = false
 )
 @ToString
-@GenerateTemplate(
-    JobDetailTemplateValue.HOSPITALIZE
+@Template(
+    TemplateValue.HOSPITALIZE
 )
 public class HospitalizeJobDetails implements JobDetails {
 
-    @FormField(
+    @TemplateField(
 	    label = "Torn id of the player who has to be attacked",
-	    serviceType = ServiceTypeValue.REQUEST
+	    serviceType = ServiceTypeValue.REQUEST,
+	    isSearchable = false
     )
     private String targetPlayerId;
 
-    @FormField(
+    @TemplateField(
 	    label = "Total number of times to hospitalize a target",
-	    type = FormFieldTypeValue.NUMBER,
+	    type = FieldTypeValue.NUMBER,
 	    minValue = 1,
-	    maxValue = 50
-    )
-    @FilterableField(
-	    label = "total hospitalizations",
+	    maxValue = 50,
 	    maxFieldLabel = "maximum no. of hospitalizations",
 	    minFieldLabel = "minimum no. of hospitalizations"
     )
     private Integer totalHospitalizations;
 
-    @FormField(
+    @TemplateField(
 	    label = "Pay per hospitalization for this job",
-	    type = FormFieldTypeValue.NUMBER,
-	    formatter = FieldFormatterValue.CURRENCY,
+	    type = FieldTypeValue.NUMBER,
+	    formatter = FieldFormatValue.CURRENCY,
 	    minValue = 100_000,
 	    maxValue = 5_000_000,
-	    payFieldType = PayFieldType.PER_ACTION
-    )
-    @FilterableField(
-	    label = "total pay per hospitalization",
+	    payFieldType = PayFieldTypeValue.PER_ACTION,
 	    maxFieldLabel = "max pay per hospitalization",
 	    minFieldLabel = "min pay per hospitalization"
+
     )
     private Long pay;
 }

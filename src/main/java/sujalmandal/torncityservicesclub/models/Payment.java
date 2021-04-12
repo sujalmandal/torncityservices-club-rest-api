@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.enums.PaymentStatus;
+import sujalmandal.torncityservicesclub.constants.PaymentStatus;
 
 @Data
 @Document(collection = "Payment")

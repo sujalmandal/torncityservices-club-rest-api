@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sujalmandal.torncityservicesclub.enums.PaymentStatus;
+import sujalmandal.torncityservicesclub.constants.PaymentStatus;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.repositories.PaymentRepository;
