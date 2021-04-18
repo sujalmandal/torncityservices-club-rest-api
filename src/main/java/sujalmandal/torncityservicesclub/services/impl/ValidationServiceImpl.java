@@ -14,7 +14,7 @@ import sujalmandal.torncityservicesclub.constants.AppConstants;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
 import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 import sujalmandal.torncityservicesclub.exceptions.ServiceException;
-import sujalmandal.torncityservicesclub.models.JobDetails;
+import sujalmandal.torncityservicesclub.models.ServiceDetail;
 import sujalmandal.torncityservicesclub.services.ValidationService;
 
 @Slf4j
@@ -29,22 +29,21 @@ public class ValidationServiceImpl implements ValidationService {
     private static final String EMPTY_OPTION_ERR_MSG = "Please select a value from the dropdown.";
 
     @Override
-    public Map<String, String> validateCreateRequest(JobDetails jobDetailImplInstance,
-	    ServiceTypeValue serviceTypeValue) {
+    public Map<String, String> validateCreateRequest(ServiceDetail serviceDetail, ServiceTypeValue serviceTypeValue) {
 
-	if (jobDetailImplInstance == null) {// 013115
+	if (serviceDetail == null) {// 013115
 	    throw new ServiceException(EMPTY_JOB_TYPE_ERR_MSG, 400);
 	}
 	Map<String, String> errorMessages = new HashMap<>();
-	JobDetails.getFieldDetails(jobDetailImplInstance.getJobDetailFormTemplateName())
+	ServiceDetail.getFieldDetails(serviceDetail.getTemplateMetadata().getTemplateName())
 		.forEach((fieldName, formField) -> {
 		    try {
-			Field currentField = jobDetailImplInstance.getClass().getDeclaredField(fieldName);
+			Field currentField = serviceDetail.getClass().getDeclaredField(fieldName);
 			currentField.setAccessible(true);
 
 			String javaType = currentField.getType().getName();
 			FieldTypeValue fieldType = formField.type();
-			Object value = currentField.get(jobDetailImplInstance);
+			Object value = currentField.get(serviceDetail);
 
 			log.info("validating '{}' of type '{}' with value '{}'", fieldName, javaType, value);
 
@@ -96,8 +95,7 @@ public class ValidationServiceImpl implements ValidationService {
 
     private void validateEmptyFields(Map<String, String> errorMessages, String fieldName, TemplateField formField,
 	    Object value, ServiceTypeValue jobServiceType) {
-	if ((!formField.optional() && value == null && formField.serviceType() == jobServiceType)
-		|| (formField.serviceType() == ServiceTypeValue.ALL && !formField.optional() && value == null)) {
+	if (!formField.optional() && value == null) {
 	    errorMessages.put(fieldName, CANNOT_BE_EMPTY_ERR_MSG);
 	}
     }

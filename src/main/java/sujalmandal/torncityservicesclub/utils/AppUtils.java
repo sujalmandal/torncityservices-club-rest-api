@@ -22,7 +22,7 @@ public class AppUtils {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DD_MM_YYYY_DATE_FORMAT.toString());
     private static final Pattern moneyPattern = Pattern.compile(MONEY_EVENT_PATTERN.toString());
 
-    public static String generateCode() {
+    public static String generateUUID() {
 	UUID uuid = UUID.randomUUID();
 	return uuid.toString();
     }

@@ -5,101 +5,129 @@ import lombok.Getter;
 @Getter
 public enum TemplateValue {
 
-    // REQUEST : I am looking for + formRequestTypeLabel
-    // OFFER : I am offering to + formOfferTypeLabel
-    EMPLOYEE(
-	    "EMPLOYEE", "Employee/Company", "EMPLOYEE_FILTER", "employee/company", "a company to work in",
-	    "hire an employee", "Enter details to search for companies to work in.",
-	    "Enter details to search for workers available. "
+    HIRE_OFFER(
+	    "HIRE_OFFER", "Offer employment in your company", "Search job offers", ServiceTypeValue.OFFER,
+	    MoneyFieldType.COST
     ),
 
-    HOSPITALIZE(
-	    "HOSPITALIZE", "Hospitalize", "HOSPITALIZE_FILTER", "hospitalization", "hospitalization services",
-	    "provide hospitalization services", "", ""
+    JOB_REQUEST(
+	    "JOB_REQUEST", "Request for work in a company", "Search for people looking for jobs",
+	    ServiceTypeValue.REQUEST, MoneyFieldType.PAY
     ),
 
-    PROFILE_WATCH(
-	    "PROFILE_WATCH", "Profile watch", "PROFILE_WATCH_FILTER", "profile watch", "profile watching services",
-	    "watch profiles", "", ""
+    HOSPITALIZE_REQUEST(
+	    "HOSPITALIZE_REQUEST", "Request for hospitalization of your target",
+	    "Search people requesting hospitalization services", ServiceTypeValue.REQUEST, MoneyFieldType.PAY
     ),
 
-    ITEMS_RUNNER(
-	    "ITEMS_RUNNER", "Item runners", "ITEMS_RUNNER_FILTER", "item runners", "item runners", "run items", "", ""
+    HOSPITALIZE_OFFER(
+	    "HOSPITALIZE_OFFER", "Offer hospitalization services", "Search people offering hospitalization services",
+	    ServiceTypeValue.OFFER, MoneyFieldType.COST
     ),
 
-    ATTACK_FACTION(
-	    "ATTACK_FACTION", "Attack a faction", "ATTACK_FACTION_FILTER", "faction attack",
-	    "attack on faction services", "attack a faction", "", ""
+    PROFILE_WATCH_REQUEST(
+	    "PROFILE_WATCH_REQUEST", "Request for someone to watch your profile",
+	    "Search for people requesting for profile watching services", ServiceTypeValue.REQUEST, MoneyFieldType.PAY
     ),
 
-    TRAINS(
-	    "TRAINS", "Trains", "TRAINS_FILTER", "train", "trains", "sell trains", "", ""
+    PROFILE_WATCH_OFFER(
+	    "PROFILE_WATCH_OFFER", "Offer profile watching services",
+	    "Search for people offering profile watching services", ServiceTypeValue.OFFER, MoneyFieldType.COST
     ),
 
-    STAT_SPY(
-	    "STAT_SPY", "Spy someone's stats", "STAT_SPY_FILTER", "stat spy", "stat spy services", "spy stats", "", ""
+    ITEMS_RUN_REQUEST(
+	    "ITEMS_RUN_REQUEST", "Request for someone to run items for you",
+	    "Search for people looking for item runners", ServiceTypeValue.REQUEST, MoneyFieldType.COST
     ),
 
-    ATTACK(
-	    "ATTACK", "Attack someone", "ATTACK_FILTER", "attack", "attack services", "provide attack services", "", ""
+    ITEMS_RUN_OFFER(
+	    "ITEMS_RUN_OFFER", "Offer to run items for clients", "Search for people willing to run items",
+	    ServiceTypeValue.OFFER, MoneyFieldType.PAY
     ),
 
-    DEFEND_FACTION(
-	    "DEFEND_FACTION", "Defend a faction", "DEFEND_FACTION_FILTER", "faction defend", "faction defend services",
-	    "provide faction defend services", "", ""
+    TRAINS_OFFER(
+	    "TRAINS_OFFER", "Offer to sell trains", "Search for people offering to sell trains", ServiceTypeValue.OFFER,
+	    MoneyFieldType.PAY
     ),
 
-    REVIVE_FACTION(
-	    "REVIVE_FACTION", "Faction revive contract", "REVIVE_FACTION_FILTER", "faction revive contract",
-	    "faction revive contract", "sell faction revive contract", "", ""
+    TRAINS_REQUEST(
+	    "TRAINS_REQUEST", "Offer to sell trains", "Search for people selling trains", ServiceTypeValue.REQUEST,
+	    MoneyFieldType.COST
     ),
 
-    BOUNTY_PLAYER(
-	    "BOUNTY_PLAYER", "Bounty a player", "BOUNTY_PLAYER_FILTER", "bounty", "bounty slots", "sell bounty slots",
-	    "", ""
+    REVIVE_CONTRACT_REQUEST(
+	    "REVIVE_CONTRACT_REQUEST", "Request for a revive contract for your faction",
+	    "Search for people requesting revive contracts for faction", ServiceTypeValue.REQUEST, MoneyFieldType.COST
     ),
 
-    BOUNTY_REVEAL(
-	    "BOUNTY_REVEAL", "Reveal bounty", "BOUNTY_REVEAL_FILTER", "bounty reveal", "bounty reveals",
-	    "sell bounty reveals", "", ""
+    REVIVE_CONTRACT_OFFER(
+	    "REVIVE_CONTRACT_OFFER", "Offer revive contract for factions",
+	    "Search for people offering revive contracts for faction", ServiceTypeValue.OFFER, MoneyFieldType.PAY
     ),
 
-    DIRTY_BOMB_A_FACTION(
-	    "DIRTY_BOMB_A_FACTION", "Nuke a faction", "DIRTY_BOMB_A_FACTION_FILTER", "dirty bomb",
-	    "someone to bomb a faction", "bomb a faction", "", ""
+    STAT_SPY_REQUEST(
+	    "STAT_SPY_REQUEST", "Request for spying the stats of your target",
+	    "Search for people willing to hire stat spies", ServiceTypeValue.REQUEST, MoneyFieldType.COST
     ),
 
-    RENT(
-	    "RENT", "Rent", "RENT_FILTER", "rent", "a property to rent", "rent a property", "", ""
+    STAT_SPY_OFFER(
+	    "STAT_SPY_OFFER", "Offer to sell stat spies", "Search for people selling stat spies",
+	    ServiceTypeValue.OFFER, MoneyFieldType.PAY
     ),
 
-    MUG(
-	    "MUG", "Mug someone", "MUG_FILTER", "mug", "mugging services", "provide mugging services", "", ""
+    BOUNTY_REVEAL_REQUEST(
+	    "BOUNTY_REVEAL_REQUEST", "Request for bounty reveal services",
+	    "Search for people requesting bounty reveals", ServiceTypeValue.REQUEST, MoneyFieldType.COST
+    ),
+
+    BOUNTY_REVEAL_OFFER(
+	    "BOUNTY_REVEAL_OFFER", "Offer to sell bounty reveal services", "Search for selling bounty reveals",
+	    ServiceTypeValue.OFFER, MoneyFieldType.PAY
+    ),
+
+    BOUNTY_PLAYER_REQUEST(
+	    "BOUNTY_PLAYER_REQUEST", "Request to buy bounty slots", "Search for people requesting to buy bounty slots",
+	    ServiceTypeValue.REQUEST, MoneyFieldType.COST
+    ),
+
+    BOUNTY_PLAYER_OFFER(
+	    "BOUNTY_PLAYER_OFFER", "Offer to sell bounty slots", "Search for people selling bounty slots",
+	    ServiceTypeValue.OFFER, MoneyFieldType.PAY
+    ),
+
+    LOSSES_REQUEST(
+	    "LOSSES_REQUEST", "Buy losses from other players", "Search for people requesting to buy losses",
+	    ServiceTypeValue.REQUEST, MoneyFieldType.COST
+    ),
+
+    LOSSES_OFFER(
+	    "LOSSES_OFFER", "Sell losses to other players", "Search for people selling losses",
+	    ServiceTypeValue.REQUEST, MoneyFieldType.PAY
+    ),
+
+    ESCAPES_REQUEST(
+	    "ESCAPES_REQUEST", "Buy losses from other players", "Search for people requesting to buy losses",
+	    ServiceTypeValue.REQUEST, MoneyFieldType.COST
+    ),
+
+    ESCAPES_OFFER(
+	    "ESCAPES_OFFER", "Sell losses to other players", "Search for people selling losses",
+	    ServiceTypeValue.REQUEST, MoneyFieldType.PAY
     );
 
-    private String formTemplateName;
-    private String formTemplateLabel;
+    private String templateName;
+    private String formLabel;
+    private String filterLabel;
+    private ServiceTypeValue serviceType;
+    private MoneyFieldType moneyFieldType;
 
-    private String formRequestTypeLabel;
-    private String formOfferTypeLabel;
-
-    private String filterTemplateName;;
-    private String filterTemplateLabel;
-
-    private String filterRequestTypeLabel;
-    private String filterOfferTypeLabel;
-
-    private TemplateValue(String formTemplateName, String formTemplateLabel, String filterTemplateName,
-	    String filterTemplateLabel, String formRequestTypeLabel, String formOfferTypeLabel,
-	    String filterRequestTypeLabel, String filterOfferTypeLabel) {
-	this.formTemplateName = formTemplateName;
-	this.formTemplateLabel = formTemplateLabel;
-	this.filterTemplateName = filterTemplateName;
-	this.filterTemplateLabel = filterTemplateLabel;
-	this.formRequestTypeLabel = formRequestTypeLabel;
-	this.formOfferTypeLabel = formOfferTypeLabel;
-	this.filterRequestTypeLabel = filterRequestTypeLabel;
-	this.filterOfferTypeLabel = filterOfferTypeLabel;
+    private TemplateValue(String templateName, String formLabel, String filterLabel, ServiceTypeValue serviceType,
+	    MoneyFieldType moneyFieldType) {
+	this.templateName = templateName;
+	this.formLabel = formLabel;
+	this.filterLabel = filterLabel;
+	this.serviceType = serviceType;
+	this.moneyFieldType = moneyFieldType;
     }
 
 }

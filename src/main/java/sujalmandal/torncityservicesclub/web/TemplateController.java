@@ -14,26 +14,30 @@ import sujalmandal.torncityservicesclub.services.JobService;
 /** public APIs **/
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping(
+    "/templates"
+)
 public class TemplateController {
 
     @Autowired
     private JobService jobService;
 
-    @RequestMapping(method = RequestMethod.GET, path = "/jobDetailFormTemplate/{templateName}")
-    public ResponseEntity<?> getJobDetailFormTemplateByName(@PathVariable("templateName") String templateName)
-	    throws JsonProcessingException {
-	return ResponseEntity.ok().body(jobService.getJobDetailFormTemplateForTemplateName(templateName).toJson());
+    @RequestMapping(
+	    method = RequestMethod.GET,
+	    path = "/{templateName}"
+    )
+    public ResponseEntity<?> getTemplate(@PathVariable(
+	"templateName"
+    )
+    String templateName) throws JsonProcessingException {
+	return ResponseEntity.ok().body(jobService.getTemplateByTemplateName(templateName));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/jobDetailFilterTemplate/{templateName}")
-    public ResponseEntity<?> getJobDetailFilterTemplateByName(@PathVariable("templateName") String templateName)
-	    throws JsonProcessingException {
-	return ResponseEntity.ok().body(jobService.getJobDetailFilterTemplateForTemplateName(templateName).toJson());
-    }
-
-    @RequestMapping(method = RequestMethod.GET, path = "/jobDetailTemplates")
-    public ResponseEntity<?> getAvailableJobDetailTemplateKeys() throws JsonProcessingException {
-	return ResponseEntity.ok().body(jobService.getJobDetailTemplateInformation());
+    @RequestMapping(
+	    method = RequestMethod.GET,
+	    path = "/availableTemplateNames"
+    )
+    public ResponseEntity<?> getAvailableTemplateNames() throws JsonProcessingException {
+	return ResponseEntity.ok().body(jobService.getAvailableTemplateNames());
     }
 }

@@ -6,6 +6,6 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class JobDetailResponseDTO {
-    List<JobDetailFieldResponseDTO> fields = new ArrayList<JobDetailFieldResponseDTO>();
+public class ServiceDetailResponseDTO {
+    List<ServiceDetailFieldResponseDTO> fields = new ArrayList<ServiceDetailFieldResponseDTO>();
 }

@@ -26,8 +26,8 @@ import sujalmandal.torncityservicesclub.models.Job;
 import sujalmandal.torncityservicesclub.models.Payment;
 import sujalmandal.torncityservicesclub.models.Player;
 import sujalmandal.torncityservicesclub.models.Subscription;
-import sujalmandal.torncityservicesclub.models.jobdetails.HospitalizeJobDetails;
-import sujalmandal.torncityservicesclub.models.jobdetails.MugJobDetails;
+import sujalmandal.torncityservicesclub.models.service.offers.HospitalizeServiceOffer;
+import sujalmandal.torncityservicesclub.models.service.requests.BountyServiceRequest;
 import sujalmandal.torncityservicesclub.services.JobService;
 import sujalmandal.torncityservicesclub.services.PlayerService;
 import sujalmandal.torncityservicesclub.services.TornAPIService;
@@ -36,12 +36,18 @@ import sujalmandal.torncityservicesclub.utils.AppUtils;
 import sujalmandal.torncityservicesclub.utils.StaticContextAccessor;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles(
+    "test"
+)
 @Slf4j
-@TestMethodOrder(OrderAnnotation.class)
+@TestMethodOrder(
+    OrderAnnotation.class
+)
 class TorncityservicesClubApplicationTests {
 
-    @Value("${torn.transhumanist.apikey}")
+    @Value(
+	"${torn.transhumanist.apikey}"
+    )
     private String myAPIKey;
 
     @Autowired
@@ -64,7 +70,9 @@ class TorncityservicesClubApplicationTests {
     }
 
     @Test
-    @Order(1)
+    @Order(
+	1
+    )
     public void testTornPlayerDataFetch() {
 	log.info("testTornPlayerDataFetch()");
 	Optional<Player> player = tornService.getPlayer(myAPIKey);
@@ -73,7 +81,9 @@ class TorncityservicesClubApplicationTests {
     }
 
     @Test
-    @Order(2)
+    @Order(
+	2
+    )
     public void testTornPlayerEventsFetch() {
 	log.info("testTornPlayerEventsFetch()");
 	PlayerEventsDTO eventsDTO = tornService.getEvents(myAPIKey);
@@ -84,7 +94,9 @@ class TorncityservicesClubApplicationTests {
     }
 
     @Test
-    @Order(3)
+    @Order(
+	3
+    )
     public void testRegisterPlayer() {
 	log.info("testRegisterPlayer()");
 	PlayerDTO registeredPlayer = playerService.registerPlayer(myAPIKey);
@@ -97,24 +109,27 @@ class TorncityservicesClubApplicationTests {
     }
 
     @Test
-    @Order(4)
+    @Order(
+	4
+    )
     public void testJobPosting() {
 	log.info("testJobPosting()");
 	log.info("using previously fetched player {}", player);
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 	createJobRequestDTO.setServiceType(ServiceTypeValue.OFFER);
 	createJobRequestDTO.setApiKey(myAPIKey);
-	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
+	HospitalizeServiceOffer hospJob = new HospitalizeServiceOffer();
 	hospJob.setPay(2_000_000L);
-	hospJob.setTargetPlayerId(player.getTornUserId());
 	hospJob.setTotalHospitalizations(20);
-	createJobRequestDTO.setJobDetails(hospJob.toMap());
+	createJobRequestDTO.setServiceDetail(hospJob.toMap());
 	Job postedJob = jobService.postJob(createJobRequestDTO);
 	Assert.notNull(postedJob, "failed to post a job!");
     }
 
     @Test
-    @Order(5)
+    @Order(
+	5
+    )
     public void testFetchingJobs() {
 	postHospitalizeJob();
 	postBountyJob();
@@ -126,7 +141,9 @@ class TorncityservicesClubApplicationTests {
     }
 
     @Test
-    @Order(1)
+    @Order(
+	1
+    )
     public void testExactingMoneyFromEventMessage() {
 	String eventMsg = "You were sent $550,000 from AwesomePlayer with the message: asbc9";
 	Long amountExtracted = AppUtils.getAmountFromEvents(eventMsg);
@@ -138,11 +155,10 @@ class TorncityservicesClubApplicationTests {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 	createJobRequestDTO.setServiceType(ServiceTypeValue.OFFER);
 	createJobRequestDTO.setApiKey(myAPIKey);
-	HospitalizeJobDetails hospJob = new HospitalizeJobDetails();
+	HospitalizeServiceOffer hospJob = new HospitalizeServiceOffer();
 	hospJob.setPay(2_000_000L);
-	hospJob.setTargetPlayerId(player.getTornUserId());
 	hospJob.setTotalHospitalizations(20);
-	createJobRequestDTO.setJobDetails(hospJob.toMap());
+	createJobRequestDTO.setServiceDetail(hospJob.toMap());
 	jobService.postJob(createJobRequestDTO);
     }
 
@@ -150,10 +166,10 @@ class TorncityservicesClubApplicationTests {
 	CreateJobRequestDTO createJobRequestDTO = new CreateJobRequestDTO();
 	createJobRequestDTO.setServiceType(ServiceTypeValue.REQUEST);
 	createJobRequestDTO.setApiKey(myAPIKey);
-	MugJobDetails mugJobDetails = new MugJobDetails();
-	mugJobDetails.setPay(50_000L);
-	mugJobDetails.setTargetPlayerId(player.getTornUserId());
-	mugJobDetails.setTotalMugs(5);
+	BountyServiceRequest bountyRequest = new BountyServiceRequest();
+	bountyRequest.setAmountPerBounty(50_000L);
+	bountyRequest.setTargetPlayerId(player.getTornUserId());
+	bountyRequest.setTotalTimes(10);
 	jobService.postJob(createJobRequestDTO);
     }
 

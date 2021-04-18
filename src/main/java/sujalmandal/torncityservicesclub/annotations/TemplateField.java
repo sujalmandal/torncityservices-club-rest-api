@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 import sujalmandal.torncityservicesclub.constants.FieldFormatValue;
 import sujalmandal.torncityservicesclub.constants.FieldTypeValue;
-import sujalmandal.torncityservicesclub.constants.PayFieldTypeValue;
-import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 
 @Retention(
     RetentionPolicy.RUNTIME
@@ -18,19 +16,18 @@ import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
 )
 public @interface TemplateField{
 
-    public String labelCommon() default "";
+    /** labels **/
+    public String formLabel() default "";
 
-    public String labelRequest() default "";
+    public String viewLabel() default "";
 
-    public String labelOffer() default "";
+    public String filterCommonLabel() default "";
 
-    public String viewLabelRequest() default "";
+    public String filterMaxFieldLabel() default "";
 
-    public String viewLabelOffer() default "";
+    public String filterMinFieldLabel() default "";
 
     public boolean optional() default false;
-
-    public ServiceTypeValue serviceType() default ServiceTypeValue.ALL;
 
     public FieldFormatValue formatter() default FieldFormatValue.TEXT;
 
@@ -38,26 +35,22 @@ public @interface TemplateField{
 
     public String defaultValue() default "";
 
-    public PayFieldTypeValue payFieldType() default PayFieldTypeValue.NONE;
+    public boolean isMoneyField() default false;
 
-    public ServiceTypeValue payOnServiceType() default ServiceTypeValue.NONE;
+    public boolean isPlayerTarget() default false;
+
+    public boolean isFactionTarget() default false;
 
     // only applicable to 'SELECT' type
     public String[] options() default "";
+
+    /* filter related options */
 
     // only applicable to 'NUMBER' type
     public long minValue() default 0;
 
     // only applicable to 'NUMBER' type
     public long maxValue() default 10;
-
-    public String maxFieldLabel() default "";
-
-    public String minFieldLabel() default "";
-
-    public boolean isPlayerTarget() default false;
-
-    public boolean isFactionTarget() default false;
 
     public boolean isSearchable() default true;
 }

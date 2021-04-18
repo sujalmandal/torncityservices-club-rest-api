@@ -9,6 +9,6 @@ import sujalmandal.torncityservicesclub.constants.TemplateValue;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Template {
+public @interface Templatized {
     public TemplateValue value();
 }

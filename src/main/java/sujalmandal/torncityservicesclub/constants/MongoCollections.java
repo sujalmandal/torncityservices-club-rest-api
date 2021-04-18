@@ -2,7 +2,11 @@ package sujalmandal.torncityservicesclub.constants;
 
 public enum MongoCollections {
 
-    JOB("Job"), MONGO_SEQUENCE("MongoSequence");
+    SERVICE_DETAIL_TEMPLATE(
+	    "ServiceDetailTemplate"
+    ), MONGO_SEQUENCE(
+	    "MongoSequence"
+    );
 
     private String value;
 

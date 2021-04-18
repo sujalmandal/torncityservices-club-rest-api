@@ -7,14 +7,14 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import sujalmandal.torncityservicesclub.models.FormTemplate;
+import sujalmandal.torncityservicesclub.models.Template;
 import sujalmandal.torncityservicesclub.utils.TemplateUtil;
 
 public class UtilsTest {
 
     @Test
     public void testFormDataGeneration() throws JsonProcessingException {
-	Set<FormTemplate> jsonFormData = TemplateUtil.generateFormTemplate();
+	Set<Template> jsonFormData = TemplateUtil.getTemplatesFromClasses();
 	Assert.notEmpty(jsonFormData, "Form data can't be empty!");
     }
 

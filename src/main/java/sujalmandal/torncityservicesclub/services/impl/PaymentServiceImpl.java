@@ -31,7 +31,7 @@ public class PaymentServiceImpl implements PaymentService {
 	payment.setPaymentInitiatedDateTime(LocalDateTime.now());
 	payment.setFromPlayerId(senderPlayerId);
 	payment.setToPlayerId(receiverPlayerId);
-	payment.setVerificationCode(AppUtils.generateCode());
+	payment.setVerificationCode(AppUtils.generateUUID());
 	return paymentRepository.save(payment);
     }
 

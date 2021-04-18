@@ -1,7 +1,7 @@
 package sujalmandal.torncityservicesclub.dtos.response;
 
 import lombok.Data;
-import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.dtos.commons.TemplateMetaInfo;
 
 @Data
 public class JobResponseDTO {
@@ -15,13 +15,8 @@ public class JobResponseDTO {
     private String postedDate;
     private String acceptedDate;
     private String finishedDate;
-    private String templateName;
-    private String templateLabel;
 
-    private JobDetailResponseDTO details;
+    private TemplateMetaInfo templateMetaInfo;
 
-    private ServiceTypeValue serviceType;
-    private ServiceTypeValue payOnServiceType;
-    private Long payPerAction;
-    private Long totalPay;
+    private ServiceDetailResponseDTO details;
 }

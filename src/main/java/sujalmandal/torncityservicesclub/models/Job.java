@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sujalmandal.torncityservicesclub.constants.JobStatus;
-import sujalmandal.torncityservicesclub.constants.ServiceTypeValue;
+import sujalmandal.torncityservicesclub.dtos.commons.TemplateMetaInfo;
 import sujalmandal.torncityservicesclub.dtos.response.JobResponseDTO;
 import sujalmandal.torncityservicesclub.utils.AppUtils;
 import sujalmandal.torncityservicesclub.utils.PojoUtils;
@@ -33,14 +33,10 @@ public class Job {
     private LocalDateTime postedDate;
     private LocalDateTime acceptedDate;
     private LocalDateTime finishedDate;
-    private String templateName;
-    private String templateLabel;
-    private String filterTemplateName;
-    private JobDetails jobDetails;
-    private ServiceTypeValue serviceType;
-    private Long payPerAction;
-    private Long totalPay;
-    private ServiceTypeValue payOnServiceType;
+
+    private ServiceDetail serviceDetail;
+
+    private TemplateMetaInfo templateMetaInfo;
 
     public JobResponseDTO toJobResponseDTO() {
 	JobResponseDTO responseDTO = new JobResponseDTO();

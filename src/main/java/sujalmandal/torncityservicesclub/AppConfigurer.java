@@ -16,8 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
-import sujalmandal.torncityservicesclub.models.FilterTemplate;
-import sujalmandal.torncityservicesclub.models.FormTemplate;
+import sujalmandal.torncityservicesclub.models.ServiceDetailTemplate;
+import sujalmandal.torncityservicesclub.models.Template;
 import sujalmandal.torncityservicesclub.services.JobService;
 import sujalmandal.torncityservicesclub.utils.TemplateUtil;
 
@@ -28,15 +28,16 @@ public class AppConfigurer implements WebMvcConfigurer {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Value("${app.cors.allowed.list}")
+    @Value(
+	"${app.cors.allowed.list}"
+    )
     private List<String> allowedCORSDomains;
 
     @Autowired
     private JobService jobService;
 
     public void configure() throws JsonProcessingException {
-	updateJobDetailFormTemplates();
-	updateJobDetailFilterTemplates();
+	updateServiceDetailTemplates();
 	jobService.initSequenceIdsIfNotPresent();
     }
 
@@ -58,23 +59,13 @@ public class AppConfigurer implements WebMvcConfigurer {
 	return new MongoTransactionManager(dbFactory);
     }
 
-    private void updateJobDetailFormTemplates() throws JsonProcessingException {
-	mongoTemplate.dropCollection(FormTemplate.class);
-	log.info("Creating job detail form templates..");
-	Set<FormTemplate> generatedFormTemplates = TemplateUtil.generateFormTemplate();
-	for (FormTemplate template : generatedFormTemplates) {
+    private void updateServiceDetailTemplates() throws JsonProcessingException {
+	mongoTemplate.dropCollection(ServiceDetailTemplate.class);
+	log.info("Creating service detail form templates..");
+	Set<Template> generatedFormTemplates = TemplateUtil.getTemplatesFromClasses();
+	for (Template template : generatedFormTemplates) {
 	    mongoTemplate.save(template);
 	}
     }
 
-    private void updateJobDetailFilterTemplates() throws JsonProcessingException {
-	mongoTemplate.dropCollection(FilterTemplate.class);
-	log.info("Creating job detail filter templates..");
-	Set<FilterTemplate> generatedFilterTemplates = TemplateUtil
-		.generateFilterTemplate();
-	for (FilterTemplate template : generatedFilterTemplates) {
-	    log.info("Saving {} filter template!", template.getFilterTemplateName());
-	    mongoTemplate.save(template);
-	}
-    }
 }
